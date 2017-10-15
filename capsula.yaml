@@ -1,0 +1,39 @@
+name: capsula
+version: 1.0.1
+iconFile:
+maintainer:
+  name: Stephan Fuhrmann
+  email: s@sfuhrm.de
+javaVersion: 8
+runtime: JDK
+shortSummary: Creates packages for multiple Linux distributions.
+longDescription: Creates packages for multiple Linux distributions.
+homepage: http://github.com/sfuhrm
+license: GPL2
+targets:
+- debian_stretch
+sourceTar: src.tgz
+debian:
+  packageName: capsula
+  priority: optional
+  section: unknown
+versions:
+- version: 1.0.1-1
+  maintainer:
+    name: Stephan Fuhrmann
+    email: s@sfuhrm.de
+  date: 2017-01-01T12:11:11
+  changes:
+  - Changed foo
+  - Changed bar
+- version: 1.0.0-1
+  maintainer:
+    name: Stephan Fuhrmann
+    email: s@sfuhrm.de
+  date: 2017-01-01T11:11:11
+  changes:
+  - Initial version
+install:
+- copy: from=target/Capsula-1.0-SNAPSHOT-jar-with-dependencies.jar to=/usr/share/capsula/Capsula-1.0-SNAPSHOT-jar-with-dependencies.jar
+- copy: from=src/main/linux/capsula to=/usr/bin/capsula owner=root group=root chmod=0666
+

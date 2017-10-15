@@ -1,0 +1,22 @@
+# Details of a directory layout
+# The following variables are defined:
+# * jpkg: The jpkg yaml file
+# * source: The source directory path
+# * target: The target directory path
+# See: https://www.debian.org/doc/manuals/maint-guide/dreq.en.html
+---
+name: Debian Stretch
+copy:
+  Dockerfile: Dockerfile
+  ${capsula.debian.packageName}_${jpkg.version}.orig.tar.gz: ../${capsula.sourceTar}
+templates:
+  ${capsula.debian.packageName}_${jpkg.version}/debian/control: control.ftl
+  ${capsula.debian.packageName}_${jpkg.version}/debian/changelog: changelog.ftl
+  ${capsula.debian.packageName}_${jpkg.version}/debian/rules: rules.ftl
+  ${capsula.debian.packageName}_${jpkg.version}/debian/compat: compat.ftl
+environment:
+  foo: bar
+run:
+- docker build . -t debian_stretch_jpkg
+- docker run -v${target}:/target -w/target/${jpkg.debian.packageName}_${jpkg.version} debian_stretch_jpkg debuild -us -uc
+

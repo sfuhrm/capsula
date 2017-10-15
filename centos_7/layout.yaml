@@ -1,0 +1,17 @@
+# Details of a directory layout
+# The following variables are defined:
+# * jpkg: The jpkg yaml file
+# * source: The source directory path
+# * target: The target directory path
+---
+name: CentOS 7
+copy:
+  Dockerfile: Dockerfile
+templates:
+  ${capsula.centos.packageName}.spec: packageName.spec.ftl
+environment:
+  foo: bar
+run:
+- docker build . -t centos_7_jpkg
+- docker run -v${target}:/target -w/target centos_7_jpkg rpm-build ${}
+
