@@ -60,11 +60,16 @@ class MkdirDelegate extends AbstractDelegate {
         log.debug("mkdirs {}", p);
         Files.createDirectories(p);
         
-        for (int i = 0; i < p.getNameCount(); i++) {
-            Path sub = p.subpath(0, i);
-            if (!sub.equals(targetPath) && sub.startsWith(targetPath)) {
+        Path sub = p;
+        for (int i = 0; i <= p.getNameCount(); i++) {
+            log.debug("i={}, count={}", i, p.getNameCount());
+            log.debug("sub={}, target={}, startsWith={}", sub, targetPath, sub.startsWith(targetPath));
+            if ((!sub.equals(targetPath)) && sub.startsWith(targetPath)) {
                 applyTargetFileModifications(sub, command);
+            } else {
+                log.debug("equals={}, startsWith={}", sub.equals(targetPath), sub.startsWith(targetPath));
             }
+            sub = sub.getParent();
         }
     }
 }
