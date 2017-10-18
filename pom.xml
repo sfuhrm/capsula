@@ -94,7 +94,7 @@
                     <archive>
                         <manifest>
                             <addClasspath>true</addClasspath>
-                            <mainClass>de.sfuhrm.jpkgbuild.Main</mainClass>
+                            <mainClass>de.sfuhrm.capsula.Main</mainClass>
                         </manifest>
                     </archive>
                 </configuration>

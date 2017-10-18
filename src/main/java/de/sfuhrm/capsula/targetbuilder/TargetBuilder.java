@@ -18,14 +18,25 @@ package de.sfuhrm.capsula.targetbuilder;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import de.sfuhrm.capsula.yaml.Capsula;
+import de.sfuhrm.capsula.yaml.command.Command;
 import de.sfuhrm.capsula.yaml.Layout;
-import freemarker.template.Configuration;
+import de.sfuhrm.capsula.yaml.command.SourceAndTargetCommand;
+import de.sfuhrm.capsula.yaml.command.TargetCommand;
 import java.io.IOException;
+import java.nio.file.FileSystem;
 import java.nio.file.Files;
+import java.nio.file.LinkOption;
 import java.nio.file.Path;
+import java.nio.file.attribute.GroupPrincipal;
+import java.nio.file.attribute.PosixFileAttributeView;
+import java.nio.file.attribute.PosixFilePermission;
+import java.nio.file.attribute.PosixFilePermissions;
+import java.nio.file.attribute.UserPrincipal;
+import java.nio.file.attribute.UserPrincipalLookupService;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import java.util.concurrent.Callable;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -107,34 +118,61 @@ public class TargetBuilder implements Callable<TargetBuilder.Result> {
         }
         environment.put("layout", layout);
         
-        if (layout.getCopy()!= null) {
-            CopyDelegate delegate = new CopyDelegate(this);
-            layout.getCopy().entrySet().stream()
-                    .forEach(e -> {
-                        delegate.copy(e.getValue(), e.getKey());
-                    });
-        }
-        
-        if (layout.getTemplates()!= null) {
-            TemplateDelegate delegate = templateDelegate;
-            layout.getTemplates().entrySet().stream()
-                    .forEach(e -> {
-                        delegate.template(e.getValue(), e.getKey());
-                    });
-        }
-        
-        if (layout.getRun()!= null) {
-            RunDelegate delegate = new RunDelegate(this);
-            layout.getRun().stream()
-                    .forEach(e -> {
-                        delegate.run(e.split(" "));
-                    });
+        for (Command cmd : layout.getPrepare()) {
+            if (cmd.getCopy() != null) {
+                CopyDelegate delegate = new CopyDelegate(this);
+                delegate.copy(cmd.getCopy());
+                applyTargetFileModifications(cmd.getCopy());
+            }
+
+            if (cmd.getTemplate()!= null) {
+                TemplateDelegate delegate = templateDelegate;
+                delegate.template(cmd.getTemplate().getFrom(), cmd.getTemplate().getTo());
+                applyTargetFileModifications(cmd.getTemplate());
+            }
+
+            if (cmd.getRun() != null) {
+                RunDelegate delegate = new RunDelegate(this);
+                delegate.run(cmd.getRun());
+            }
+            
+            if (cmd.getMkdir()!= null) {
+                MkdirDelegate delegate = new MkdirDelegate(this);
+                delegate.mkdir(cmd.getMkdir());
+            }
         }
         
         MDC.remove("layout");
         
         Result result = new Result();
         return result;
+    }
+    
+    private void applyTargetFileModifications(TargetCommand command) throws IOException {
+        Path toPath = getTargetPath().resolve(command.getTo());
+                
+        FileSystem fileSystem = toPath.getFileSystem();
+        UserPrincipalLookupService lookupService
+                = fileSystem.getUserPrincipalLookupService();
+        
+        if (command.getOwner() != null) {
+            log.debug("Setting owner of {} to {}", toPath, command.getOwner());
+            UserPrincipal owner = lookupService.lookupPrincipalByName(command.getOwner());
+            Files.setOwner(toPath, owner);
+        }
+        
+        if (command.getGroup() != null) {
+            log.debug("Setting group of {} to {}", toPath, command.getOwner());
+            GroupPrincipal group = lookupService.lookupPrincipalByGroupName(command.getGroup());
+            Files.getFileAttributeView(toPath, PosixFileAttributeView.class, LinkOption.NOFOLLOW_LINKS).setGroup(group);
+        }
+        
+        if (command.getMode()!= null) {
+            log.debug("Setting mode of {} to {}", toPath, command.getMode());
+            
+            Set<PosixFilePermission> permissions = PosixFilePermissions.fromString(command.getMode());
+            Files.getFileAttributeView(toPath, PosixFileAttributeView.class, LinkOption.NOFOLLOW_LINKS).setPermissions(permissions);
+        }
     }
 
     public void cleanup() {

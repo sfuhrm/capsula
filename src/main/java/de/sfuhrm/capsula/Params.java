@@ -44,6 +44,10 @@ public class Params {
     @Getter
     @Option(name = "-debug", aliases = {"-d"}, usage = "More debugging output")
     private boolean debug;
+    
+    @Getter
+    @Option(name = "-validate", aliases = {"-c"}, usage = "Validate descriptor file and exit")
+    private boolean validate;
 
     @Getter
     @Argument

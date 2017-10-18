@@ -13,32 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package de.sfuhrm.capsula.yaml;
-
-import de.sfuhrm.capsula.yaml.command.Command;
-import java.util.List;
-import java.util.Map;
-import javax.validation.constraints.NotNull;
-import lombok.Getter;
+package de.sfuhrm.capsula.yaml.command;
 
 /**
- * Layout file for one Linux distribution target.
+ * Copy one file / directory to a target location.
  * @author Stephan Fuhrmann
  */
-public class Layout {
-    @NotNull
-    @Getter
-    private String name;
-    
-    @Getter
-    private Map<String, String> copy;
-    
-    @Getter
-    private Map<String, String> templates;
-    
-    @Getter
-    private Map<String, String> environment;
-    
-    @Getter
-    private List<Command> prepare;
+public class MkdirCommand extends TargetCommand {
 }

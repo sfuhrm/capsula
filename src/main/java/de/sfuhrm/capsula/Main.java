@@ -23,8 +23,8 @@ import de.sfuhrm.capsula.yaml.Capsula;
 import java.io.IOException;
 import java.nio.file.FileSystems;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
-import java.util.concurrent.atomic.AtomicBoolean;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
@@ -53,29 +53,26 @@ public class Main {
     public Capsula getDescriptor() throws IOException {
         ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
         Capsula build = mapper.readValue(params.getDescriptor().toFile(), Capsula.class);
-        validate(build);
         return build;
     }
 
-    private <T> void validate(T o) {
+    private <T> Set<ConstraintViolation<T>> validate(T o) {
         final Set<ConstraintViolation<T>> violations = validator.validate(o);
         if (violations.size() > 0) {
-            AtomicBoolean ok = new AtomicBoolean(true);
-
-            System.out.println("YAML config contains errors:");
+            System.err.println("YAML config contains errors:");
             violations.forEach(u -> {
                 log.error("Validation error for {} {}. ", u.getPropertyPath().toString(), u.getMessage());
-                System.err.println("  \"" + u.getPropertyPath().toString() + "\"" + " " + u.getMessage());
-                ok.set(false);
+                System.err.println("  \"" + u.getPropertyPath().toString() + "\"" + " " + u.getMessage()+" (value: "+u.getInvalidValue()+")");
             });
 
-            if (!ok.get()) {
-                throw new IllegalArgumentException("Validation error, exiting");
-            }
+            System.err.printf("Got %d validation errors\n", violations.size());
         } else {
             log.debug("Object validated");
+            if (params.isValidate() || params.isDebug()) {
+                System.err.println("Got no validation errors");
+            }
         }
-
+        return violations;
     }
 
     public static void main(String[] args) throws IOException, JAXBException, SAXException {
@@ -86,6 +83,10 @@ public class Main {
 
         Main main = new Main(params);
         Capsula build = main.getDescriptor();
+        Set<ConstraintViolation<Capsula>> constraintViolations = main.validate(build);
+        if (!constraintViolations.isEmpty() || params.isValidate()) {
+            return;
+        }
 
         build.getTargets().stream().forEach(t -> {
             try {

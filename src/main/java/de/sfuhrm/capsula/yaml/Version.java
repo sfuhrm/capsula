@@ -19,6 +19,7 @@ import java.util.Date;
 import java.util.List;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.PastOrPresent;
 import javax.validation.constraints.Size;
 import lombok.Getter;
 
@@ -26,7 +27,6 @@ import lombok.Getter;
  * Version with maintainer and list of changes.
  * @author Stephan Fuhrmann
  */
-@Valid
 public class Version {
     @Getter @NotNull @Size(min = 1)
     private String version;
@@ -37,6 +37,6 @@ public class Version {
     @Getter @NotNull    
     private List<String> changes;
     
-    @Getter @NotNull
+    @Getter @NotNull @PastOrPresent
     private Date date;
 }

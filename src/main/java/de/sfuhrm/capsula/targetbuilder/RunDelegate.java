@@ -15,6 +15,7 @@
  */
 package de.sfuhrm.capsula.targetbuilder;
 
+import de.sfuhrm.capsula.yaml.command.RunCommand;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Objects;
@@ -32,13 +33,14 @@ class RunDelegate extends AbstractDelegate {
         super(targetBuilder);
     }
 
-    public void run(String... cmd) {
-        String cmdString = Arrays.toString(cmd);
+    public void run(RunCommand command) {
         try {
-            MDC.put("cmd", cmd);
-            Objects.requireNonNull(cmd, "cmd is null");
+            MDC.put("cmd", command.getCommand());
+            Objects.requireNonNull(command.getCommand(), "command is null");
+            String[] cmdArray = command.getCommand().split(" ");
+            String cmdString = Arrays.toString(cmdArray);   
             
-            ProcessBuilder builder = new ProcessBuilder(cmd);
+            ProcessBuilder builder = new ProcessBuilder(cmdArray);
             
             log.debug("Starting cmd {}", cmdString);
             Process process = builder
@@ -54,7 +56,7 @@ class RunDelegate extends AbstractDelegate {
                 throw new BuildException(cmdString+" returned exit value "+exitValue);
             }
         } catch (InterruptedException | IOException ex) {
-            throw new BuildException(cmdString, ex);
+            throw new BuildException(command.getCommand(), ex);
         }
     }
 }

@@ -15,8 +15,10 @@
  */
 package de.sfuhrm.capsula.yaml;
 
+import de.sfuhrm.capsula.yaml.command.Command;
 import java.util.List;
 import java.util.Set;
+import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import lombok.Getter;
@@ -33,7 +35,7 @@ public class Capsula {
     @Getter @NotNull @NotBlank
     private String version;
     
-    @Getter @NotNull
+    @Getter @NotNull @Valid
     private NameEmail maintainer;
     
     @Getter @NotNull @NotBlank @URL
@@ -60,10 +62,10 @@ public class Capsula {
         APACHE20
     };
     
-    @Getter @NotNull
+    @Getter @NotNull @Valid
     private License license;
         
-    @Getter @NotNull
+    @Getter @NotNull @Valid
     private Debian debian;
     
     enum Runtime {
@@ -71,12 +73,15 @@ public class Capsula {
         JRE
     };
     
-    @Getter @NotNull
+    @Getter @NotNull @Valid
     private Runtime runtime;
     
-    @Getter
+    @Getter @Valid
     private Set<String> targets;
     
-    @Getter
+    @Getter @Valid
     private List<Version> versions; 
+    
+    @Getter @Valid
+    private List<Command> install;
 }

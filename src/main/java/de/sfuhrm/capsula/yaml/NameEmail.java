@@ -15,7 +15,6 @@
  */
 package de.sfuhrm.capsula.yaml;
 
-import javax.validation.Valid;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
@@ -25,7 +24,6 @@ import lombok.Getter;
  * Author/maintainer name and email address.
  * @author Stephan Fuhrmann
  */
-@Valid
 public class NameEmail {
     @Getter @NotNull @Pattern(regexp = ".* .*")
     private String name;

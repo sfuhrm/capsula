@@ -15,6 +15,7 @@
  */
 package de.sfuhrm.capsula.targetbuilder;
 
+import de.sfuhrm.capsula.yaml.command.CopyCommand;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -33,15 +34,15 @@ class CopyDelegate extends AbstractDelegate {
         super(targetBuilder);
     }
 
-    public void copy(String from, String to) {
-        MDC.put("from", from);
-        MDC.put("to", to);
-        Objects.requireNonNull(from, "from is null");
-        Objects.requireNonNull(to, "to is null");
-        Path fromPath = getTargetBuilder().getLayoutDirectory().resolve(from);
-        Path toPath = getTargetBuilder().getTargetPath().resolve(to);
+    public void copy(CopyCommand command) {
+        MDC.put("from", command.getFrom());
+        MDC.put("to", command.getTo());
+        Objects.requireNonNull(command.getFrom(), "from is null");
+        Objects.requireNonNull(command.getTo(), "to is null");
+        Path fromPath = getTargetBuilder().getLayoutDirectory().resolve(command.getFrom());
+        Path toPath = getTargetBuilder().getTargetPath().resolve(command.getTo());
 
-        log.info("Copying {} to {}", from, to);
+        log.info("Copying {} to {}", command.getFrom(), command.getTo());
         log.debug("Copying path {} to {}", fromPath, toPath);
 
         if (!Files.exists(fromPath)) {
@@ -58,36 +59,38 @@ class CopyDelegate extends AbstractDelegate {
         }
 
         if (Files.isDirectory(fromPath) || Files.isRegularFile(fromPath)) {
-            copyRecursive(fromPath, toPath);
+            copyRecursive(fromPath, toPath, command);
 
         } else {
             throw new BuildException("Unknown file type: " + fromPath);
         }
     }
     
-    private void mkdirs(Path p) throws IOException {
+    private void mkdirs(Path p, CopyCommand command) throws IOException {
         log.debug("mkdirs {}", p);
         Files.createDirectories(p);
+        applyTargetFileModifications(command); // TODO this just changes the deepest path
     }
 
-    private void copyRecursive(Path from, Path to) {
+    private void copyRecursive(Path from, Path to, CopyCommand command) {
         try {
             if (Files.isRegularFile(from)) {
                 if (Files.isDirectory(from.getParent())) {
-                    mkdirs(to.getParent());
+                    mkdirs(to.getParent(), command);
                 }
                 
                 Files.copy(from, to);
+                applyTargetFileModifications(to, command);
                 return;
             }
 
             if (Files.isDirectory(from)) {
                 Path name = from.getFileName();
                 Path target = to.resolve(name);
-                mkdirs(target);
+                mkdirs(target, command);
 
                 Files.list(from).forEach(p -> {
-                    copyRecursive(p, target.resolve(p.getFileName()));
+                    copyRecursive(p, target.resolve(p.getFileName()), command);
                 });
             }
         } catch (IOException exception) {

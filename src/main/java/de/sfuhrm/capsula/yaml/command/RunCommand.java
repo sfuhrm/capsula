@@ -13,39 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package de.sfuhrm.capsula.yaml;
+package de.sfuhrm.capsula.yaml.command;
 
-import javax.validation.Valid;
+import de.sfuhrm.capsula.yaml.constraints.FileExists;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import lombok.Getter;
 
 /**
- * Specific descriptor for Debian distribution.
- * @see https://www.debian.org/doc/manuals/maint-guide/dreq.de.html
+ * Run a command.
  * @author Stephan Fuhrmann
  */
-public class Debian {
-    @Getter @NotNull
-    private String packageName;
+public class RunCommand {
+    @Getter @NotNull @NotBlank
+    private String command;
     
-    enum Priority {
-        optional,
-        required,
-        important,
-        standard
-    };
-    
-    @Getter @NotNull
-    private Priority priority = Priority.optional;
-    
-    @Getter @NotNull
-    private String section;
-    
-    enum Architecture {
-        any,
-        all
-    };
-    
-    @Getter @NotNull
-    private Architecture architecture;
+    @Getter @FileExists
+    private String directory;
 }

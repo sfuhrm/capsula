@@ -17,6 +17,7 @@ debian:
   packageName: capsula
   priority: optional
   section: unknown
+  architecture: all
 versions:
 - version: 1.0.1-1
   maintainer:
@@ -34,6 +35,14 @@ versions:
   changes:
   - Initial version
 install:
-- copy: from=target/Capsula-1.0-SNAPSHOT-jar-with-dependencies.jar to=/usr/share/capsula/Capsula-1.0-SNAPSHOT-jar-with-dependencies.jar
-- copy: from=src/main/linux/capsula to=/usr/bin/capsula owner=root group=root chmod=0666
+- copy:
+    from: target/capsula-1.0-SNAPSHOT-jar-with-dependencies.jar
+    to: /usr/share/capsula/Capsula-1.0-SNAPSHOT-jar-with-dependencies.jar
+    mode: rw-r--r--
+- copy:
+    from: LICENSE
+    to: /usr/bin/capsula
+    owner: root
+    group: root
+    mode: rwxr-xr-x
 

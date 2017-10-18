@@ -13,32 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package de.sfuhrm.capsula.yaml;
+package de.sfuhrm.capsula.yaml.constraints;
 
-import de.sfuhrm.capsula.yaml.command.Command;
-import java.util.List;
-import java.util.Map;
-import javax.validation.constraints.NotNull;
-import lombok.Getter;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import javax.validation.ConstraintValidator;
+import javax.validation.ConstraintValidatorContext;
 
 /**
- * Layout file for one Linux distribution target.
+ * Checks whether a file exists.
  * @author Stephan Fuhrmann
  */
-public class Layout {
-    @NotNull
-    @Getter
-    private String name;
-    
-    @Getter
-    private Map<String, String> copy;
-    
-    @Getter
-    private Map<String, String> templates;
-    
-    @Getter
-    private Map<String, String> environment;
-    
-    @Getter
-    private List<Command> prepare;
+public class FileExistsValidator implements ConstraintValidator<FileExists, String> {
+
+    @Override
+    public boolean isValid(String t, ConstraintValidatorContext cvc) {
+        if (t == null) {
+            return true;
+        }
+
+        Path path = FileSystems.getDefault().getPath(t);
+        return Files.exists(path);
+    }
 }

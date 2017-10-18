@@ -6,17 +6,33 @@
 # See: https://www.debian.org/doc/manuals/maint-guide/dreq.en.html
 ---
 name: Debian Stretch
-copy:
-  Dockerfile: Dockerfile
-  ${capsula.debian.packageName}_${jpkg.version}.orig.tar.gz: ../${capsula.sourceTar}
-templates:
-  ${capsula.debian.packageName}_${jpkg.version}/debian/control: control.ftl
-  ${capsula.debian.packageName}_${jpkg.version}/debian/changelog: changelog.ftl
-  ${capsula.debian.packageName}_${jpkg.version}/debian/rules: rules.ftl
-  ${capsula.debian.packageName}_${jpkg.version}/debian/compat: compat.ftl
+prepare:
+- copy:
+    from: Dockerfile
+    to: Dockerfile
+- mkdir:
+    to: ${capsula.debian.packageName}_${capsula.version}
+    mode: rwxrwxrwx
+- copy:
+    from: ../${capsula.sourceTar}
+    to: ${capsula.debian.packageName}_${capsula.version}.orig.tar.gz
+- template:
+    from: control.ftl
+    to: ${capsula.debian.packageName}_${capsula.version}/debian/control
+- template:
+    from: changelog.ftl
+    to: ${capsula.debian.packageName}_${capsula.version}/debian/changelog
+- template:
+    from: rules.ftl
+    to: ${capsula.debian.packageName}_${capsula.version}/debian/rules
+    mode: rwxr-xr-x
+- template:
+    from: compat.ftl
+    to: ${capsula.debian.packageName}_${capsula.version}/debian/compat
+- run:
+    command: docker build . -t debian_stretch_jpkg
+- run:
+    command: docker run -v${target}:/target -w/target/${capsula.debian.packageName}_${capsula.version} debian_stretch_jpkg debuild -us -uc
 environment:
   foo: bar
-run:
-- docker build . -t debian_stretch_jpkg
-- docker run -v${target}:/target -w/target/${jpkg.debian.packageName}_${jpkg.version} debian_stretch_jpkg debuild -us -uc
 
