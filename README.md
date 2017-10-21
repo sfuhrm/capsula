@@ -5,6 +5,7 @@ Linux platforms from one universal descriptor file.
 The name 'Capsula' is latin for the english word 'capsule'.
 
 Linux platforms supported:
+
 * [Debian](https://www.debian.org/)
 * [CentOS](https://www.centos.org/)
 * and many more
@@ -12,6 +13,7 @@ Linux platforms supported:
 ## Requirements
 
 The requirements are:
+
 * [Java 8+](http://www.oracle.com/technetwork/java/index.html) runtime
 * [Docker](https://www.docker.com/) installation
 
@@ -25,13 +27,20 @@ Capsula is easily extensible because it uses a simple templating approach per pl
 ## Features
 
 Capsula has the following features:
+
 * Only one YAML configuration file necessary.
 * Can build packages for multiple target platforms.
 
 ## TODOs
 
-* TBD Can test installation of packages on each platform.
-* TBD Scaffolding of the YAML configuration for your program.
+* Stop at certain stages for debugging, for example after template generation.
+* Proper package copying back mechanism (.deb file to output dir).
+* Support for different JDK/JRE depencendies.
+* Add support for Gradle, Ant (?) besides Maven.
+* Proper environment mechanism. The current one sucks. 
+  Idea: environment.yaml file.
+* Test installation of packages on each platform.
+* Scaffolding of the YAML configuration for your program.
 * Support app icons.
 * Move the template directories somewhere where it makes sense.
 
