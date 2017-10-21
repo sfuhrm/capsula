@@ -24,6 +24,6 @@ import lombok.Getter;
  * @author Stephan Fuhrmann
  */
 public class SourceAndTargetCommand extends TargetCommand {
-    @Getter @NotNull @FileExists
+    @Getter @NotNull
     private String from;
 }
