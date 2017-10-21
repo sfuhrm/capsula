@@ -16,8 +16,11 @@
 package de.sfuhrm.capsula.yaml;
 
 import de.sfuhrm.capsula.yaml.command.Command;
+import java.net.MalformedURLException;
 import java.util.List;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -44,8 +47,8 @@ public class Capsula {
     @Getter
     private String iconFile;
     
-    @Getter @NotNull @NotBlank
-    private String sourceTar;
+    @Getter @NotNull @URL
+    private String gitUrl;
     
     @Getter @NotNull @NotBlank
     private String javaVersion;
@@ -84,4 +87,15 @@ public class Capsula {
     
     @Getter @Valid
     private List<Command> install;
+    
+    public String getGitProject() throws MalformedURLException {
+        Pattern p = Pattern.compile(".*/([^/]*)\\.git");
+        Matcher m = p.matcher(getGitUrl());
+        
+        if (m.matches()) {
+            return m.group(1);
+        } else {
+            throw new IllegalArgumentException("Can not determine got project from url '"+getGitUrl()+"'");
+        }
+    }
 }
