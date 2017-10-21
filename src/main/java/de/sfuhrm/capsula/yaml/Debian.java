@@ -15,7 +15,6 @@
  */
 package de.sfuhrm.capsula.yaml;
 
-import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import lombok.Getter;
 

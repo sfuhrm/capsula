@@ -16,14 +16,22 @@
 package de.sfuhrm.capsula.yaml;
 
 import de.sfuhrm.capsula.yaml.command.Command;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.MalformedURLException;
+import java.nio.charset.Charset;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import lombok.Getter;
 import org.hibernate.validator.constraints.URL;
 
@@ -37,6 +45,9 @@ public class Capsula {
 
     @Getter @NotNull @NotBlank
     private String version;
+    
+    @Getter @NotNull @Valid
+    private NameEmail author;
     
     @Getter @NotNull @Valid
     private NameEmail maintainer;
@@ -56,13 +67,47 @@ public class Capsula {
     @Getter @NotNull @NotBlank
     private String shortSummary;
     
-    @Getter @NotNull @NotBlank
-    private String longDescription;
+    @Getter @NotNull @Size(min = 1)
+    private List<String> longDescription;
     
-    enum License {
-        GPL2,
-        LGPL2,
-        APACHE20
+    public enum License {
+        GPL_30("GPL-3.0", "GPL-3", "https://www.gnu.org/licenses/gpl-3.0.txt"),
+        LGPL_30("LGPL-3.0", "LGPL-3", "https://www.gnu.org/licenses/lgpl-3.0.txt"),        
+        GPL_20("GPL-2.0", "GPL-2", "https://www.gnu.org/licenses/gpl-2.0.txt"),
+        LGPL_21("LGPL-2.1", "LGPL-2.1", "https://www.gnu.org/licenses/lgpl-2.1.txt"),
+        LGPL_20("LGPL-2.0", "LGPL-2", "https://www.gnu.org/licenses/lgpl-2.0.txt"),
+        APACHE_20("APACHE-2.0", "Apache-2.0", "http://www.apache.org/licenses/LICENSE-2.0.txt");
+
+        @Getter
+        private final String licenseTextUrl;
+        
+        @Getter
+        private final String licenseName;
+        
+        private final String debianName;
+        
+        private License(String name, String debianName, String licenseTextUrl) {
+            this.licenseName = Objects.requireNonNull(name);
+            this.debianName = Objects.requireNonNull(debianName);
+            this.licenseTextUrl = Objects.requireNonNull(licenseTextUrl);
+        }
+        
+        public List<String> getLicenseText() throws IOException {
+            InputStream inputStream = new java.net.URL(getLicenseTextUrl()).openStream();
+            InputStreamReader inputStreamReader = new InputStreamReader(inputStream, Charset.forName("UTF-8"));
+            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+            List<String> lines = new ArrayList<>();
+            String line;
+            
+            while (null != (line = bufferedReader.readLine())) {
+                lines.add(line);
+            }
+            return lines;
+        }
+        
+        public String getDebianFile() {
+            return "/usr/share/common-licenses/"+debianName;
+        }
     };
     
     @Getter @NotNull @Valid

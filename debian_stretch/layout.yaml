@@ -10,15 +10,30 @@ prepare:
 - copy:
     from: Dockerfile
     to: Dockerfile
+# build docker image
+- run:
+    command: docker build . -t debian_stretch_jpkg
+# clone project
+- run:
+    command: git clone ${capsula.gitUrl}
+# remove .git files
+- run:
+    command: rm -fr ${capsula.gitProject}/.git ${capsula.gitProject}/.gitignore
+- run:
+    command: mv ${capsula.gitProject} ${capsula.debian.packageName}_${capsula.version}
+- run:
+    command: docker run -v${target}:/target -w/target debian_stretch_jpkg tar -czvf ${capsula.debian.packageName}_${capsula.version}.orig.tar.gz ${capsula.debian.packageName}_${capsula.version}
 - mkdir:
-    to: ${capsula.debian.packageName}_${capsula.version}
+    to: ${capsula.debian.packageName}_${capsula.version}/debian/${capsula.debian.packageName}/DEBIAN
     mode: rwxrwxrwx
-- copy:
-    from: ../${capsula.sourceTar}
-    to: ${capsula.debian.packageName}_${capsula.version}.orig.tar.gz
+- run:
+    command: echo ${capsula.gitProject}
 - template:
     from: control.ftl
     to: ${capsula.debian.packageName}_${capsula.version}/debian/control
+- template:
+    from: copyright.ftl
+    to: ${capsula.debian.packageName}_${capsula.version}/debian/copyright
 - template:
     from: changelog.ftl
     to: ${capsula.debian.packageName}_${capsula.version}/debian/changelog
@@ -29,10 +44,14 @@ prepare:
 - template:
     from: compat.ftl
     to: ${capsula.debian.packageName}_${capsula.version}/debian/compat
-- run:
-    command: docker build . -t debian_stretch_jpkg
+#- run:
+#    command: docker run -v${target}:/target -w/target/${capsula.debian.packageName}_${capsula.version} debian_stretch_jpkg mvn clean package
 - run:
     command: docker run -v${target}:/target -w/target/${capsula.debian.packageName}_${capsula.version} debian_stretch_jpkg debuild -us -uc
+- run:
+    command: docker run -v${target}:/target -w/target/${capsula.debian.packageName}_${capsula.version} debian_stretch_jpkg chmod -R a+rwx .
+- run:
+    command: docker run -v${target}:/target -w/target/${capsula.debian.packageName}_${capsula.version} debian_stretch_jpkg dpkg -i /target/${capsula.debian.packageName}_${capsula.version}-1_amd64.deb
 environment:
   foo: bar
 

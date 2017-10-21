@@ -1,23 +1,32 @@
-name: capsula
-version: 1.0.1
-iconFile:
-maintainer:
+name: capsula # name of the project
+version: 1.0.1 # version of the project
+iconFile: # TBD
+author: # who's the main author of the program TBD: author/maintainer/etc
   name: Stephan Fuhrmann
   email: s@sfuhrm.de
-javaVersion: 8
-runtime: JDK
-shortSummary: Creates packages for multiple Linux distributions.
-longDescription: Creates packages for multiple Linux distributions.
-homepage: http://github.com/sfuhrm
-license: GPL2
-targets:
+maintainer: # who's the package maintainer of the program
+  name: Stephan Fuhrmann
+  email: s@sfuhrm.de
+javaVersion: 8 # what JDK is required? TBD mvn? 
+runtime: JDK # which runtime is required? TBD package dependency? combine with javaVersion?
+shortSummary: Creates packages for multiple Linux distributions. # short summary of package content
+longDescription: # long description of package content
+- A template-driven approach for generating multiple package formats
+- for Linux distributions.
+- ""
+- Current supported Linux distributions are
 - debian_stretch
-sourceTar: src.tgz
+homepage: http://github.com/sfuhrm # homepage of the project
+license: GPL_20 # license the project is in
+targets: # which platforms to build an archive for
+- debian_stretch
+gitUrl: https://github.com/sfuhrm/sudoku.git
 debian:
   packageName: capsula
   priority: optional
-  section: unknown
+  section: devel
   architecture: all
+# Version history of the package. Used for Debian changelogs.
 versions:
 - version: 1.0.1-1
   maintainer:
@@ -34,6 +43,7 @@ versions:
   date: 2017-01-01T11:11:11
   changes:
   - Initial version
+# Where to install what on the target system?
 install:
 - copy:
     from: target/capsula-1.0-SNAPSHOT-jar-with-dependencies.jar
