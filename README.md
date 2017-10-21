@@ -1,4 +1,4 @@
-# Capsula - Java Linux package making tool
+# Capsula - Java Linux package making tool ![Travis CI Status](https://travis-ci.org/sfuhrm/capsula.svg?branch=master)
 
 Capsula is a program for creating packages for multiple
 Linux platforms from one universal descriptor file. 
