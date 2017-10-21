@@ -1,5 +1,5 @@
 name: capsula # name of the project
-version: 1.0.1 # version of the project
+version: 0.0.1 # version of the project
 iconFile: # TBD
 author: # who's the main author of the program TBD: author/maintainer/etc
   name: Stephan Fuhrmann
@@ -20,38 +20,30 @@ homepage: http://github.com/sfuhrm # homepage of the project
 license: GPL_20 # license the project is in
 targets: # which platforms to build an archive for
 - debian_stretch
-gitUrl: https://github.com/sfuhrm/sudoku.git
+gitUrl: https://github.com/sfuhrm/capsula.git
 debian:
   packageName: capsula
   priority: optional
   section: devel
   architecture: all
-  version: 1.0.1-1
+  version: 0.0.1-1
 # Version history of the package. Used for Debian changelogs.
 versions:
-- version: 1.0.1-1
+- version: 0.0.1-1
   maintainer:
     name: Stephan Fuhrmann
     email: s@sfuhrm.de
-  date: 2017-01-01T12:11:11
-  changes:
-  - Changed foo
-  - Changed bar
-- version: 1.0.0-1
-  maintainer:
-    name: Stephan Fuhrmann
-    email: s@sfuhrm.de
-  date: 2017-01-01T11:11:11
+  date: 2017-10-21T20:00:00
   changes:
   - Initial version
 # Where to install what on the target system?
 install:
 - copy:
-    from: target/capsula-1.0-SNAPSHOT-jar-with-dependencies.jar
-    to: /usr/share/capsula/Capsula-1.0-SNAPSHOT-jar-with-dependencies.jar
+    from: target/capsula-0.0.1-SNAPSHOT-jar-with-dependencies.jar
+    to: /usr/share/capsula/capsula-0.0.1-SNAPSHOT-jar-with-dependencies.jar
     mode: rw-r--r--
 - copy:
-    from: LICENSE
+    from: src/main/debian/capsula
     to: /usr/bin/capsula
     owner: root
     group: root
