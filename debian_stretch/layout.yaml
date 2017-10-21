@@ -42,10 +42,12 @@ prepare:
     to: ${capsula.debian.packageName}_${capsula.version}/debian/rules
     mode: rwxr-xr-x
 - template:
+    from: install.ftl
+    to: ${capsula.debian.packageName}_${capsula.version}/debian/install
+    mode: rwxr-xr-x
+- template:
     from: compat.ftl
     to: ${capsula.debian.packageName}_${capsula.version}/debian/compat
-#- run:
-#    command: docker run -v${target}:/target -w/target/${capsula.debian.packageName}_${capsula.version} debian_stretch_jpkg mvn clean package
 - run:
     command: docker run -v${target}:/target -w/target/${capsula.debian.packageName}_${capsula.version} debian_stretch_jpkg debuild -us -uc
 - run:
