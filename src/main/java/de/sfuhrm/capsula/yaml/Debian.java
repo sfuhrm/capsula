@@ -15,6 +15,7 @@
  */
 package de.sfuhrm.capsula.yaml;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import lombok.Getter;
 
@@ -24,7 +25,7 @@ import lombok.Getter;
  * @author Stephan Fuhrmann
  */
 public class Debian {
-    @Getter @NotNull
+    @Getter @NotNull @NotBlank
     private String packageName;
     
     enum Priority {
@@ -37,13 +38,16 @@ public class Debian {
     @Getter @NotNull
     private Priority priority = Priority.optional;
     
-    @Getter @NotNull
+    @Getter @NotNull @NotBlank
     private String section;
     
     enum Architecture {
         any,
         all
     };
+    
+    @Getter @NotNull @NotBlank
+    private String version;
     
     @Getter @NotNull
     private Architecture architecture;

@@ -26,6 +26,7 @@ debian:
   priority: optional
   section: devel
   architecture: all
+  version: 1.0.1-1
 # Version history of the package. Used for Debian changelogs.
 versions:
 - version: 1.0.1-1
