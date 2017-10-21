@@ -54,6 +54,7 @@ The following TODOs are open programming tasks as known for today:
 * Scaffolding of the YAML configuration for your program.
 * Support app icons.
 * Move the template directories somewhere where it makes sense.
+* Testing.
 
 ## Milestones
 
