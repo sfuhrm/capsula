@@ -24,6 +24,15 @@ This is why Capsula uses Docker instead.
 
 Capsula is easily extensible because it uses a simple templating approach per platform.
 
+## Project status statement
+
+The project is at the moment **experimental**. 
+It is **not** recommended to use it if you're not sure what
+you're doing.
+
+Releasing the project at this stage is to enable other people
+to participate.
+
 ## Features
 
 Capsula has the following features:
@@ -32,6 +41,8 @@ Capsula has the following features:
 * Can build packages for multiple target platforms.
 
 ## TODOs
+
+The following TODOs are open programming tasks as known for today:
 
 * Stop at certain stages for debugging, for example after template generation.
 * Proper package copying back mechanism (.deb file to output dir).
