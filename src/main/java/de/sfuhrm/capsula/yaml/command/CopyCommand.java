@@ -15,12 +15,6 @@
  */
 package de.sfuhrm.capsula.yaml.command;
 
-import de.sfuhrm.capsula.yaml.constraints.FileExists;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
-import lombok.Getter;
-
 /**
  * Copy one file / directory to a target location.
  * @author Stephan Fuhrmann
