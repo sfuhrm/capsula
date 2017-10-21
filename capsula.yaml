@@ -33,7 +33,7 @@ versions:
   maintainer:
     name: Stephan Fuhrmann
     email: s@sfuhrm.de
-  date: 2017-10-21T20:00:00
+  date: 2017-10-21T20:00:00+02:00
   changes:
   - Initial version
 # Where to install what on the target system?
