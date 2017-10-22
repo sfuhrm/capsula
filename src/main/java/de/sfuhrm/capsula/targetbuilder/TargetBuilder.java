@@ -39,7 +39,9 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.Callable;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.log4j.MDC;
 
@@ -146,6 +148,7 @@ public class TargetBuilder implements Callable<TargetBuilder.Result> {
         MDC.remove("layout");
         
         Result result = new Result();
+        result.setSuccess(true);
         return result;
     }
     
@@ -199,6 +202,7 @@ public class TargetBuilder implements Callable<TargetBuilder.Result> {
     
     
     static class Result {
-        boolean success;
+        @Getter @Setter(AccessLevel.PRIVATE)
+        private boolean success;
     }
 }
