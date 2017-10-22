@@ -36,7 +36,8 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- *
+ * Abstract base class for delegates.
+ * It is holding a reference to the {@link #targetBuilder TargetBuilder}.
  * @author Stephan Fuhrmann
  */
 @Slf4j
@@ -48,6 +49,10 @@ public class AbstractDelegate {
         this.targetBuilder = Objects.requireNonNull(targetBuilder);
     }
     
+    /** Does owner/group/permission changes for a target path.
+     * @param toPath direct target path to modify.
+     * @param command  the command to take the owner/group/permissions from.
+     */
     protected void applyTargetFileModifications(final Path toPath, final TargetCommand command) throws IOException {
         FileSystem fileSystem = toPath.getFileSystem();
         UserPrincipalLookupService lookupService
@@ -73,6 +78,9 @@ public class AbstractDelegate {
         }
     }
     
+    /** Does owner/group/permission changes for a target path.
+     * @param command abstract target path description in the target command.
+     */
     protected void applyTargetFileModifications(TargetCommand command) throws IOException {
         Path toPath = targetBuilder.getTargetPath().resolve(command.getTo());
         applyTargetFileModifications(toPath, command);

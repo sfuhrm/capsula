@@ -25,7 +25,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.log4j.MDC;
 
 /**
- *
+ * Delegate for running a command.
  * @author Stephan Fuhrmann
  */
 @Slf4j

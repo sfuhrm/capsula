@@ -46,7 +46,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.log4j.MDC;
 
 /**
- *
+ * Builds for one build target using a layout file.
+ * @see Layout
  * @author Stephan Fuhrmann
  */
 @Slf4j

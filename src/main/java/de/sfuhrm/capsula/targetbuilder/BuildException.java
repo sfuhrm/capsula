@@ -18,7 +18,7 @@
 package de.sfuhrm.capsula.targetbuilder;
 
 /**
- *
+ * Application internal exception while building.
  * @author Stephan Fuhrmann
  */
 public class BuildException extends RuntimeException {

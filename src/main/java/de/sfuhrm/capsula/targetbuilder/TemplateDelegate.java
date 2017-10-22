@@ -32,7 +32,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.log4j.MDC;
 
 /**
- *
+ * Delegate for template generation.
  * @author Stephan Fuhrmann
  */
 @Slf4j

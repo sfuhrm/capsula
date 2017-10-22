@@ -26,7 +26,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.log4j.MDC;
 
 /**
- *
+ * Delegate for copying one file or directory.
  * @author Stephan Fuhrmann
  */
 @Slf4j
