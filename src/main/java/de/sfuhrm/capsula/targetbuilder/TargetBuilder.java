@@ -22,7 +22,6 @@ import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import de.sfuhrm.capsula.yaml.Capsula;
 import de.sfuhrm.capsula.yaml.command.Command;
 import de.sfuhrm.capsula.yaml.Layout;
-import de.sfuhrm.capsula.yaml.command.SourceAndTargetCommand;
 import de.sfuhrm.capsula.yaml.command.TargetCommand;
 import java.io.IOException;
 import java.nio.file.FileSystem;
