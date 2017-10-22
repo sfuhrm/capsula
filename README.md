@@ -1,4 +1,4 @@
-# Capsula - Java Linux package making tool ![Travis CI Status](https://travis-ci.org/sfuhrm/capsula.svg?branch=master) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/ed538897b79543f1a4f933b2347fd7e5)](https://www.codacy.com/app/sfuhrm/capsula?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=sfuhrm/capsula&amp;utm_campaign=Badge_Grade)
+# Capsula - Java Linux package making tool ![Travis CI Status](https://travis-ci.org/sfuhrm/capsula.svg?branch=master) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/ed538897b79543f1a4f933b2347fd7e5)](https://www.codacy.com/app/sfuhrm/capsula?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=sfuhrm/capsula&amp;utm_campaign=Badge_Grade) [![License: GPL v2](https://img.shields.io/badge/License-GPL%20v2-blue.svg)](https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html)
 
 Capsula is a program for creating packages for multiple
 Linux platforms from one universal descriptor file. 
