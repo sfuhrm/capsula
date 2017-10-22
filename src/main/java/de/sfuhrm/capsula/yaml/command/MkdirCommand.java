@@ -18,7 +18,7 @@
 package de.sfuhrm.capsula.yaml.command;
 
 /**
- * Copy one file / directory to a target location.
+ * Make a directory to a target location.
  * @author Stephan Fuhrmann
  */
 public class MkdirCommand extends TargetCommand {
