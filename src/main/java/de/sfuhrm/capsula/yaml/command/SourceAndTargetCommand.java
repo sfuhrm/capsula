@@ -17,7 +17,6 @@
  */
 package de.sfuhrm.capsula.yaml.command;
 
-import de.sfuhrm.capsula.yaml.constraints.FileExists;
 import javax.validation.constraints.NotNull;
 import lombok.Getter;
 
