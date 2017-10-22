@@ -8,6 +8,7 @@ LABEL maintainer="s@sfuhrm.de"
 RUN apt-get update && apt-get install --no-install-recommends --yes \
 build-essential fakeroot devscripts \
 openjdk-8-jdk-headless:amd64 maven && \
+apt-get clean && \
 rm -rf /var/lib/apt/lists/* && \
 rm -rf /var/cache/apt/archives/*
 
