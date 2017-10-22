@@ -56,7 +56,7 @@ class MkdirDelegate extends AbstractDelegate {
         }
     }
     
-    void mkdirs(Path p, Path targetPath, MkdirCommand command) throws IOException {
+    private void mkdirs(Path p, Path targetPath, MkdirCommand command) throws IOException {
         log.debug("mkdirs {}", p);
         Files.createDirectories(p);
         
