@@ -44,7 +44,7 @@ class RunDelegate extends AbstractDelegate {
             
             ProcessBuilder builder = new ProcessBuilder(cmdArray);
             
-            log.debug("Starting cmd {}", cmdString);
+            log.info("Starting command {}", command.getCommand());
             Process process = builder
                     .directory(getTargetBuilder().getTargetPath().toFile())
                     .inheritIO()
