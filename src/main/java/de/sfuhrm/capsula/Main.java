@@ -25,7 +25,6 @@ import de.sfuhrm.capsula.yaml.Capsula;
 import java.io.IOException;
 import java.nio.file.FileSystems;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.Set;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
