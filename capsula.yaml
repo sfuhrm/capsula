@@ -1,4 +1,4 @@
-name: capsula # name of the project
+packageName: capsula # name of the project package
 version: 0.0.1 # version of the project
 iconFile: # TBD
 author: # who's the main author of the program TBD: author/maintainer/etc
@@ -19,10 +19,12 @@ longDescription: # long description of package content
 homepage: http://github.com/sfuhrm # homepage of the project
 license: GPL_20 # license the project is in
 targets: # which platforms to build an archive for
-- debian_stretch
+- centos_7
+#- debian_stretch
 gitUrl: https://github.com/sfuhrm/capsula.git
+redhat:
+  section: devel
 debian:
-  packageName: capsula
   priority: optional
   section: devel
   architecture: all
@@ -30,9 +32,6 @@ debian:
 # Version history of the package. Used for Debian changelogs.
 versions:
 - version: 0.0.1-1
-  maintainer:
-    name: Stephan Fuhrmann
-    email: s@sfuhrm.de
   date: 2017-10-21T20:00:00+02:00
   changes:
   - Initial version
