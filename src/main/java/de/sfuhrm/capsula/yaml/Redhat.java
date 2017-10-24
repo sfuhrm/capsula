@@ -20,37 +20,19 @@ package de.sfuhrm.capsula.yaml;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import lombok.Getter;
+import lombok.Setter;
 
 /**
- * Specific descriptor for Debian distribution.
- * @see https://www.debian.org/doc/manuals/maint-guide/dreq.de.html
+ * Specific descriptor for Redhat distribution.
  * @author Stephan Fuhrmann
  */
-public class Debian {
-    @Getter @NotNull @NotBlank
-    private String packageName;
-    
-    enum Priority {
-        optional,
-        required,
-        important,
-        standard
-    };
-    
-    @Getter @NotNull
-    private Priority priority = Priority.optional;
-    
-    @Getter @NotNull @NotBlank
+public class Redhat {
+    @Getter @Setter @NotNull @NotBlank
+    private String packageName; // inherited
+        
+    @Getter @Setter @NotNull @NotBlank
     private String section;
-    
-    enum Architecture {
-        any,
-        all
-    };
-    
-    @Getter @NotNull @NotBlank
-    private String version;
-    
-    @Getter @NotNull
-    private Architecture architecture;
+        
+    @Getter @Setter @NotNull @NotBlank
+    private String version;  // inherited
 }

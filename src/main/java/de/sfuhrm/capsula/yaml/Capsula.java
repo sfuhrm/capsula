@@ -43,7 +43,7 @@ import org.hibernate.validator.constraints.URL;
  */
 public class Capsula {
     @Getter @NotNull @NotBlank
-    private String name;
+    private String packageName;
 
     @Getter @NotNull @NotBlank
     private String version;
@@ -118,6 +118,9 @@ public class Capsula {
     @Getter @NotNull @Valid
     private Debian debian;
     
+    @Getter @NotNull @Valid
+    private Redhat redhat;
+    
     enum Runtime {
         JDK,
         JRE
@@ -135,6 +138,7 @@ public class Capsula {
     @Getter @Valid
     private List<Command> install;
     
+    /** Get the project directory name from the GIT URL. */
     public String getGitProject() throws MalformedURLException {
         Pattern p = Pattern.compile(".*/([^/]*)\\.git");
         Matcher m = p.matcher(getGitUrl());
