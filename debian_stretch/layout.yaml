@@ -41,10 +41,13 @@ prepare:
     from: rules.ftl
     to: ${capsula.debian.packageName}_${capsula.version}/debian/rules
     mode: rwxr-xr-x
+#- template:
+#    from: install.ftl
+#    to: ${capsula.debian.packageName}_${capsula.version}/debian/install
+#    mode: rwxr-xr-x
 - template:
-    from: install.ftl
-    to: ${capsula.debian.packageName}_${capsula.version}/debian/install
-    mode: rwxr-xr-x
+    from: Makefile.ftl
+    to: ${capsula.debian.packageName}_${capsula.version}/Makefile
 - template:
     from: compat.ftl
     to: ${capsula.debian.packageName}_${capsula.version}/debian/compat
