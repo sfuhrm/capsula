@@ -20,6 +20,7 @@ package de.sfuhrm.capsula.yaml;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import lombok.Getter;
+import lombok.Setter;
 
 /**
  * Specific descriptor for Debian distribution.
@@ -27,8 +28,8 @@ import lombok.Getter;
  * @author Stephan Fuhrmann
  */
 public class Debian {
-    @Getter @NotNull @NotBlank
-    private String packageName;
+    @Getter @Setter @NotNull @NotBlank
+    private String packageName; // inherited
     
     enum Priority {
         optional,
@@ -48,8 +49,8 @@ public class Debian {
         all
     };
     
-    @Getter @NotNull @NotBlank
-    private String version;
+    @Getter @Setter @NotNull @NotBlank
+    private String version;  // inherited
     
     @Getter @NotNull
     private Architecture architecture;
