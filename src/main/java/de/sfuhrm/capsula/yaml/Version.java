@@ -23,16 +23,17 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PastOrPresent;
 import javax.validation.constraints.Size;
 import lombok.Getter;
+import lombok.Setter;
 
 /**
  * Version with maintainer and list of changes.
  * @author Stephan Fuhrmann
  */
 public class Version {
-    @Getter @NotNull @Size(min = 1)
+    @Getter @Setter @NotNull @Size(min = 1)
     private String version;
     
-    @Getter @NotNull
+    @Getter @Setter @NotNull
     private NameEmail maintainer;
    
     @Getter @NotNull    
