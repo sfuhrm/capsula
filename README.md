@@ -67,7 +67,7 @@ The following TODOs are open programming tasks as known for today:
 Links that might be useful or not:
 
 * [Debian Package maintainer guide](https://www.debian.org/doc/manuals/maint-guide/first.en.html) describes how to create
-  packages.
+  packages. A short packaging tutorial is [here](https://vincent.bernat.im/en/blog/2016-pragmatic-debian-packaging).
 * [RPM Package guide](http://www.thegeekstuff.com/2015/02/rpm-build-package-example/) is for CentOS.
 * [Alpine package](https://wiki.alpinelinux.org/wiki/Creating_an_Alpine_package) guide.
 
