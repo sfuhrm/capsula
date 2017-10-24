@@ -5,13 +5,23 @@
 # * target: The target directory path
 ---
 name: CentOS 7
-copy:
-  Dockerfile: Dockerfile
-templates:
-  ${capsula.centos.packageName}.spec: packageName.spec.ftl
-environment:
-  foo: bar
-run:
-- docker build . -t centos_7_jpkg
-- docker run -v${target}:/target -w/target centos_7_jpkg rpm-build ${}
-
+prepare:
+- copy:
+    from: Dockerfile
+    to: Dockerfile
+- template:
+    from: project.spec.ftl
+    to: ${capsula.redhat.packageName}-${capsula.redhat.version}.spec
+- run:
+    command: docker build . -t centos_7_jpkg
+# build docker image
+- run:
+    command: docker build . -t centos_7_jpkg
+# clone project
+- run:
+    command: git clone ${capsula.gitUrl}
+# remove .git files
+- run:
+    command: rm -fr ${capsula.gitProject}/.git ${capsula.gitProject}/.gitignore
+- run:
+    command: docker run -v${target}:/target -w/target centos_7_jpkg rpm -ba ${capsula.redhat.packageName}-${capsula.redhat.version}.spec
