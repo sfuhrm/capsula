@@ -41,6 +41,8 @@ install:
 - copy:
     from: target/capsula-0.0.1-SNAPSHOT-jar-with-dependencies.jar
     to: /usr/share/capsula/capsula-0.0.1-SNAPSHOT-jar-with-dependencies.jar
+    owner: root
+    group: root
     mode: rw-r--r--
 - copy:
     from: src/main/debian/capsula
