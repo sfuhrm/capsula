@@ -66,4 +66,11 @@ public class TargetCommandTest {
         t.setMode("rwxrwxrwx");
         assertEquals("0777", t.getOctal());
     }
+    
+    @Test
+    public void getOctalWith644() {
+        TargetCommand t = new TargetCommand();
+        t.setMode("rw-r--r--");
+        assertEquals("0644", t.getOctal());
+    }
 }
