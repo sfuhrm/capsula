@@ -22,6 +22,7 @@ import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import de.sfuhrm.capsula.targetbuilder.BuildException;
 import de.sfuhrm.capsula.targetbuilder.TargetBuilder;
 import de.sfuhrm.capsula.yaml.Capsula;
+import de.sfuhrm.capsula.yaml.PropertyInheritance;
 import java.io.IOException;
 import java.nio.file.FileSystems;
 import java.util.Objects;
@@ -54,6 +55,14 @@ public class Main {
     public Capsula getDescriptor() throws IOException {
         ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
         Capsula build = mapper.readValue(params.getDescriptor().toFile(), Capsula.class);
+        
+        PropertyInheritance.inherit(build, build.getDebian());
+        PropertyInheritance.inherit(build, build.getRedhat());
+        build.getVersions().stream().forEach(v -> {
+            if (v.getMaintainer() == null) {
+                v.setMaintainer(build.getMaintainer());
+            }
+        });
         return build;
     }
 
