@@ -20,7 +20,6 @@ install:
 </#if>
 <#if entry.copy?has_content>
 	if [ -f ${entry.copy.from} ]; then install ${modeStatement} ${ownerStatement} ${groupStatement} -D ${entry.copy.from} $(DESTDIR)/${entry.copy.to}; fi
-	if [ -d ${entry.copy.from} ]; then install ${modeStatement} ${ownerStatement} ${groupStatement}  -d ${entry.copy.from} $(DESTDIR)/${entry.copy.to}; fi
+	if [ -d ${entry.copy.from} ]; then install ${modeStatement} ${ownerStatement} ${groupStatement} -d ${entry.copy.from} $(DESTDIR)/${entry.copy.to}; fi
 </#if>
 </#list>
-
