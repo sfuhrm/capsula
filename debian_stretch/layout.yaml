@@ -56,7 +56,7 @@ prepare:
 - run:
     command: docker run -v${target}:/target -w/target/${capsula.debian.packageName}_${capsula.version} debian_stretch_jpkg chmod -R a+rwx .
 - run:
-    command: docker run -v${target}:/target -w/target/${capsula.debian.packageName}_${capsula.version} debian_stretch_jpkg dpkg -i /target/${capsula.debian.packageName}_${capsula.version}-1_amd64.deb
+    command: docker run -v${target}:/target -w/target/${capsula.debian.packageName}_${capsula.version} debian_stretch_jpkg dpkg -i /target/${capsula.debian.packageName}_${capsula.version}-1_all.deb
 environment:
   foo: bar
 
