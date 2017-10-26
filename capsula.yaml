@@ -31,7 +31,8 @@ debian:
   version: 0.0.1-1
 # Version history of the package. Used for Debian changelogs.
 versions:
-- version: 0.0.1-1
+- version: 0.0.1
+  release: 1
   date: 2017-10-21T20:00:00+02:00
   changes:
   - Initial version

@@ -1,10 +1,11 @@
 Summary: ${capsula.shortSummary}
 Name: ${capsula.redhat.packageName}
 Version: ${capsula.version}
-Release: ${capsula.redhat.release}
-Copyright: ${capsula.license}
+Release: ${capsula.versions[0].release}
+License: ${capsula.license}
 Group: Utilities/System
-Source: ${capsula.gitUrl}
+Source: ${capsula.packageName}-${capsula.redhat.version}.tar.gz
+Packager: ${capsula.maintainer.name} <${capsula.maintainer.email}>
 %description
 <#list capsula.longDescription as line>
 ${line}
@@ -38,9 +39,3 @@ if [ -f ${entry.copy.from} ]; then install ${modeStatement} ${ownerStatement} ${
 if [ -d ${entry.copy.from} ]; then install ${modeStatement} ${ownerStatement} ${groupStatement} -d ${entry.copy.from} $(DESTDIR)/${entry.copy.to}; fi
 </#if>
 </#list>
-
-#%files
-#%doc README COPYING ChangeLog
-
-/usr/bin/eject
-/usr/man/man1/eject.1

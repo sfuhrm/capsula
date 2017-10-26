@@ -5,7 +5,7 @@ FROM centos:7
 
 LABEL maintainer="s@sfuhrm.de"
 
-RUN yum install -y rpm-build
+RUN yum install -y rpm-build maven
 
 WORKDIR /
 
