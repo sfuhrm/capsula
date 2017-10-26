@@ -4,7 +4,7 @@ Version: ${capsula.version}
 Release: ${capsula.versions[0].release}
 License: ${capsula.license}
 Group: Utilities/System
-Source: ${capsula.packageName}-${capsula.redhat.version}.tar.gz
+Source: ${capsula.redhat.packageName}-${capsula.redhat.version}.tar.gz
 Packager: ${capsula.maintainer.name} <${capsula.maintainer.email}>
 BuildArch: noarch
 %description

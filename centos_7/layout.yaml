@@ -24,15 +24,15 @@ prepare:
 - run:
     command: rm -fr ${capsula.gitProject}/.git ${capsula.gitProject}/.gitignore    
 - run:
-    command: mv ${capsula.gitProject} ${capsula.packageName}-${capsula.redhat.version}
+    command: mv ${capsula.gitProject} ${capsula.redhat.packageName}-${capsula.redhat.version}
   # make rpm builder directorys (see https://wiki.centos.org/HowTos/SetupRpmBuildEnvironment)
 - run:
     command: mkdir -p root/rpmbuild/BUILD root/rpmbuild/RPMS root/rpmbuild/SOURCES root/rpmbuild/SRPMS   
 - run:
-    command: tar -czvf root/rpmbuild/SOURCES/${capsula.packageName}-${capsula.redhat.version}.tar.gz ${capsula.packageName}-${capsula.redhat.version}/    
+    command: tar -czvf root/rpmbuild/SOURCES/${capsula.redhat.packageName}-${capsula.redhat.version}.tar.gz ${capsula.redhat.packageName}-${capsula.redhat.version}/    
 - run:
-    command: chmod a+rw root/rpmbuild/SOURCES/${capsula.packageName}-${capsula.redhat.version}.tar.gz 
+    command: chmod a+rw root/rpmbuild/SOURCES/${capsula.redhat.packageName}-${capsula.redhat.version}.tar.gz 
 - run:
-    command: docker run -v${target}:/target -v${target}/root/rpmbuild:/root/rpmbuild -w/target centos_7_jpkg chown root:root /target/${capsula.redhat.packageName}-${capsula.redhat.version}.spec /target/root/rpmbuild/SOURCES/${capsula.packageName}-${capsula.redhat.version}.tar.gz 
+    command: docker run -v${target}:/target -v${target}/root/rpmbuild:/root/rpmbuild -w/target centos_7_jpkg chown root:root /target/${capsula.redhat.packageName}-${capsula.redhat.version}.spec /target/root/rpmbuild/SOURCES/${capsula.redhat.packageName}-${capsula.redhat.version}.tar.gz 
 - run:
     command: docker run -v${target}:/target -v${target}/root/rpmbuild:/root/rpmbuild -w/target centos_7_jpkg rpmbuild -ba ${capsula.redhat.packageName}-${capsula.redhat.version}.spec
