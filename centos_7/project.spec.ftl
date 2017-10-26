@@ -35,7 +35,12 @@ mvn clean package
 <#assign groupStatement = "">
 </#if>
 <#if entry.copy?has_content>
-if [ -f ${entry.copy.from} ]; then install ${modeStatement} ${ownerStatement} ${groupStatement} -D ${entry.copy.from} $(DESTDIR)/${entry.copy.to}; fi
-if [ -d ${entry.copy.from} ]; then install ${modeStatement} ${ownerStatement} ${groupStatement} -d ${entry.copy.from} $(DESTDIR)/${entry.copy.to}; fi
+if [ -f ${entry.copy.from} ]; then install ${modeStatement} ${ownerStatement} ${groupStatement} -D ${entry.copy.from} %{buildroot}/${entry.copy.to}; fi
+if [ -d ${entry.copy.from} ]; then install ${modeStatement} ${ownerStatement} ${groupStatement} -d ${entry.copy.from} %{buildroot}/${entry.copy.to}; fi
 </#if>
+</#list>
+
+%files
+<#list capsula.install as entry>
+${entry.copy.to}
 </#list>
