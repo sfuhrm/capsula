@@ -72,6 +72,12 @@ public class TargetBuilder implements Callable<TargetBuilder.Result> {
     
     private TemplateDelegate templateDelegate;
     
+    /**
+     * Creates an instance.
+     * @param build the build descriptor for all builds.
+     * @param directory the target the layout and templates are located in.
+     * @throws IOException if something goes wrong while initialization.
+     */
     public TargetBuilder(Capsula build, Path directory) throws IOException {
         this.build = Objects.requireNonNull(build);
         
@@ -92,6 +98,9 @@ public class TargetBuilder implements Callable<TargetBuilder.Result> {
         templateDelegate = new TemplateDelegate(this);
     }
     
+    /** Reads the layout, processes it as a template and parses it.
+     * @return the parsed layout file as an object.
+     */
     public Layout readLayout() throws IOException {
         ObjectMapper mapper = new ObjectMapper(new YAMLFactory());        
         
@@ -103,6 +112,9 @@ public class TargetBuilder implements Callable<TargetBuilder.Result> {
         return layout;
     }
     
+    /** Initialize the preset variables that can be used in the
+     * template.
+     */
     private void initEnvironment() {
         environment = new HashMap<>();
         environment.put("capsula", getBuild());
@@ -149,10 +161,11 @@ public class TargetBuilder implements Callable<TargetBuilder.Result> {
         MDC.remove("layout");
         
         Result result = new Result();
-        result.setSuccess(true);
+        result.setSuccess(true); // TBD never used?
         return result;
     }
     
+    /** Changes owner, group and permissions for a target file.  */
     private void applyTargetFileModifications(TargetCommand command) throws IOException {
         Path toPath = getTargetPath().resolve(command.getTo());
                 
@@ -180,10 +193,16 @@ public class TargetBuilder implements Callable<TargetBuilder.Result> {
         }
     }
 
+    /** Deletes the target directory. 
+     * @throws BuildException in case of an IO exception.
+     */
     public void cleanup() {
         deleteRecursive(targetPath);
     }
     
+    /** Deletes a path and its children. 
+     * @throws BuildException in case of an IO exception.
+     */
     private static void deleteRecursive(Path p) {
         try {
             if (Files.isRegularFile(p)) {
