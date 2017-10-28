@@ -40,6 +40,7 @@ import java.nio.file.attribute.UserPrincipalLookupService;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.Callable;
 import lombok.AccessLevel;
@@ -145,7 +146,7 @@ public class TargetBuilder implements Callable<TargetBuilder.Result> {
         
         layoutTmp = Files.createTempFile("layout", "yaml");
         
-        templateDelegate.template(LAYOUT_YAML, layoutTmp.toString());
+        templateDelegate.template(LAYOUT_YAML, layoutTmp.toString(), Optional.empty());
         
         Layout layout = mapper.readValue(layoutTmp.toFile(), Layout.class);
         return layout;
@@ -157,7 +158,7 @@ public class TargetBuilder implements Callable<TargetBuilder.Result> {
         
         environmentTmp = Files.createTempFile("environment", "yaml");
         
-        templateDelegate.template(ENVIRONMENT_YAML, environmentTmp.toString());
+        templateDelegate.template(ENVIRONMENT_YAML, environmentTmp.toString(), Optional.empty());
         
         Map<String,String> env = mapper.readValue(environmentTmp.toFile(), Map.class);
         return env;
@@ -207,13 +208,11 @@ public class TargetBuilder implements Callable<TargetBuilder.Result> {
             if (cmd.getCopy() != null) {
                 CopyDelegate delegate = new CopyDelegate(this);
                 delegate.copy(cmd.getCopy());
-                applyTargetFileModifications(cmd.getCopy());
             }
 
             if (cmd.getTemplate()!= null) {
                 TemplateDelegate delegate = templateDelegate;
-                delegate.template(cmd.getTemplate().getFrom(), cmd.getTemplate().getTo());
-                applyTargetFileModifications(cmd.getTemplate());
+                delegate.template(cmd.getTemplate().getFrom(), cmd.getTemplate().getTo(), Optional.of(cmd.getTemplate()));
             }
 
             if (cmd.getRun() != null) {
@@ -232,34 +231,6 @@ public class TargetBuilder implements Callable<TargetBuilder.Result> {
         Result result = new Result();
         result.setSuccess(true); // TBD never used?
         return result;
-    }
-    
-    /** Changes owner, group and permissions for a target file.  */
-    private void applyTargetFileModifications(TargetCommand command) throws IOException {
-        Path toPath = getTargetPath().resolve(command.getTo());
-                
-        FileSystem fileSystem = toPath.getFileSystem();
-        UserPrincipalLookupService lookupService
-                = fileSystem.getUserPrincipalLookupService();
-        
-        if (command.getOwner() != null) {
-            log.debug("Setting owner of {} to {}", toPath, command.getOwner());
-            UserPrincipal owner = lookupService.lookupPrincipalByName(command.getOwner());
-            Files.setOwner(toPath, owner);
-        }
-        
-        if (command.getGroup() != null) {
-            log.debug("Setting group of {} to {}", toPath, command.getOwner());
-            GroupPrincipal group = lookupService.lookupPrincipalByGroupName(command.getGroup());
-            Files.getFileAttributeView(toPath, PosixFileAttributeView.class, LinkOption.NOFOLLOW_LINKS).setGroup(group);
-        }
-        
-        if (command.getMode()!= null) {
-            log.debug("Setting mode of {} to {}", toPath, command.getMode());
-            
-            Set<PosixFilePermission> permissions = PosixFilePermissions.fromString(command.getMode());
-            Files.getFileAttributeView(toPath, PosixFileAttributeView.class, LinkOption.NOFOLLOW_LINKS).setPermissions(permissions);
-        }
     }
 
     /** Deletes the target directory. 

@@ -17,6 +17,7 @@
  */
 package de.sfuhrm.capsula.targetbuilder;
 
+import de.sfuhrm.capsula.FileUtils;
 import de.sfuhrm.capsula.yaml.command.TargetCommand;
 import java.io.IOException;
 import java.nio.file.FileSystem;
@@ -48,42 +49,13 @@ public class AbstractDelegate {
     public AbstractDelegate(TargetBuilder targetBuilder) {
         this.targetBuilder = Objects.requireNonNull(targetBuilder);
     }
-    
-    /** Does owner/group/permission changes for a target path.
-     * @param toPath direct target path to modify.
-     * @param command  the command to take the owner/group/permissions from.
-     */
-    protected void applyTargetFileModifications(final Path toPath, final TargetCommand command) throws IOException {
-        FileSystem fileSystem = toPath.getFileSystem();
-        UserPrincipalLookupService lookupService
-                = fileSystem.getUserPrincipalLookupService();
-
-        if (command.getOwner() != null) {
-            log.debug("Setting owner of {} to {}", toPath, command.getOwner());
-            UserPrincipal owner = lookupService.lookupPrincipalByName(command.getOwner());
-            Files.setOwner(toPath, owner);
-        }
-
-        if (command.getGroup() != null) {
-            log.debug("Setting group of {} to {}", toPath, command.getOwner());
-            GroupPrincipal group = lookupService.lookupPrincipalByGroupName(command.getGroup());
-            Files.getFileAttributeView(toPath, PosixFileAttributeView.class, LinkOption.NOFOLLOW_LINKS).setGroup(group);
-        }
-
-        if (command.getMode() != null) {
-            log.debug("Setting mode of {} to {}", toPath, command.getMode());
-
-            Set<PosixFilePermission> permissions = PosixFilePermissions.fromString(command.getMode());
-            Files.getFileAttributeView(toPath, PosixFileAttributeView.class, LinkOption.NOFOLLOW_LINKS).setPermissions(permissions);
-        }
-    }
-    
+        
     /** Does owner/group/permission changes for a target path.
      * @param command abstract target path description in the target command.
      */
     protected void applyTargetFileModifications(TargetCommand command) throws IOException {
         Path toPath = targetBuilder.getTargetPath().resolve(command.getTo());
-        applyTargetFileModifications(toPath, command);
+        FileUtils.applyTargetFileModifications(toPath, command);
     }
 
 }

@@ -17,6 +17,8 @@
  */
 package de.sfuhrm.capsula.targetbuilder;
 
+import de.sfuhrm.capsula.FileUtils;
+import de.sfuhrm.capsula.yaml.command.TargetCommand;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
@@ -28,6 +30,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.log4j.MDC;
 
@@ -51,7 +54,7 @@ class TemplateDelegate extends AbstractDelegate {
         cfg.setLocale(Locale.US);
     }
 
-    public void template(String from, String to) throws IOException {
+    public void template(String from, String to, Optional<TargetCommand> cmd) throws IOException {
         MDC.put("from", from);
         MDC.put("to", to);
         Objects.requireNonNull(from, "from is null");
@@ -66,6 +69,10 @@ class TemplateDelegate extends AbstractDelegate {
             }       
             try (Writer out = Files.newBufferedWriter(toPath, Charset.forName("UTF-8"))) {
                 temp.process(getTargetBuilder().getEnvironment(), out);
+            }
+            
+            if (cmd.isPresent()) {
+                FileUtils.applyTargetFileModifications(toPath, cmd.get());
             }
         } catch (TemplateException ex) {
             throw new BuildException("Template problem for "+from, ex);

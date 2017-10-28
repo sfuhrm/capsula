@@ -17,6 +17,7 @@
  */
 package de.sfuhrm.capsula.targetbuilder;
 
+import de.sfuhrm.capsula.FileUtils;
 import de.sfuhrm.capsula.yaml.command.CopyCommand;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -82,7 +83,7 @@ class CopyDelegate extends AbstractDelegate {
                 }
                 
                 Files.copy(from, to);
-                applyTargetFileModifications(to, command);
+                FileUtils.applyTargetFileModifications(to, command);
                 return;
             }
 

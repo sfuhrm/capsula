@@ -17,6 +17,7 @@
  */
 package de.sfuhrm.capsula.targetbuilder;
 
+import de.sfuhrm.capsula.FileUtils;
 import de.sfuhrm.capsula.yaml.command.MkdirCommand;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -65,7 +66,7 @@ class MkdirDelegate extends AbstractDelegate {
             log.debug("i={}, count={}", i, p.getNameCount());
             log.debug("sub={}, target={}, startsWith={}", sub, targetPath, sub.startsWith(targetPath));
             if ((!sub.equals(targetPath)) && sub.startsWith(targetPath)) {
-                applyTargetFileModifications(sub, command);
+                FileUtils.applyTargetFileModifications(sub, command);
             } else {
                 log.debug("equals={}, startsWith={}", sub.equals(targetPath), sub.startsWith(targetPath));
             }
