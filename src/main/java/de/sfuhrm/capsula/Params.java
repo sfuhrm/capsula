@@ -51,6 +51,10 @@ public class Params {
     @Getter
     @Option(name = "-validate", aliases = {"-c"}, usage = "Validate descriptor file and exit")
     private boolean validate;
+    
+    @Getter
+    @Option(name = "-out", required = true, aliases = {"-o"}, usage = "The output directory to write the generated files to")
+    private Path out;
 
     @Getter
     @Argument
