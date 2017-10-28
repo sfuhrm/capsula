@@ -49,8 +49,6 @@ prepare:
     command: docker run -v${target}:/target -w/target/${pkgdir} ${image} debuild -us -uc
 - run:
     command: docker run -v${target}:/target -w/target/${pkgdir} ${image} chmod -R a+rwx .
-- run:
-    command: docker run -v${target}:/target -w/target/${pkgdir} ${image} dpkg -i /target/${capsula.debian.packageName}_${version.version}-${version.release}_all.deb
 packages:
 - ${capsula.debian.packageName}_${version.version}-${version.release}_all.deb
 
