@@ -19,6 +19,7 @@ package de.sfuhrm.capsula.targetbuilder;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+import de.sfuhrm.capsula.FileUtils;
 import de.sfuhrm.capsula.yaml.Capsula;
 import de.sfuhrm.capsula.yaml.command.Command;
 import de.sfuhrm.capsula.yaml.Layout;
@@ -265,33 +266,12 @@ public class TargetBuilder implements Callable<TargetBuilder.Result> {
      * @throws BuildException in case of an IO exception.
      */
     public void cleanup() {
-        deleteRecursive(targetPath);
+        FileUtils.deleteRecursive(targetPath);
         if (Files.exists(environmentTmp))
-            deleteRecursive(environmentTmp);
+            FileUtils.deleteRecursive(environmentTmp);
         if (Files.exists(layoutTmp))
-            deleteRecursive(layoutTmp);
-    }
-    
-    /** Deletes a path and its children. 
-     * @throws BuildException in case of an IO exception.
-     */
-    private static void deleteRecursive(Path p) {
-        try {
-            if (Files.isRegularFile(p)) {
-                log.debug("Deleting file {}", p);
-                Files.delete(p);
-            }
-            if (Files.isDirectory(p)) {
-                log.debug("Deleting directory contents {}", p);
-                Files.list(p).forEach(t -> deleteRecursive(t));
-                log.debug("Deleting directory {}", p);
-                Files.delete(p);
-            }
-        } catch (IOException exception) {
-            throw new BuildException("Error deleting recursively: " + p, exception);
-        }
-    }
-    
+            FileUtils.deleteRecursive(layoutTmp);
+    }    
     
     static class Result {
         @Getter @Setter(AccessLevel.PRIVATE)

@@ -216,6 +216,7 @@ public class Main {
                     } else {
                         log.debug("Cleaning up builder");
                         builder.cleanup();
+                        FileUtils.deleteRecursive(targetPath);
                     }
                 }
             } catch (Exception ex) {
