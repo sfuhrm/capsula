@@ -51,5 +51,3 @@ prepare:
     command: docker run -v${target}:/target -w/target/${pkgdir} ${image} chmod -R a+rwx .
 packages:
 - ${capsula.debian.packageName}_${version.version}-${version.release}_all.deb
-
-
