@@ -29,12 +29,11 @@ import lombok.Setter;
  * An abstract linux distribution.
  * @author Stephan Fuhrmann
  */
-@Valid
 public class Distribution {
     @Getter @Setter @NotNull @NotBlank
     private String packageName; // inherited
 
-    @Getter @Setter @NotNull
+    @Getter @Setter @NotNull @Valid
     private List<Relation> relations;
     
     /** Get relations of a certain type. 

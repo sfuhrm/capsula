@@ -127,15 +127,14 @@ public class Capsula {
     @Getter @NotNull @Valid
     private Runtime runtime;
     
-    @Getter @Valid
+    @Getter @Valid @Size(min = 1)
     private Set<String> targets;
     
-    @Getter @Valid
+    @Getter @Valid @Size(min = 1)
     private List<VersionWithChanges> versions; 
     
-    @Getter @Valid
+    @Getter @Valid @NotNull
     private List<Command> install;
-    
     
     public void calculateReleaseNumbers() {
         for (VersionWithChanges versionWithChanges : versions) {
