@@ -1,9 +1,3 @@
-# Details of a directory layout
-# The following variables are defined:
-# * jpkg: The jpkg yaml file
-# * source: The source directory path
-# * target: The target directory path
-# See: https://www.debian.org/doc/manuals/maint-guide/dreq.en.html
 ---
 name: Debian Stretch
 prepare:
@@ -12,7 +6,7 @@ prepare:
     to: Dockerfile
 # build docker image
 - run:
-    command: docker build . -t debian_stretch_jpkg
+    command: docker build . -t ${image}
 # clone project
 - run:
     command: git clone ${capsula.gitUrl}
@@ -22,7 +16,7 @@ prepare:
 - run:
     command: mv ${capsula.gitProject} ${capsula.debian.packageName}_${version.version}
 - run:
-    command: docker run -v${target}:/target -w/target debian_stretch_jpkg tar -czvf ${capsula.debian.packageName}_${version.version}.orig.tar.gz ${capsula.debian.packageName}_${version.version}
+    command: docker run -v${target}:/target -w/target ${image} tar -czvf ${capsula.debian.packageName}_${version.version}.orig.tar.gz ${capsula.debian.packageName}_${version.version}
 - mkdir:
     to: ${capsula.debian.packageName}_${version.version}/debian/${capsula.debian.packageName}/DEBIAN
     mode: rwxrwxrwx
@@ -52,11 +46,11 @@ prepare:
     from: compat.ftl
     to: ${pkgdir}/debian/compat
 - run:
-    command: docker run -v${target}:/target -w/target/${pkgdir} debian_stretch_jpkg debuild -us -uc
+    command: docker run -v${target}:/target -w/target/${pkgdir} ${image} debuild -us -uc
 - run:
-    command: docker run -v${target}:/target -w/target/${pkgdir} debian_stretch_jpkg chmod -R a+rwx .
+    command: docker run -v${target}:/target -w/target/${pkgdir} ${image} chmod -R a+rwx .
 - run:
-    command: docker run -v${target}:/target -w/target/${pkgdir} debian_stretch_jpkg dpkg -i /target/${capsula.debian.packageName}_${version.version}-${version.release}_all.deb
+    command: docker run -v${target}:/target -w/target/${pkgdir} ${image} dpkg -i /target/${capsula.debian.packageName}_${version.version}-${version.release}_all.deb
 packages:
 - ${capsula.debian.packageName}_${version.version}-${version.release}_all.deb
 

@@ -1,2 +1,2 @@
 pkgdir: ${capsula.debian.packageName}_${version.version}
-
+image: debian_stretch_jpkg

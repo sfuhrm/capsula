@@ -1,8 +1,3 @@
-# Details of a directory layout
-# The following variables are defined:
-# * jpkg: The jpkg yaml file
-# * source: The source directory path
-# * target: The target directory path
 ---
 name: CentOS 7
 prepare:
@@ -13,10 +8,10 @@ prepare:
     from: project.spec.ftl
     to: ${capsula.redhat.packageName}-${version.version}.spec
 - run:
-    command: docker build . -t centos_7_jpkg
+    command: docker build . -t ${image}
 # build docker image
 - run:
-    command: docker build . -t centos_7_jpkg
+    command: docker build . -t ${image}
 # clone project
 - run:
     command: git clone ${capsula.gitUrl}
@@ -33,11 +28,11 @@ prepare:
 - run:
     command: chmod a+rw root/rpmbuild/SOURCES/${capsula.redhat.packageName}-${version.version}.tar.gz 
 - run:
-    command: docker run -v${target}:/target -v${target}/root/rpmbuild:/root/rpmbuild -w/target centos_7_jpkg chown root:root /target/${capsula.redhat.packageName}-${version.version}.spec /target/root/rpmbuild/SOURCES/${capsula.redhat.packageName}-${version.version}.tar.gz 
+    command: docker run -v${target}:/target -v${target}/root/rpmbuild:/root/rpmbuild -w/target ${image} chown root:root /target/${capsula.redhat.packageName}-${version.version}.spec /target/root/rpmbuild/SOURCES/${capsula.redhat.packageName}-${version.version}.tar.gz 
 - run:
-    command: docker run -v${target}:/target -v${target}/root/rpmbuild:/root/rpmbuild -w/target centos_7_jpkg rpmbuild -ba ${capsula.redhat.packageName}-${version.version}.spec
+    command: docker run -v${target}:/target -v${target}/root/rpmbuild:/root/rpmbuild -w/target ${image} rpmbuild -ba ${capsula.redhat.packageName}-${version.version}.spec
 - run:
-    command: docker run -v${target}:/target -w/target centos_7_jpkg chmod -R a+rwx .
+    command: docker run -v${target}:/target -w/target ${image} chmod -R a+rwx .
 packages:
 - root/rpmbuild/RPMS/noarch/${capsula.redhat.packageName}-${version.version}-${version.releaseNumber}.noarch.rpm
 - root/rpmbuild/SRPMS/${capsula.redhat.packageName}-${version.version}-${version.releaseNumber}.src.rpm
