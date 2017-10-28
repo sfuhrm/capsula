@@ -106,6 +106,7 @@ public class Main {
                 TargetBuilder builder = new TargetBuilder(build, FileSystems.getDefault().getPath(t));
                 try {
                     builder.call();
+                    builder.copyPackageFilesTo(params.getOut());
                 } finally {
                     if (params.isDebug()) {
                         System.err.println("DEBUG: Target directory: " + builder.getTargetPath());
