@@ -23,10 +23,18 @@ targets: # which platforms to build an archive for
 gitUrl: https://github.com/sfuhrm/capsula.git
 redhat:
   section: devel
+  relations:
+  - pkg: docker-ce
+  - pkg: git
+  - pkg: tar
 debian:
   priority: optional
   section: devel
   architecture: all
+  relations:
+  - pkg: docker-ce
+  - pkg: git
+  - pkg: tar
 # Version history of the package. Used for Debian changelogs.
 versions:
 - version: 0.0.1 # TBD this needs to match the debian version as a string
