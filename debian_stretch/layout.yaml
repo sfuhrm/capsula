@@ -20,8 +20,6 @@ prepare:
 - mkdir:
     to: ${capsula.debian.packageName}_${version.version}/debian/${capsula.debian.packageName}/DEBIAN
     mode: rwxrwxrwx
-- run:
-    command: echo ${capsula.gitProject}
 - template:
     from: control.ftl
     to: ${pkgdir}/debian/control
