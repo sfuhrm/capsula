@@ -55,7 +55,7 @@ import org.apache.log4j.MDC;
 @Slf4j
 public class TargetBuilder implements Callable<TargetBuilder.Result> {
 
-    /** Where the layout file is in. */
+    /** Where the layout file is in. Can be read-only. */
     @Getter
     private final Path layoutDirectory;
     
@@ -64,7 +64,7 @@ public class TargetBuilder implements Callable<TargetBuilder.Result> {
     private Path layoutFilePath;
     
     /** The file to the target directory where the building happens.
-     * This is usually a temporary directory.
+     * This is usually a temporary directory. Must be writable!
      */
     @Getter
     private Path targetPath;
