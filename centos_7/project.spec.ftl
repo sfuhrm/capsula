@@ -1,3 +1,6 @@
+<#macro relation r>${r.pkg}<#if r.op?has_content> ${r.op.operator} ${r.version}</#if></#macro>
+<#macro relations name list><#if list?has_content>${name}: <#list list as rel><@relation r=rel/><#sep>, </#sep></#list>
+</#if></#macro>
 Summary: ${capsula.shortSummary}
 Name: ${capsula.redhat.packageName}
 Version: ${version.version}
@@ -6,6 +9,11 @@ License: ${capsula.license}
 Group: Utilities/System
 Source: ${capsula.redhat.packageName}-${version.version}.tar.gz
 Packager: ${capsula.maintainer.name} <${capsula.maintainer.email}>
+<@relations name="Requires" list=capsula.debian.relationsFor("depends")/>
+<@relations name="Recommends" list=capsula.debian.relationsFor("recommends")/>
+<@relations name="Suggests" list=capsula.debian.relationsFor("suggests")/>
+<@relations name="Conflicts" list=capsula.debian.relationsFor("conflicts")/>
+<@relations name="Provides" list=capsula.debian.relationsFor("provides")/>
 BuildArch: noarch
 %description
 <#list capsula.longDescription as line>
