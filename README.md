@@ -46,11 +46,9 @@ Capsula has the following features:
 The following TODOs are open programming tasks as known for today:
 
 * Stop at certain stages for debugging, for example after template generation.
-* Proper package copying back mechanism (.deb file to output dir).
+* Proper distro related dependency mechanism with good defaults.
 * Support for different JDK/JRE depencendies.
 * Add support for Gradle, Ant (?) besides Maven.
-* Proper environment mechanism. The current one sucks. 
-  Idea: environment.yaml file.
 * Test installation of packages on each platform.
 * Scaffolding of the YAML configuration for your program.
 * Support app icons.
@@ -59,8 +57,9 @@ The following TODOs are open programming tasks as known for today:
 
 ## Milestones
 
-* Milestone 1: Make Capsula package itself for Debian Stretch.
-* Milestone 2: Make Capsula package itself for CentOS 7.
+* [Finished] Milestone 1: Make Capsula package itself for Debian Stretch.
+* [Finished] Milestone 2: Make Capsula package itself for CentOS 7.
+* Milestone 3: Debugging & performance.
 
 ## Links
 
