@@ -35,7 +35,7 @@ class RunDelegate extends AbstractDelegate {
         super(targetBuilder);
     }
 
-    public void run(RunCommand command) {
+    public void run(RunCommand command) throws IOException {
         try {
             MDC.put("cmd", command.getCommand());
             Objects.requireNonNull(command.getCommand(), "command is null");
@@ -57,7 +57,7 @@ class RunDelegate extends AbstractDelegate {
             if (exitValue != 0) {
                 throw new BuildException(cmdString+" returned exit value "+exitValue);
             }
-        } catch (InterruptedException | IOException ex) {
+        } catch (InterruptedException ex) {
             throw new BuildException(command.getCommand(), ex);
         }
     }

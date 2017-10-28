@@ -51,7 +51,7 @@ class TemplateDelegate extends AbstractDelegate {
         cfg.setLocale(Locale.US);
     }
 
-    public void template(String from, String to) {
+    public void template(String from, String to) throws IOException {
         MDC.put("from", from);
         MDC.put("to", to);
         Objects.requireNonNull(from, "from is null");
@@ -67,7 +67,7 @@ class TemplateDelegate extends AbstractDelegate {
             try (Writer out = Files.newBufferedWriter(toPath, Charset.forName("UTF-8"))) {
                 temp.process(getTargetBuilder().getEnvironment(), out);
             }
-        } catch (TemplateException | IOException ex) {
+        } catch (TemplateException ex) {
             throw new BuildException("Template problem for "+from, ex);
         }
     }

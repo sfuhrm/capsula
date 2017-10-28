@@ -1,0 +1,2 @@
+pkgdir: ${capsula.debian.packageName}_${version.version}
+

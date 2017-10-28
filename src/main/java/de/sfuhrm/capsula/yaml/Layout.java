@@ -19,7 +19,6 @@ package de.sfuhrm.capsula.yaml;
 
 import de.sfuhrm.capsula.yaml.command.Command;
 import java.util.List;
-import java.util.Map;
 import javax.validation.constraints.NotNull;
 import lombok.Getter;
 
@@ -33,14 +32,8 @@ public class Layout {
     private String name;
     
     @Getter
-    private Map<String, String> copy;
-    
-    @Getter
-    private Map<String, String> templates;
-    
-    @Getter
-    private Map<String, String> environment;
-    
-    @Getter
     private List<Command> prepare;
+    
+    @Getter
+    private List<String> packages;    
 }

@@ -1,5 +1,4 @@
 packageName: capsula # name of the project package
-version: 0.0.1 # version of the project
 iconFile: # TBD
 author: # who's the main author of the program TBD: author/maintainer/etc
   name: Stephan Fuhrmann
@@ -28,10 +27,9 @@ debian:
   priority: optional
   section: devel
   architecture: all
-  version: 0.0.1-1
 # Version history of the package. Used for Debian changelogs.
 versions:
-- version: 0.0.1
+- version: 0.0.1 # TBD this needs to match the debian version as a string
   release: 1
   date: 2017-10-21T20:00:00+02:00
   changes:

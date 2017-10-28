@@ -1,5 +1,5 @@
 <#list capsula.versions as version>
-${capsula.debian.packageName} (${version.version}) unstable; urgency=medium
+${capsula.debian.packageName} (${version.debianVersion}) unstable; urgency=medium
 
 <#list version.changes as change>
   * ${change}

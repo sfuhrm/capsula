@@ -32,7 +32,4 @@ public class Redhat {
         
     @Getter @Setter @NotNull @NotBlank
     private String section;
-        
-    @Getter @Setter @NotNull @NotBlank
-    private String version;  // inherited
 }

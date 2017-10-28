@@ -49,9 +49,6 @@ public class Debian {
         all
     };
     
-    @Getter @Setter @NotNull @NotBlank
-    private String version;  // inherited
-    
     @Getter @NotNull
     private Architecture architecture;
 }

@@ -23,6 +23,8 @@ import de.sfuhrm.capsula.yaml.Capsula;
 import de.sfuhrm.capsula.yaml.command.Command;
 import de.sfuhrm.capsula.yaml.Layout;
 import de.sfuhrm.capsula.yaml.command.TargetCommand;
+import freemarker.template.TemplateNotFoundException;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.FileSystem;
 import java.nio.file.Files;
@@ -39,6 +41,8 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.Callable;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
@@ -69,6 +73,7 @@ public class TargetBuilder implements Callable<TargetBuilder.Result> {
     private final Capsula build;
     
     public final static String LAYOUT_YAML = "layout.yaml";
+    public final static String ENVIRONMENT_YAML = "environment.yaml";
     
     private TemplateDelegate templateDelegate;
     
@@ -98,18 +103,31 @@ public class TargetBuilder implements Callable<TargetBuilder.Result> {
         templateDelegate = new TemplateDelegate(this);
     }
     
+    private Path layoutTmp;
     /** Reads the layout, processes it as a template and parses it.
      * @return the parsed layout file as an object.
      */
     public Layout readLayout() throws IOException {
         ObjectMapper mapper = new ObjectMapper(new YAMLFactory());        
         
-        Path tmp = Files.createTempFile("layout", "yaml");
+        layoutTmp = Files.createTempFile("layout", "yaml");
         
-        templateDelegate.template(LAYOUT_YAML, tmp.toString());
+        templateDelegate.template(LAYOUT_YAML, layoutTmp.toString());
         
-        Layout layout = mapper.readValue(tmp.toFile(), Layout.class);
+        Layout layout = mapper.readValue(layoutTmp.toFile(), Layout.class);
         return layout;
+    }
+    
+    private Path environmentTmp;
+    public Map<String,String> readEnvironment() throws IOException {
+        ObjectMapper mapper = new ObjectMapper(new YAMLFactory());        
+        
+        environmentTmp = Files.createTempFile("environment", "yaml");
+        
+        templateDelegate.template(ENVIRONMENT_YAML, environmentTmp.toString());
+        
+        Map<String,String> env = mapper.readValue(environmentTmp.toFile(), Map.class);
+        return env;
     }
     
     /** Initialize the preset variables that can be used in the
@@ -118,8 +136,20 @@ public class TargetBuilder implements Callable<TargetBuilder.Result> {
     private void initEnvironment() {
         environment = new HashMap<>();
         environment.put("capsula", getBuild());
+        environment.put("version", getBuild().getVersions().get(0));
         environment.put("source", layoutDirectory);
         environment.put("target", targetPath);
+        try {
+            
+            Map<String,String> fileEnv = readEnvironment();
+            environment.putAll(fileEnv);
+        } 
+        catch (FileNotFoundException ex) {
+            log.info("Environment file {} not found, going on without", ENVIRONMENT_YAML);
+        }
+        catch (IOException ex) {
+            throw new BuildException("Error while loading "+ENVIRONMENT_YAML, ex);            
+        }
     }
 
     @Override
@@ -129,9 +159,6 @@ public class TargetBuilder implements Callable<TargetBuilder.Result> {
         
         MDC.put("layout", layout.getName());
         
-        if (layout.getEnvironment() != null) {
-            environment.putAll(layout.getEnvironment());
-        }
         environment.put("layout", layout);
         
         for (Command cmd : layout.getPrepare()) {
@@ -198,6 +225,10 @@ public class TargetBuilder implements Callable<TargetBuilder.Result> {
      */
     public void cleanup() {
         deleteRecursive(targetPath);
+        if (Files.exists(environmentTmp))
+            deleteRecursive(environmentTmp);
+        if (Files.exists(layoutTmp))
+            deleteRecursive(layoutTmp);
     }
     
     /** Deletes a path and its children. 

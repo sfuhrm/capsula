@@ -11,7 +11,7 @@ prepare:
     to: Dockerfile
 - template:
     from: project.spec.ftl
-    to: ${capsula.redhat.packageName}-${capsula.redhat.version}.spec
+    to: ${capsula.redhat.packageName}-${version.version}.spec
 - run:
     command: docker build . -t centos_7_jpkg
 # build docker image
@@ -24,15 +24,21 @@ prepare:
 - run:
     command: rm -fr ${capsula.gitProject}/.git ${capsula.gitProject}/.gitignore    
 - run:
-    command: mv ${capsula.gitProject} ${capsula.redhat.packageName}-${capsula.redhat.version}
+    command: mv ${capsula.gitProject} ${capsula.redhat.packageName}-${version.version}
   # make rpm builder directorys (see https://wiki.centos.org/HowTos/SetupRpmBuildEnvironment)
 - run:
     command: mkdir -p root/rpmbuild/BUILD root/rpmbuild/RPMS root/rpmbuild/SOURCES root/rpmbuild/SRPMS   
 - run:
-    command: tar -czvf root/rpmbuild/SOURCES/${capsula.redhat.packageName}-${capsula.redhat.version}.tar.gz ${capsula.redhat.packageName}-${capsula.redhat.version}/    
+    command: tar -czvf root/rpmbuild/SOURCES/${capsula.redhat.packageName}-${version.version}.tar.gz ${capsula.redhat.packageName}-${version.version}/    
 - run:
-    command: chmod a+rw root/rpmbuild/SOURCES/${capsula.redhat.packageName}-${capsula.redhat.version}.tar.gz 
+    command: chmod a+rw root/rpmbuild/SOURCES/${capsula.redhat.packageName}-${version.version}.tar.gz 
 - run:
-    command: docker run -v${target}:/target -v${target}/root/rpmbuild:/root/rpmbuild -w/target centos_7_jpkg chown root:root /target/${capsula.redhat.packageName}-${capsula.redhat.version}.spec /target/root/rpmbuild/SOURCES/${capsula.redhat.packageName}-${capsula.redhat.version}.tar.gz 
+    command: docker run -v${target}:/target -v${target}/root/rpmbuild:/root/rpmbuild -w/target centos_7_jpkg chown root:root /target/${capsula.redhat.packageName}-${version.version}.spec /target/root/rpmbuild/SOURCES/${capsula.redhat.packageName}-${version.version}.tar.gz 
 - run:
-    command: docker run -v${target}:/target -v${target}/root/rpmbuild:/root/rpmbuild -w/target centos_7_jpkg rpmbuild -ba ${capsula.redhat.packageName}-${capsula.redhat.version}.spec
+    command: docker run -v${target}:/target -v${target}/root/rpmbuild:/root/rpmbuild -w/target centos_7_jpkg rpmbuild -ba ${capsula.redhat.packageName}-${version.version}.spec
+- run:
+    command: docker run -v${target}:/target -w/target centos_7_jpkg chmod -R a+rwx .
+packages:
+- /target/root/rpmbuild/RPMS/noarch/${capsula.redhat.packageName}-${version.version}-${version.releaseNumber}.noarch.rpm
+- /target/root/rpmbuild/SRPMS/noarch/${capsula.redhat.packageName}-${version.version}-${version.releaseNumber}.src.rpm
+

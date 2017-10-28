@@ -30,6 +30,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -45,9 +46,6 @@ public class Capsula {
     @Getter @NotNull @NotBlank
     private String packageName;
 
-    @Getter @NotNull @NotBlank
-    private String version;
-    
     @Getter @NotNull @Valid
     private NameEmail author;
     
@@ -133,10 +131,25 @@ public class Capsula {
     private Set<String> targets;
     
     @Getter @Valid
-    private List<Version> versions; 
+    private List<VersionWithChanges> versions; 
     
     @Getter @Valid
     private List<Command> install;
+    
+    
+    public void calculateReleaseNumbers() {
+        for (VersionWithChanges versionWithChanges : versions) {
+            List<VersionWithChanges> sameVersion = versions.stream()
+                    .filter(v -> v.getVersion().equals(versionWithChanges.getVersion()))
+                    .collect(Collectors.toList());
+            
+            int total = sameVersion.size();
+            int indexInverse = sameVersion.indexOf(versionWithChanges);
+            int index = total - indexInverse - 1;
+            
+            versionWithChanges.setReleaseNumber(index);
+        }
+    }
     
     /** Get the project directory name from the GIT URL. */
     public String getGitProject() throws MalformedURLException {

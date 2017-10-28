@@ -55,6 +55,8 @@ public class Main {
     public Capsula getDescriptor() throws IOException {
         ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
         Capsula build = mapper.readValue(params.getDescriptor().toFile(), Capsula.class);
+
+        build.calculateReleaseNumbers();
         
         PropertyInheritance.inherit(build, build.getDebian());
         PropertyInheritance.inherit(build, build.getRedhat());

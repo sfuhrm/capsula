@@ -17,33 +17,25 @@
  */
 package de.sfuhrm.capsula.yaml;
 
-import javax.validation.constraints.NotBlank;
+import java.util.Date;
+import java.util.List;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.PastOrPresent;
 import lombok.Getter;
 import lombok.Setter;
 
 /**
- * Version information.
+ * Version with maintainer and list of changes.
  * @author Stephan Fuhrmann
  */
-public class Version {
-    /** This is the source tar version by the author. */
-    @Getter @Setter @NotNull @NotBlank
-    private String version;
+public class VersionWithChanges extends Version {
     
-     /** This is the packaging release by the maintainer. */
-    @Getter @Setter @NotNull @NotBlank
-    private String release;
+    @Getter @Setter @NotNull
+    private NameEmail maintainer;
+   
+    @Getter @NotNull    
+    private List<String> changes;
     
-     /** This is the the release number for this version. The first release gets number 1. */
-    @Getter @Setter
-    private int releaseNumber;
-    
-    public String getDebianVersion() {
-        return version+"-"+release;
-    }
-    
-    public String getRedhatVersion() {
-        return version;
-    }
+    @Getter @NotNull @PastOrPresent
+    private Date date;
 }

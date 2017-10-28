@@ -17,4 +17,3 @@ Description: ${capsula.shortSummary}
  .
 </#if>
 </#list>
-

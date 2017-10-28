@@ -20,43 +20,44 @@ prepare:
 - run:
     command: rm -fr ${capsula.gitProject}/.git ${capsula.gitProject}/.gitignore
 - run:
-    command: mv ${capsula.gitProject} ${capsula.debian.packageName}_${capsula.version}
+    command: mv ${capsula.gitProject} ${capsula.debian.packageName}_${version.version}
 - run:
-    command: docker run -v${target}:/target -w/target debian_stretch_jpkg tar -czvf ${capsula.debian.packageName}_${capsula.version}.orig.tar.gz ${capsula.debian.packageName}_${capsula.version}
+    command: docker run -v${target}:/target -w/target debian_stretch_jpkg tar -czvf ${capsula.debian.packageName}_${version.version}.orig.tar.gz ${capsula.debian.packageName}_${version.version}
 - mkdir:
-    to: ${capsula.debian.packageName}_${capsula.version}/debian/${capsula.debian.packageName}/DEBIAN
+    to: ${capsula.debian.packageName}_${version.version}/debian/${capsula.debian.packageName}/DEBIAN
     mode: rwxrwxrwx
 - run:
     command: echo ${capsula.gitProject}
 - template:
     from: control.ftl
-    to: ${capsula.debian.packageName}_${capsula.version}/debian/control
+    to: ${pkgdir}/debian/control
 - template:
     from: copyright.ftl
-    to: ${capsula.debian.packageName}_${capsula.version}/debian/copyright
+    to: ${pkgdir}/debian/copyright
 - template:
     from: changelog.ftl
-    to: ${capsula.debian.packageName}_${capsula.version}/debian/changelog
+    to: ${pkgdir}/debian/changelog
 - template:
     from: rules.ftl
-    to: ${capsula.debian.packageName}_${capsula.version}/debian/rules
+    to: ${pkgdir}/debian/rules
     mode: rwxr-xr-x
 #- template:
 #    from: install.ftl
-#    to: ${capsula.debian.packageName}_${capsula.version}/debian/install
+#    to: ${pkgdir}/debian/install
 #    mode: rwxr-xr-x
 - template:
     from: Makefile.ftl
-    to: ${capsula.debian.packageName}_${capsula.version}/Makefile
+    to: ${pkgdir}/Makefile
 - template:
     from: compat.ftl
-    to: ${capsula.debian.packageName}_${capsula.version}/debian/compat
+    to: ${pkgdir}/debian/compat
 - run:
-    command: docker run -v${target}:/target -w/target/${capsula.debian.packageName}_${capsula.version} debian_stretch_jpkg debuild -us -uc
+    command: docker run -v${target}:/target -w/target/${pkgdir} debian_stretch_jpkg debuild -us -uc
 - run:
-    command: docker run -v${target}:/target -w/target/${capsula.debian.packageName}_${capsula.version} debian_stretch_jpkg chmod -R a+rwx .
+    command: docker run -v${target}:/target -w/target/${pkgdir} debian_stretch_jpkg chmod -R a+rwx .
 - run:
-    command: docker run -v${target}:/target -w/target/${capsula.debian.packageName}_${capsula.version} debian_stretch_jpkg dpkg -i /target/${capsula.debian.packageName}_${capsula.version}-1_all.deb
-environment:
-  foo: bar
+    command: docker run -v${target}:/target -w/target/${pkgdir} debian_stretch_jpkg dpkg -i /target/${capsula.debian.packageName}_${version.version}-${version.release}_all.deb
+packages:
+- /target/${capsula.debian.packageName}_${version.version}-${version.release}_all.deb
+
 
