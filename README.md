@@ -57,7 +57,6 @@ The following TODOs are open programming tasks as known for today:
 * Scaffolding of the YAML configuration for your program.
 * YAML scaffolding using an existing pom file.
 * Support app icons.
-* Move the template directories somewhere where it makes sense.
 * Testing.
 * Support for different JDK/JRE depencendies. At the moment this can be done using the relations.
 
@@ -65,8 +64,9 @@ The following TODOs are open programming tasks as known for today:
 
 * [Finished] Milestone 1: Make Capsula package itself for Debian Stretch.
 * [Finished] Milestone 2: Make Capsula package itself for CentOS 7.
-* [Finished] Milestone 3: Dependencies
-* Milestone 4: Move template directories
+* [Finished] Milestone 3: Package dependencies.
+* [Finished] Milestone 4: Move template directories.
+* Milestone 5: TBD.
 
 ## Links
 
