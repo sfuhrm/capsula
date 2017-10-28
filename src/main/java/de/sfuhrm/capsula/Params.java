@@ -59,7 +59,7 @@ public class Params {
     
     @Getter
     @Option(name = "-targets", aliases = {"-t"}, usage = "Restrict the targets created to the given names")    
-    private Set<String> targets;
+    private List<String> targets;
 
     @Getter
     @Argument

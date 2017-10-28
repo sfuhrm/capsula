@@ -108,7 +108,7 @@ public class Main {
 
         build.getTargets()
                 .stream()
-                .filter(t -> params.getTargets().isEmpty() || params.getTargets().contains(t))
+                .filter(t -> params.getTargets() == null || params.getTargets().contains(t))
                 .forEach(t -> {
             try {
                 log.debug("Target {}", t);
