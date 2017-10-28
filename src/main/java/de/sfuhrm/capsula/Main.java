@@ -54,7 +54,7 @@ public class Main {
 
     /** Reads the descriptor and fills auto-generated fields in it.
      */
-    public Capsula readDescriptor() throws IOException {
+    private Capsula readDescriptor() throws IOException {
         ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
         Capsula build = mapper.readValue(params.getDescriptor().toFile(), Capsula.class);
 
