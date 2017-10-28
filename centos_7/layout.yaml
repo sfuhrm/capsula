@@ -39,6 +39,6 @@ prepare:
 - run:
     command: docker run -v${target}:/target -w/target centos_7_jpkg chmod -R a+rwx .
 packages:
-- /target/root/rpmbuild/RPMS/noarch/${capsula.redhat.packageName}-${version.version}-${version.releaseNumber}.noarch.rpm
-- /target/root/rpmbuild/SRPMS/noarch/${capsula.redhat.packageName}-${version.version}-${version.releaseNumber}.src.rpm
+- root/rpmbuild/RPMS/noarch/${capsula.redhat.packageName}-${version.version}-${version.releaseNumber}.noarch.rpm
+- root/rpmbuild/SRPMS/${capsula.redhat.packageName}-${version.version}-${version.releaseNumber}.src.rpm
 
