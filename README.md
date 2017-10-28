@@ -59,7 +59,7 @@ The following TODOs are open programming tasks as known for today:
 
 * [Finished] Milestone 1: Make Capsula package itself for Debian Stretch.
 * [Finished] Milestone 2: Make Capsula package itself for CentOS 7.
-* Milestone 3: Debugging & performance.
+* Milestone 3: Dependencies
 
 ## Links
 
