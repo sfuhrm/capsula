@@ -65,6 +65,12 @@ public class Main {
                 v.setMaintainer(build.getMaintainer());
             }
         });
+        
+        // if in debug mode, write the expanded capsula.yaml
+        if (params.isDebug()) {
+            mapper.writeValue(params.getOut().resolve("capsula.yaml").toFile(), build);
+        }
+        
         return build;
     }
 
@@ -100,7 +106,10 @@ public class Main {
             return;
         }
 
-        build.getTargets().stream().forEach(t -> {
+        build.getTargets()
+                .stream()
+                .filter(t -> params.getTargets().isEmpty() || params.getTargets().contains(t))
+                .forEach(t -> {
             try {
                 log.debug("Target {}", t);
                 TargetBuilder builder = new TargetBuilder(build, FileSystems.getDefault().getPath(t));

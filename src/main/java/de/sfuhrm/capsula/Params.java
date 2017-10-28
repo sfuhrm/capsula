@@ -20,6 +20,7 @@ package de.sfuhrm.capsula;
 import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.kohsuke.args4j.Argument;
@@ -55,6 +56,10 @@ public class Params {
     @Getter
     @Option(name = "-out", required = true, aliases = {"-o"}, usage = "The output directory to write the generated files to")
     private Path out;
+    
+    @Getter
+    @Option(name = "-targets", aliases = {"-t"}, usage = "Restrict the targets created to the given names")    
+    private Set<String> targets;
 
     @Getter
     @Argument
