@@ -31,7 +31,6 @@ import java.nio.file.attribute.PosixFilePermission;
 import java.nio.file.attribute.PosixFilePermissions;
 import java.nio.file.attribute.UserPrincipal;
 import java.nio.file.attribute.UserPrincipalLookupService;
-import java.util.Optional;
 import java.util.Set;
 import lombok.extern.slf4j.Slf4j;
 
@@ -55,11 +54,11 @@ public class FileUtils {
         }
         
         if (command.getGroup()!= null) {
-            changeOwner(toPath, command.getGroup());
+            changeGroup(toPath, command.getGroup());
         }
         
         if (command.getMode()!= null) {
-            changeOwner(toPath, command.getGroup());
+            changeMode(toPath, command.getMode());
         }
     }
     
