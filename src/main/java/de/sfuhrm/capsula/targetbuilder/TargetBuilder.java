@@ -55,26 +55,53 @@ import org.apache.log4j.MDC;
 @Slf4j
 public class TargetBuilder implements Callable<TargetBuilder.Result> {
 
+    /** Where the layout file is in. */
     @Getter
     private final Path layoutDirectory;
     
+    /** The path to the layout file itself. */
     @Getter
     private Path layoutFilePath;
     
+    /** The file to the target directory where the building happens.
+     * This is usually a temporary directory.
+     */
     @Getter
     private Path targetPath;
     
+    /** The environment for this target builder.
+     * Has the following variables set:
+     * <ul>
+     * <li> capsula: the object from the config file
+     * <li> version: the first version from the config file ("this" version)
+     * <li> source: the layout directory
+     * <li> target: the target directory where the build is performed
+     * <li> ... and everything from <code>environment.yaml</code>
+     * </ul>
+     */
     @Getter
     private Map<String, Object> environment;
     
+    /** The generic configuration file. */
     @Getter    
     private final Capsula build;
     
+    /** The configuration for building this target. */
     private Layout layout;
     
-    public final static String LAYOUT_YAML = "layout.yaml";
-    public final static String ENVIRONMENT_YAML = "environment.yaml";
+    /** Name of the layout config file in the directory. 
+     * @see #readLayout() 
+     */
+    private final static String LAYOUT_YAML = "layout.yaml";
     
+    /** Name of the environment config file in the directory. 
+     * @see #readEnvironment()  
+     */
+    private final static String ENVIRONMENT_YAML = "environment.yaml";
+    
+    /** Delegate for template generation. Is used for all templating tasks,
+     * also when reading the layout/environment files.
+     */
     private TemplateDelegate templateDelegate;
     
     /**
