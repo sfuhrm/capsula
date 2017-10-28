@@ -17,6 +17,7 @@ The requirements are:
 
 * [Java 8+](http://www.oracle.com/technetwork/java/index.html) runtime
 * [Docker](https://www.docker.com/) installation
+* Git command line client
 
 Capsula requires a running *Docker* installation on the host. Docker is used for each
 platform to create a package. The package creation tools are usually only available on
@@ -40,26 +41,32 @@ Capsula has the following features:
 
 * Only one YAML configuration file necessary.
 * Can build packages for multiple target platforms.
+* Dependencies can be configured for every distribution.
 
 ## TODOs
 
 The following TODOs are open programming tasks as known for today:
 
+* Documentation for usage.
+* Documentation for YAML format.
+* Reusing of users .m2 directory for speeding up maven runs a lot.
 * Stop at certain stages for debugging, for example after template generation.
-* Proper distro related dependency mechanism with good defaults.
-* Support for different JDK/JRE depencendies.
 * Add support for Gradle, Ant (?) besides Maven.
-* Test installation of packages on each platform.
+* Test installation of packages on each platform. This is a little difficult
+  because a package could require other apt sources (like capsula does for docker).
 * Scaffolding of the YAML configuration for your program.
+* YAML scaffolding using an existing pom file.
 * Support app icons.
 * Move the template directories somewhere where it makes sense.
 * Testing.
+* Support for different JDK/JRE depencendies. At the moment this can be done using the relations.
 
 ## Milestones
 
 * [Finished] Milestone 1: Make Capsula package itself for Debian Stretch.
 * [Finished] Milestone 2: Make Capsula package itself for CentOS 7.
-* Milestone 3: Dependencies
+* [Finished] Milestone 3: Dependencies
+* Milestone 4: Move template directories
 
 ## Links
 
