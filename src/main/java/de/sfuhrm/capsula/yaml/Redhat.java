@@ -17,6 +17,7 @@
  */
 package de.sfuhrm.capsula.yaml;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import lombok.Getter;
@@ -26,10 +27,8 @@ import lombok.Setter;
  * Specific descriptor for Redhat distribution.
  * @author Stephan Fuhrmann
  */
-public class Redhat {
+@Valid
+public class Redhat extends Distribution {
     @Getter @Setter @NotNull @NotBlank
-    private String packageName; // inherited
-        
-    @Getter @Setter @NotNull @NotBlank
-    private String section;
+    private String section;    
 }

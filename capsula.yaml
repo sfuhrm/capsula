@@ -27,6 +27,9 @@ redhat:
   - pkg: docker-ce
   - pkg: git
   - pkg: tar
+    op: ge
+    version: 1.26
+  - pkg: java-1.8.0-openjdk-headless
 debian:
   priority: optional
   section: devel
@@ -35,6 +38,9 @@ debian:
   - pkg: docker-ce
   - pkg: git
   - pkg: tar
+    op: ge
+    version: 1.29
+  - pkg: openjdk-8-jdk-headless
 # Version history of the package. Used for Debian changelogs.
 versions:
 - version: 0.0.1 # TBD this needs to match the debian version as a string

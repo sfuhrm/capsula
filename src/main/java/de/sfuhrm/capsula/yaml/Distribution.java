@@ -17,37 +17,34 @@
  */
 package de.sfuhrm.capsula.yaml;
 
+import java.util.List;
+import java.util.stream.Collectors;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import lombok.Getter;
+import lombok.Setter;
 
 /**
- * Specific descriptor for Debian distribution.
- * @see https://www.debian.org/doc/manuals/maint-guide/dreq.de.html
+ * An abstract linux distribution.
  * @author Stephan Fuhrmann
  */
 @Valid
-public class Debian extends Distribution {
+public class Distribution {
+    @Getter @Setter @NotNull @NotBlank
+    private String packageName; // inherited
+
+    @Getter @Setter @NotNull
+    private List<Relation> relations;
     
-    enum Priority {
-        optional,
-        required,
-        important,
-        standard
-    };
-    
-    @Getter @NotNull
-    private Priority priority = Priority.optional;
-    
-    @Getter @NotNull @NotBlank
-    private String section;
-    
-    enum Architecture {
-        any,
-        all
-    };
-    
-    @Getter @NotNull
-    private Architecture architecture;    
+    /** Get relations of a certain type. 
+     * @param type the type as can be found in {@link Relation.RelationType}.
+     * @return the sublist of relations of the given type.
+     */
+    public List<Relation> relationsFor(String type) {
+        return relations
+                .stream()
+                .filter(r -> r.getType().toString().equalsIgnoreCase(type))
+                .collect(Collectors.toList());
+    }
 }
