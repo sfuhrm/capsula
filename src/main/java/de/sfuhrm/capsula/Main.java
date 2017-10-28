@@ -117,7 +117,7 @@ public class Main {
                 .forEach(t -> {
             try {
                 log.debug("Target {}", t);
-                TargetBuilder builder = new TargetBuilder(build, FileSystems.getDefault().getPath(t));
+                TargetBuilder builder = new TargetBuilder(build, t, FileSystems.getDefault().getPath(t));
                 try {
                     builder.call();
                     builder.copyPackageFilesTo(params.getOut());

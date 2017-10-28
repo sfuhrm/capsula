@@ -104,14 +104,19 @@ public class TargetBuilder implements Callable<TargetBuilder.Result> {
      */
     private TemplateDelegate templateDelegate;
     
+    /** The name of the target. */
+    private final String targetName; 
+    
     /**
      * Creates an instance.
      * @param build the build descriptor for all builds.
+     * @param targetName the name of this target.
      * @param layoutDirectory the directory the layout and templates are located in.
      * @throws IOException if something goes wrong while initialization.
      */
-    public TargetBuilder(Capsula build, Path layoutDirectory) throws IOException {
+    public TargetBuilder(Capsula build, String targetName, Path layoutDirectory) throws IOException {
         this.build = Objects.requireNonNull(build);
+        this.targetName = Objects.requireNonNull(targetName);
         
         log.debug("Layout directory is {}", layoutDirectory);
         this.layoutDirectory = Objects.requireNonNull(layoutDirectory, "directory is null");
@@ -125,7 +130,7 @@ public class TargetBuilder implements Callable<TargetBuilder.Result> {
             throw new IllegalStateException(layoutFilePath+" is not a file");
         }
         
-        targetPath = Files.createTempDirectory("capsula").toAbsolutePath();
+        targetPath = Files.createTempDirectory(this.targetName).toAbsolutePath();
         log.debug("Target path is {}", targetPath);
         templateDelegate = new TemplateDelegate(this);
     }
