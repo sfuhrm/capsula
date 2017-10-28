@@ -52,7 +52,9 @@ public class Main {
         validator = factory.getValidator();
     }
 
-    public Capsula getDescriptor() throws IOException {
+    /** Reads the descriptor and fills auto-generated fields in it.
+     */
+    public Capsula readDescriptor() throws IOException {
         ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
         Capsula build = mapper.readValue(params.getDescriptor().toFile(), Capsula.class);
 
@@ -74,6 +76,9 @@ public class Main {
         return build;
     }
 
+    /** Validates the given object. Prints all constraint violations.
+     * @return the set of constraint violations detected.
+     */
     private <T> Set<ConstraintViolation<T>> validate(T o) {
         final Set<ConstraintViolation<T>> violations = validator.validate(o);
         if (violations.size() > 0) {
@@ -100,7 +105,7 @@ public class Main {
         }
 
         Main main = new Main(params);
-        Capsula build = main.getDescriptor();
+        Capsula build = main.readDescriptor();
         Set<ConstraintViolation<Capsula>> constraintViolations = main.validate(build);
         if (!constraintViolations.isEmpty() || params.isValidate()) {
             return;
