@@ -26,10 +26,12 @@ import de.sfuhrm.capsula.yaml.command.TargetCommand;
 import freemarker.template.TemplateNotFoundException;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.file.CopyOption;
 import java.nio.file.FileSystem;
 import java.nio.file.Files;
 import java.nio.file.LinkOption;
 import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.nio.file.attribute.GroupPrincipal;
 import java.nio.file.attribute.PosixFileAttributeView;
 import java.nio.file.attribute.PosixFilePermission;
@@ -71,6 +73,8 @@ public class TargetBuilder implements Callable<TargetBuilder.Result> {
     
     @Getter    
     private final Capsula build;
+    
+    private Layout layout;
     
     public final static String LAYOUT_YAML = "layout.yaml";
     public final static String ENVIRONMENT_YAML = "environment.yaml";
@@ -151,11 +155,20 @@ public class TargetBuilder implements Callable<TargetBuilder.Result> {
             throw new BuildException("Error while loading "+ENVIRONMENT_YAML, ex);            
         }
     }
+    
+    public void copyPackageFilesTo(Path out) throws IOException {
+        Objects.requireNonNull(layout, "layout needs to be non-null");
+        for (String file : layout.getPackages()) {
+            Path fromPath = getTargetPath().resolve(file);
+            Path toPath = out.resolve(fromPath.getFileName());
+            Files.copy(fromPath, toPath, StandardCopyOption.REPLACE_EXISTING);
+        }
+    }
 
     @Override
     public Result call() throws Exception {
         initEnvironment();
-        Layout layout = readLayout(); // must be AFTER initEnvironment()
+        layout = readLayout(); // must be AFTER initEnvironment()
         
         MDC.put("layout", layout.getName());
         
