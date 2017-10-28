@@ -107,19 +107,19 @@ public class TargetBuilder implements Callable<TargetBuilder.Result> {
     /**
      * Creates an instance.
      * @param build the build descriptor for all builds.
-     * @param directory the target the layout and templates are located in.
+     * @param layoutDirectory the directory the layout and templates are located in.
      * @throws IOException if something goes wrong while initialization.
      */
-    public TargetBuilder(Capsula build, Path directory) throws IOException {
+    public TargetBuilder(Capsula build, Path layoutDirectory) throws IOException {
         this.build = Objects.requireNonNull(build);
         
-        log.debug("Layout directory is {}", directory);
-        this.layoutDirectory = Objects.requireNonNull(directory, "directory is null");
-        if (! Files.isDirectory(directory)) {
-            throw new IllegalStateException(directory+" is not a directory");
+        log.debug("Layout directory is {}", layoutDirectory);
+        this.layoutDirectory = Objects.requireNonNull(layoutDirectory, "directory is null");
+        if (! Files.isDirectory(layoutDirectory)) {
+            throw new IllegalStateException(layoutDirectory+" is not a directory");
         }
 
-        layoutFilePath = directory.resolve(LAYOUT_YAML);
+        layoutFilePath = layoutDirectory.resolve(LAYOUT_YAML);
         log.debug("Layout file is {}", layoutFilePath);
         if (! Files.isRegularFile(layoutFilePath)) {
             throw new IllegalStateException(layoutFilePath+" is not a file");
