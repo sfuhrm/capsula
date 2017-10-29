@@ -20,7 +20,6 @@ package de.sfuhrm.capsula;
 import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Set;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.kohsuke.args4j.Argument;
