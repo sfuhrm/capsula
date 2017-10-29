@@ -104,89 +104,8 @@ public class Main {
         }
         return violations;
     }    
-    
-    /** Extracts the target folder from the JAR archive to a temporary
-     * file on disk.
-     * @param target the target name to extract.
-     * @return the name of the temporary directory where the target was extracted to.
-     */
-    private Path extractTargetToTmp(String target) throws IOException {
-        Path targetPath = Files.createTempDirectory(target).toAbsolutePath();
-        log.debug("Target {} will be extracted to {}", target, targetPath);
         
-        Set<String> targets = getTargets();
-        log.debug("Targets in classpath: {}", targets);
-        if (targets.isEmpty()) {
-            throw new IllegalStateException("Targets not found");
-        }
-        
-        if (!targets.contains(target)) {
-            throw new NoSuchElementException("Target not found: "+target);
-        }
-        
-        Set<String> files = getTargetResources(target);
-        log.debug("Target {} files: {}", target, files);
-        if (files.isEmpty()) {
-            throw new IllegalStateException("Target "+target+" contains no files");
-        }
-        
-        for (String file : files) {
-            try (InputStream is = getResourceAsStream(target, file)) {
-                Path toPath = targetPath.resolve(file);
-                Files.copy(is, toPath);
-            }
-        }
-        
-        return targetPath;
-    }
-
-    public final static String TARGETS = "targets";
-    
-    /** All class path resources. */
-    private static Set<ClassPath.ResourceInfo> resourceInfos;
-    
-    /** Get the class path resources containing targets. */
-    private static Set<ClassPath.ResourceInfo> getClassPathResources() throws IOException {
-        if (resourceInfos == null) {
-            ClassPath classPath = ClassPath.from(Main.class.getClassLoader());
-            resourceInfos = classPath.getResources()
-                    .stream()
-                    .filter(ri -> ri.getResourceName().startsWith(TARGETS))
-                    .collect(Collectors.toSet());
-        }
-        return resourceInfos;
-    }
-    
-    /** Opens a stream for the given resource. */
-    InputStream getResourceAsStream(String target, String resource) throws IOException {
-        Optional<ByteSource> byteSource = getClassPathResources()
-                .stream()
-                .filter(ri -> ri.getResourceName().equals(TARGETS+"/"+target+"/"+resource))
-                .map(ri -> ri.asByteSource())
-                .findFirst();
-        return byteSource.orElseThrow(() -> new IOException("Can't find "+target+"/"+resource)).openStream();
-    }
-    
-    /** Get the list of possible target resources from the classpath. */
-    private Set<String> getTargetResources(String target) throws IOException {
-        return getClassPathResources()
-                .stream()
-                .filter(ri -> ri.getResourceName().startsWith(TARGETS+"/"+target))
-                .map(ri -> ri.getResourceName().split("/")[2])
-                .collect(Collectors.toSet());
-    }
-    
-    /** Get the list of possible targets from the classpath. */
-    private Set<String> getTargets() throws IOException {
-        return getClassPathResources()
-                .stream()
-                .filter(ri -> ri.getResourceName().startsWith(TARGETS+"/"))
-                .map(ri -> ri.getResourceName().split("/")[1])
-                .collect(Collectors.toSet());
-    }
-    
     public static void main(String[] args) throws IOException, JAXBException, SAXException {
-        getClassPathResources();
         Params params = Params.parse(args);
         if (params == null) {
             return;
@@ -198,6 +117,12 @@ public class Main {
         if (!constraintViolations.isEmpty() || params.isValidate()) {
             return;
         }
+        
+        TargetLocator targetLocator = new TargetLocator();
+        if (params.isListTargets()) {
+            System.out.println(targetLocator.getTargets());
+            return;
+        }
 
         build.getTargets()
                 .stream()
@@ -205,7 +130,7 @@ public class Main {
                 .forEach(t -> {
             try {
                 log.debug("Target {}", t);
-                Path targetPath = main.extractTargetToTmp(t);
+                Path targetPath = targetLocator.extractTargetToTmp(t);
                 TargetBuilder builder = new TargetBuilder(build, t, targetPath);
                 try {
                     builder.call();

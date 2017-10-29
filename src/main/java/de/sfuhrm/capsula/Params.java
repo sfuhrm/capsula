@@ -41,24 +41,28 @@ public class Params {
     private boolean help;
     
     @Getter
-    @Option(name = "-descriptor", aliases = {"-f"}, usage = "YAML descriptor for the application packaging", metaVar = "YAML", required = true)
+    @Option(name = "-descriptor", aliases = {"-f"}, usage = "YAML descriptor for the application packaging. Describes the package and how to install the components.", metaVar = "YAML", required = true)
     private Path descriptor;
     
     @Getter
-    @Option(name = "-debug", aliases = {"-d"}, usage = "More debugging output")
+    @Option(name = "-debug", aliases = {"-d"}, usage = "Show more debugging output. Will keep temporary files instead of deleting them.")
     private boolean debug;
     
     @Getter
-    @Option(name = "-validate", aliases = {"-c"}, usage = "Validate descriptor file and exit")
+    @Option(name = "-validate", aliases = {"-c"}, usage = "Validate YAML descriptor file and exit.")
     private boolean validate;
     
     @Getter
-    @Option(name = "-out", required = true, aliases = {"-o"}, usage = "The output directory to write the generated files to")
+    @Option(name = "-out", required = true, aliases = {"-o"}, usage = "The output directory to write the generated packages to.")
     private Path out;
     
     @Getter
-    @Option(name = "-targets", aliases = {"-t"}, usage = "Restrict the targets created to the given names")    
+    @Option(name = "-targets", aliases = {"-t"}, usage = "Restrict the targets created to the given names.")
     private List<String> targets;
+    
+    @Getter
+    @Option(name = "-list-targets", aliases = {"-T"}, usage = "List the currently available targets and exit.")
+    private boolean listTargets;
 
     @Getter
     @Argument
