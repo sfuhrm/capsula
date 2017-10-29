@@ -9,11 +9,11 @@ License: ${capsula.license}
 Group: Utilities/System
 Source: ${capsula.redhat.packageName}-${version.version}.tar.gz
 Packager: ${capsula.maintainer.name} <${capsula.maintainer.email}>
-<@relations name="Requires" list=capsula.debian.relationsFor("depends")/>
-<@relations name="Recommends" list=capsula.debian.relationsFor("recommends")/>
-<@relations name="Suggests" list=capsula.debian.relationsFor("suggests")/>
-<@relations name="Conflicts" list=capsula.debian.relationsFor("conflicts")/>
-<@relations name="Provides" list=capsula.debian.relationsFor("provides")/>
+<@relations name="Requires" list=capsula.redhat.relationsFor("depends")/>
+<@relations name="Recommends" list=capsula.redhat.relationsFor("recommends")/>
+<@relations name="Suggests" list=capsula.redhat.relationsFor("suggests")/>
+<@relations name="Conflicts" list=capsula.redhat.relationsFor("conflicts")/>
+<@relations name="Provides" list=capsula.redhat.relationsFor("provides")/>
 BuildArch: noarch
 %description
 <#list capsula.longDescription as line>
