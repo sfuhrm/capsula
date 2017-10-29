@@ -38,12 +38,4 @@ public class Version {
      /** This is the the release number for this version. The first release gets number 1. */
     @Getter @Setter
     private int releaseNumber;
-    
-    public String getDebianVersion() {
-        return version+"-"+release;
-    }
-    
-    public String getRedhatVersion() {
-        return version;
-    }
 }
