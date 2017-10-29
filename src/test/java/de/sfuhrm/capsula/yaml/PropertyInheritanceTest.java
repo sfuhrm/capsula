@@ -23,7 +23,7 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 /**
- *
+ * Tests the {@link PropertyInheritance}.
  * @author Stephan Fuhrmann
  */
 public class PropertyInheritanceTest {
