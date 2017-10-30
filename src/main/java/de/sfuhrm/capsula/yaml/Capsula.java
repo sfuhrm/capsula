@@ -43,24 +43,31 @@ import org.hibernate.validator.constraints.URL;
  * @author Stephan Fuhrmann
  */
 public class Capsula {
+    /** The name of the package to gernerate. */
     @Getter @NotNull @NotBlank
     private String packageName;
 
+    /** The author of the software in the package. */
     @Getter @NotNull @Valid
     private NameEmail author;
     
+    /** The maintainer of the package. */
     @Getter @NotNull @Valid
     private NameEmail maintainer;
     
+    /** The homepage of the project. */
     @Getter @NotNull @NotBlank @URL
     private String homepage;
 
+    /** Where to get the project source code. */
     @Getter @NotNull @URL
     private String gitUrl;
     
+    /** Short summary what this project is. */
     @Getter @NotNull @NotBlank
     private String shortSummary;
     
+    /** Long multi-line description of the project. */
     @Getter @NotNull @Size(min = 1)
     private List<String> longDescription;
     
@@ -104,24 +111,35 @@ public class Capsula {
         }
     };
     
+    /** The license for the project. */
     @Getter @NotNull @Valid
     private License license;
         
+    /** Debian specific information. */
     @Getter @NotNull @Valid
     private Debian debian;
     
+    /** Redhat specific information. */
     @Getter @NotNull @Valid
     private Redhat redhat;
         
+    /** Which targets to create packages for. */
     @Getter @Valid @Size(min = 1)
     private Set<String> targets;
     
+    /** A changelog with newest versions coming first. The first
+     * version is the version to generate.
+     */
     @Getter @Valid @Size(min = 1)
     private List<VersionWithChanges> versions; 
     
+    /** Installation commmands.
+     */
     @Getter @Valid @NotNull
     private List<Command> install;
     
+    /** Calculates {@link Version#releaseNumber} fields.
+     */
     public void calculateReleaseNumbers() {
         for (VersionWithChanges versionWithChanges : versions) {
             List<VersionWithChanges> sameVersion = versions.stream()
