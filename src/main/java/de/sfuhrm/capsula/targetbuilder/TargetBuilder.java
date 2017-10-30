@@ -98,6 +98,9 @@ public class TargetBuilder implements Callable<TargetBuilder.Result> {
     
     /** The name of the target. */
     private final String targetName; 
+
+    private Path layoutTmp;
+    private Path environmentTmp;
     
     /**
      * Creates an instance.
@@ -126,8 +129,7 @@ public class TargetBuilder implements Callable<TargetBuilder.Result> {
         log.debug("Target path is {}", targetPath);
         templateDelegate = new TemplateDelegate(this);
     }
-    
-    private Path layoutTmp;
+
     /** Reads the layout, processes it as a template and parses it.
      * @return the parsed layout file as an object.
      */
@@ -141,8 +143,8 @@ public class TargetBuilder implements Callable<TargetBuilder.Result> {
         Layout layout = mapper.readValue(layoutTmp.toFile(), Layout.class);
         return layout;
     }
-    
-    private Path environmentTmp;
+
+    /** Reads the environment from the file. */
     public Map<String,String> readEnvironment() throws IOException {
         ObjectMapper mapper = new ObjectMapper(new YAMLFactory());        
         
