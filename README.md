@@ -43,6 +43,37 @@ Capsula has the following features:
 * Can build packages for multiple target platforms.
 * Dependencies can be configured for every distribution.
 
+## How to test package installation
+
+It is recommended to test the produced package. At least the
+relations/dependencies can be wrong and are not checked by the package
+building tools.
+
+The package installation test is at the moment manual because it can
+be very specific to your package.
+
+You can use Docker for this very easily. Please note that I have replaced
+the package name to test with a generic bash expression that expands to a
+pattern:
+
+### Fedora
+
+    docker run -v$PWD/out:/out fedora yum install -y /out/$(cd out;ls *.noarch.rpm)
+
+### Debian
+
+For Debian it is a little more difficult because dependencies require a loaded
+package index. This can be done in one run:
+
+Latest Debian:
+
+    docker run -v$PWD/out:/out debian /bin/bash -c "apt-get update; apt-get install /out/$(cd out;ls *_all.deb)"
+
+Debian Jessie is more complicated. First the index needs to be loaded, then the package needs to be installed and then
+the unmet dependencies need to be fetched:
+
+    docker run -v$PWD/out:/out debian:8 /bin/bash -c "apt-get update; dpkg -i /out/$(cd out;ls *_all.deb); apt-get install -f --no-install-recommends -y"
+
 ## TODOs
 
 The following TODOs are open programming tasks as known for today:
@@ -76,6 +107,7 @@ Links that might be useful or not:
   packages. A short packaging tutorial is [here](https://vincent.bernat.im/en/blog/2016-pragmatic-debian-packaging).
 * [RPM Spec file info](http://ftp.rpm.org/max-rpm/s1-rpm-build-creating-spec-file.html) and [RPM Package guide](http://www.thegeekstuff.com/2015/02/rpm-build-package-example/) is for CentOS.
 * [Alpine package](https://wiki.alpinelinux.org/wiki/Creating_an_Alpine_package) guide.
+* [Slackware package](https://docs.slackware.com/howtos:slackware_admin:building_a_package) guide.
 
 ## License
 
