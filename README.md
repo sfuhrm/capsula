@@ -100,6 +100,7 @@ the unmet dependencies need to be fetched:
 
 The following TODOs are open programming tasks as known for today:
 
+* Proper log4j config for packages.
 * Documentation for usage.
 * Documentation for YAML format.
 * Could somehow tag which Git commit was used for building.
