@@ -38,7 +38,22 @@ public class TargetLocator {
     /** The prefix of targets in the classpath. */
     public final static String TARGETS = "targets";
     
-        /** Extracts the target folder from the JAR archive to a temporary
+    /** All class path resources. */
+    private static Set<ClassPath.ResourceInfo> resourceInfos;
+    
+    /** Get the class path resources containing targets. */
+    private static Set<ClassPath.ResourceInfo> getClassPathResources() throws IOException {
+        if (resourceInfos == null) {
+            ClassPath classPath = ClassPath.from(Main.class.getClassLoader());
+            resourceInfos = classPath.getResources()
+                    .stream()
+                    .filter(ri -> ri.getResourceName().startsWith(TARGETS))
+                    .collect(Collectors.toSet());
+        }
+        return resourceInfos;
+    }
+    
+    /** Extracts the target folder from the JAR archive to a temporary
      * file on disk.
      * @param target the target name to extract.
      * @return the name of the temporary directory where the target was extracted to.
@@ -72,22 +87,7 @@ public class TargetLocator {
         
         return targetPath;
     }
-    
-    /** All class path resources. */
-    private static Set<ClassPath.ResourceInfo> resourceInfos;
-    
-    /** Get the class path resources containing targets. */
-    private static Set<ClassPath.ResourceInfo> getClassPathResources() throws IOException {
-        if (resourceInfos == null) {
-            ClassPath classPath = ClassPath.from(Main.class.getClassLoader());
-            resourceInfos = classPath.getResources()
-                    .stream()
-                    .filter(ri -> ri.getResourceName().startsWith(TARGETS))
-                    .collect(Collectors.toSet());
-        }
-        return resourceInfos;
-    }
-    
+        
     /** Opens a stream for the given resource. */
     private InputStream getResourceAsStream(String target, String resource) throws IOException {
         Optional<ByteSource> byteSource = getClassPathResources()
