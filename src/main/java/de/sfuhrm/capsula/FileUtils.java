@@ -18,7 +18,6 @@
 package de.sfuhrm.capsula;
 
 import de.sfuhrm.capsula.targetbuilder.BuildException;
-import de.sfuhrm.capsula.yaml.command.CopyCommand;
 import de.sfuhrm.capsula.yaml.command.TargetCommand;
 import java.io.IOException;
 import java.nio.file.FileSystem;
