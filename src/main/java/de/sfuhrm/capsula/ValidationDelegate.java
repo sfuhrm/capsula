@@ -49,7 +49,7 @@ public class ValidationDelegate {
                 System.err.println("  \"" + u.getPropertyPath().toString() + "\"" + " " + u.getMessage()+" (value: "+u.getInvalidValue()+")");
             });
 
-            System.err.printf("Got %d validation errors\n", violations.size());
+            System.err.printf("Got %d validation errors%n", violations.size());
         } else {
             log.debug("Object validated");
         }
