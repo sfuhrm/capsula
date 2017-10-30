@@ -77,14 +77,13 @@ public class Params {
      * was displayed.
      */
     public static Params parse(String[] args) {
-        CmdLineParser cmdLineParser = null;
+        Params result = new Params();
+        CmdLineParser cmdLineParser = new CmdLineParser(result);
         try {
             if (log.isDebugEnabled()) {
                 log.debug("Args: {}", Arrays.toString(args));
             }
             
-            Params result = new Params();
-            cmdLineParser = new CmdLineParser(result);
             cmdLineParser.parseArgument(args);
             
             if (result.help) {
