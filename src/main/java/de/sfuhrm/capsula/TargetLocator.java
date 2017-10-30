@@ -34,15 +34,20 @@ import lombok.extern.slf4j.Slf4j;
  * @author Stephan Fuhrmann
  */
 @Slf4j
-public class TargetLocator {
+public final class TargetLocator {
     /** The prefix of targets in the classpath. */
-    public final static String TARGETS = "targets";
-    
+    private static final String TARGETS = "targets";
+
     /** All class path resources. */
     private static Set<ClassPath.ResourceInfo> resourceInfos;
-    
-    /** Get the class path resources containing targets. */
-    private synchronized static Set<ClassPath.ResourceInfo> getClassPathResources() throws IOException {
+
+    /** Get the class path resources containing targets.
+     * @return a set of resource infos for resources inside the
+     * {@link TargetLocator#TARGETS} hierarchy.
+     * @throws IOException if an IO problem occurs.
+     */
+    private static synchronized
+        Set<ClassPath.ResourceInfo> getClassPathResources() throws IOException {
         if (resourceInfos == null) {
             ClassPath classPath = ClassPath.from(Main.class.getClassLoader());
             resourceInfos = classPath.getResources()
@@ -52,66 +57,87 @@ public class TargetLocator {
         }
         return resourceInfos;
     }
-    
+
     /** Extracts the target folder from the JAR archive to a temporary
      * file on disk.
      * @param target the target name to extract.
-     * @return the name of the temporary directory where the target was extracted to.
+     * @return the name of the temporary directory where the target
+     * was extracted to.
+     * @throws IOException if an IO problem occurs.
      */
-    public Path extractTargetToTmp(String target) throws IOException {
+    public Path extractTargetToTmp(final String target) throws IOException {
         Path targetPath = Files.createTempDirectory(target).toAbsolutePath();
         log.debug("Target {} will be extracted to {}", target, targetPath);
-        
+
         Set<String> targets = getTargets();
         log.debug("Targets in classpath: {}", targets);
         if (targets.isEmpty()) {
             throw new IllegalStateException("Targets not found");
         }
-        
+
         if (!targets.contains(target)) {
-            throw new NoSuchElementException("Target not found: "+target);
+            throw new NoSuchElementException("Target not found: " + target);
         }
-        
+
         Set<String> files = getTargetResources(target);
         log.debug("Target {} files: {}", target, files);
         if (files.isEmpty()) {
-            throw new IllegalStateException("Target "+target+" contains no files");
+            throw new IllegalStateException(
+                    "Target " + target + " contains no files");
         }
-        
+
         for (String file : files) {
             try (InputStream is = getResourceAsStream(target, file)) {
                 Path toPath = targetPath.resolve(file);
                 Files.copy(is, toPath);
             }
         }
-        
+
         return targetPath;
     }
-        
-    /** Opens a stream for the given resource. */
-    private InputStream getResourceAsStream(String target, String resource) throws IOException {
+
+    /** Opens a stream for the given resource.
+     * @param target the target name to get the resource for.
+     * @param resource the resource name inside the target hierarchy to get.
+     * @return a stream for reading the resource.
+     * @throws IOException if an IO problem occurs.
+     */
+    private InputStream getResourceAsStream(final String target,
+            final String resource) throws IOException {
         Optional<ByteSource> byteSource = getClassPathResources()
                 .stream()
-                .filter(ri -> ri.getResourceName().equals(TARGETS+"/"+target+"/"+resource))
+                .filter(ri -> ri.getResourceName()
+                        .equals(TARGETS + "/" + target + "/" + resource))
                 .map(ri -> ri.asByteSource())
                 .findFirst();
-        return byteSource.orElseThrow(() -> new IOException("Can't find "+target+"/"+resource)).openStream();
+        return byteSource.orElseThrow(() ->
+                new IOException("Can't find " + target + "/" + resource))
+                .openStream();
     }
-    
-    /** Get the list of possible target resources from the classpath. */
-    private Set<String> getTargetResources(String target) throws IOException {
+
+    /** Get the list of possible target resources from the classpath.
+     * @param target the target to get the resources for.
+     * @return the set of resource names / file names for this target.
+     * @throws IOException if an IO problem occurs.
+     */
+    private Set<String> getTargetResources(final String target) throws
+            IOException {
         return getClassPathResources()
                 .stream()
-                .filter(ri -> ri.getResourceName().startsWith(TARGETS+"/"+target))
+                .filter(ri -> ri.getResourceName()
+                        .startsWith(TARGETS + "/" + target))
                 .map(ri -> ri.getResourceName().split("/")[2])
                 .collect(Collectors.toSet());
     }
-    
-    /** Get the list of possible targets from the classpath. */
+
+    /** Get the list of possible targets from the classpath.
+     * @return a set of target names.
+     * @throws IOException if an IO problem occurs.
+     */
     public Set<String> getTargets() throws IOException {
         return getClassPathResources()
                 .stream()
-                .filter(ri -> ri.getResourceName().startsWith(TARGETS+"/"))
+                .filter(ri -> ri.getResourceName().startsWith(TARGETS + "/"))
                 .map(ri -> ri.getResourceName().split("/")[1])
                 .collect(Collectors.toSet());
     }
