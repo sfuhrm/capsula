@@ -35,6 +35,9 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 public class TargetLocator {
+    /** The prefix of targets in the classpath. */
+    public final static String TARGETS = "targets";
+    
         /** Extracts the target folder from the JAR archive to a temporary
      * file on disk.
      * @param target the target name to extract.
@@ -69,9 +72,6 @@ public class TargetLocator {
         
         return targetPath;
     }
-
-    /** The prefix of targets in the classpath. */
-    public final static String TARGETS = "targets";
     
     /** All class path resources. */
     private static Set<ClassPath.ResourceInfo> resourceInfos;
