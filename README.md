@@ -53,7 +53,19 @@ Capsula has the following features:
 * Can build packages for multiple target platforms.
 * Dependencies can be configured for every distribution.
 
-## How to test package installation
+## Starting Capsula
+
+If you've installed the Capsula package, you have a capsula command
+line tool:
+
+    capsula -f capsula.yaml -o out/
+
+if not, you have to build Capsula and run it like this
+
+    mvn clean package
+    java -jar target/capsula-0.0.1-SNAPSHOT-jar-with-dependencies.jar -f capsula.yaml -o out/
+
+## How to test installation of a created package
 
 It is recommended to test the produced package. At least the
 relations/dependencies can be wrong and are not checked by the package
