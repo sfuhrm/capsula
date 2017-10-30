@@ -26,8 +26,7 @@ redhat:
   - pkg: tar
     op: ge
     version: 1.26
-  - pkg: jre
-    op: ge
+  - op: ge
     version: 1.8.0
 debian:
   priority: optional
