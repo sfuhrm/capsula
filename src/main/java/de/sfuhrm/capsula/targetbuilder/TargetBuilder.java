@@ -20,6 +20,7 @@ package de.sfuhrm.capsula.targetbuilder;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import de.sfuhrm.capsula.FileUtils;
+import de.sfuhrm.capsula.ValidationDelegate;
 import de.sfuhrm.capsula.yaml.Capsula;
 import de.sfuhrm.capsula.yaml.command.Command;
 import de.sfuhrm.capsula.yaml.Layout;
@@ -32,7 +33,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.Callable;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
@@ -141,6 +145,13 @@ public class TargetBuilder implements Callable<TargetBuilder.Result> {
         templateDelegate.template(LAYOUT_YAML, layoutTmp.toString(), Optional.empty());
         
         Layout myLayout = mapper.readValue(layoutTmp.toFile(), Layout.class);
+
+        ValidationDelegate validationDelegate = new ValidationDelegate();
+        Set<ConstraintViolation<Layout>> constraintViolations = validationDelegate.validate(myLayout);        
+        if (!constraintViolations.isEmpty()) {
+            throw new BuildException(LAYOUT_YAML+" contains errors.");
+        }
+        
         return myLayout;
     }
 
