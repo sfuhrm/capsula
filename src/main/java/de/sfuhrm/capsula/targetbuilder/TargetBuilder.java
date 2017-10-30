@@ -140,8 +140,8 @@ public class TargetBuilder implements Callable<TargetBuilder.Result> {
         
         templateDelegate.template(LAYOUT_YAML, layoutTmp.toString(), Optional.empty());
         
-        Layout layout = mapper.readValue(layoutTmp.toFile(), Layout.class);
-        return layout;
+        Layout myLayout = mapper.readValue(layoutTmp.toFile(), Layout.class);
+        return myLayout;
     }
 
     /** Reads the environment from the file. */
