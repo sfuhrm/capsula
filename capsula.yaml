@@ -1,13 +1,10 @@
 packageName: capsula # name of the project package
-iconFile: # TBD
 author: # who's the main author of the program TBD: author/maintainer/etc
   name: Stephan Fuhrmann
   email: s@sfuhrm.de
 maintainer: # who's the package maintainer of the program
   name: Stephan Fuhrmann
   email: s@sfuhrm.de
-javaVersion: 8 # what JDK is required? TBD mvn? 
-runtime: JDK # which runtime is required? TBD package dependency? combine with javaVersion?
 shortSummary: Creates packages for multiple Linux distributions. # short summary of package content
 longDescription: # long description of package content
 - A template-driven approach for generating multiple package formats

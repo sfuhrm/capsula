@@ -55,14 +55,8 @@ public class Capsula {
     @Getter @NotNull @NotBlank @URL
     private String homepage;
 
-    @Getter
-    private String iconFile;
-    
     @Getter @NotNull @URL
     private String gitUrl;
-    
-    @Getter @NotNull @NotBlank
-    private String javaVersion;
     
     @Getter @NotNull @NotBlank
     private String shortSummary;
@@ -118,15 +112,7 @@ public class Capsula {
     
     @Getter @NotNull @Valid
     private Redhat redhat;
-    
-    enum Runtime {
-        JDK,
-        JRE
-    };
-    
-    @Getter @NotNull @Valid
-    private Runtime runtime;
-    
+        
     @Getter @Valid @Size(min = 1)
     private Set<String> targets;
     
