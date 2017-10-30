@@ -10,6 +10,8 @@ longDescription: # long description of package content
 - The formatter can act on whole files, on limited lines (--lines), on specific offsets (--offset), 
 - passing through to standard-out (default) or altered in-place (--replace).
 - ""
+- "The Google Java Style is described here: https://google.github.io/styleguide/javaguide.html"
+- ""
 - To reformat changed lines in a specific patch, use google-java-format-diff.py.
 - ""
 - "Note: There is no configurability as to the formatter's algorithm for formatting. This is a deliberate design decision to unify our code - formatting on a single format."
