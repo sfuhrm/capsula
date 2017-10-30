@@ -11,6 +11,12 @@ Linux platforms supported:
 * [CentOS](https://www.centos.org/)
 * and many more
 
+### Sample session for building
+
+The following video shows building a Debian and a Redhat package from the examples.
+
+[![Building a tool sample video](https://img.youtube.com/vi/Dbo7BumrZ3A/0.jpg)](https://www.youtube.com/watch?v=Dbo7BumrZ3A)
+
 ### The Capsula process
 
 The process is described in the following picture:
