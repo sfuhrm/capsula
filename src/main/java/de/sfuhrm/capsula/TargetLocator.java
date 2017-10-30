@@ -30,7 +30,7 @@ import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- *
+ * Locates possible build targets in the class path.
  * @author Stephan Fuhrmann
  */
 @Slf4j
@@ -42,7 +42,7 @@ public class TargetLocator {
     private static Set<ClassPath.ResourceInfo> resourceInfos;
     
     /** Get the class path resources containing targets. */
-    private static Set<ClassPath.ResourceInfo> getClassPathResources() throws IOException {
+    private synchronized static Set<ClassPath.ResourceInfo> getClassPathResources() throws IOException {
         if (resourceInfos == null) {
             ClassPath classPath = ClassPath.from(Main.class.getClassLoader());
             resourceInfos = classPath.getResources()
