@@ -28,7 +28,4 @@ import lombok.Getter;
 public class RunCommand {
     @Getter @NotNull @NotBlank
     private String command;
-    
-    @Getter
-    private String directory;
 }
