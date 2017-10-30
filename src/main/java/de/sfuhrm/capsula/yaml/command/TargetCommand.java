@@ -30,16 +30,16 @@ import lombok.Setter;
 public class TargetCommand {
     @Getter @Setter @NotNull
     private String to;
-    
+
     @Getter @Setter @Size(min = 1)
     private String owner;
-    
+
     @Getter @Setter @Size(min = 1)
     private String group;
-    
-    @Getter @Setter @Pattern(regexp = "([r-][w-][x-]){3}") @NotNull
+
+    @Getter @Setter @Pattern(regexp = "([r-][w-][x-]){3}")
     private String mode;
-    
+
     public String getOctal() {
         String myMode = getMode();
         int value = 0;
