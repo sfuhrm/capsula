@@ -11,6 +11,16 @@ Linux platforms supported:
 * [CentOS](https://www.centos.org/)
 * and many more
 
+### The Capsula process
+
+The process is described in the following picture:
+
+![Capsula Process](https://raw.githubusercontent.com/sfuhrm/capsula/master/images/Capsula-Process-SF-1.png "Capsula Process")
+
+The descriptor file is generic. For each target platform, the descriptor is used together with distribution
+depending templates to build a distribution specific package definition. The package definition is then
+fed to a Docker container which builds the package.
+
 ## Requirements
 
 The requirements are:
