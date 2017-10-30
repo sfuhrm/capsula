@@ -24,12 +24,14 @@ gitUrl: https://github.com/sfuhrm/capsula.git
 redhat:
   section: devel
   relations:
-  - pkg: docker-ce
+  - pkg: docker
   - pkg: git
   - pkg: tar
     op: ge
     version: 1.26
-  - pkg: java-1.8.0-openjdk-headless
+  - pkg: jre
+    op: ge
+    version: 1.8.0
 debian:
   priority: optional
   section: devel
@@ -40,7 +42,7 @@ debian:
   - pkg: tar
     op: ge
     version: 1.29
-  - pkg: openjdk-8-jdk-headless
+  - pkg: java8-runtime-headless
 # Version history of the package. Used for Debian changelogs.
 versions:
 - version: 0.0.1 # TBD this needs to match the debian version as a string
