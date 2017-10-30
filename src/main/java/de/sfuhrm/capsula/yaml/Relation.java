@@ -28,7 +28,6 @@ import lombok.Setter;
  * Relation definition to other packages.
  * @author Stephan Fuhrmann
  */
-@Valid
 public class Relation {
     /** The name of the other package */
     @Getter @Setter @NotEmpty
@@ -41,7 +40,7 @@ public class Relation {
     @Getter @Setter
     private VersionOperator op;
     
-    /** The reference version . */
+    /** The reference version. */
     @Getter @Setter
     private String version;
     

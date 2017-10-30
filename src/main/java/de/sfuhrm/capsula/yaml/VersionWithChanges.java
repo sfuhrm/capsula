@@ -19,6 +19,7 @@ package de.sfuhrm.capsula.yaml;
 
 import java.util.Date;
 import java.util.List;
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PastOrPresent;
 import lombok.Getter;
@@ -30,7 +31,7 @@ import lombok.Setter;
  */
 public class VersionWithChanges extends Version {
     
-    @Getter @Setter @NotNull
+    @Getter @Setter @NotNull @Valid
     private NameEmail maintainer;
    
     @Getter @NotNull    

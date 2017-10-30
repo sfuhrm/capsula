@@ -19,6 +19,8 @@ package de.sfuhrm.capsula.yaml;
 
 import de.sfuhrm.capsula.yaml.command.Command;
 import java.util.List;
+import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import lombok.Getter;
 
@@ -27,11 +29,10 @@ import lombok.Getter;
  * @author Stephan Fuhrmann
  */
 public class Layout {
-    @NotNull
-    @Getter
+    @NotNull @Getter @NotBlank
     private String name;
     
-    @Getter
+    @Getter @Valid
     private List<Command> prepare;
     
     @Getter

@@ -17,7 +17,6 @@
  */
 package de.sfuhrm.capsula.yaml.command;
 
-import de.sfuhrm.capsula.yaml.constraints.FileExists;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import lombok.Getter;
@@ -30,6 +29,6 @@ public class RunCommand {
     @Getter @NotNull @NotBlank
     private String command;
     
-    @Getter @FileExists
+    @Getter
     private String directory;
 }
