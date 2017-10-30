@@ -25,7 +25,7 @@ import javax.validation.ValidatorFactory;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- *
+ * Validates an object tree using Bean validation.
  * @author Stephan Fuhrmann
  */
 @Slf4j
