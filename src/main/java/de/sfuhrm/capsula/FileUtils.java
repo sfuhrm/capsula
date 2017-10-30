@@ -49,27 +49,41 @@ public final class FileUtils {
      * @param command  the command to take the owner/group/permissions from.
      * @throws IOException when one of the operations didn't succeed.
      */
-    public static void applyTargetFileModifications(final Path toPath, 
+    public static void applyTargetFileModifications(final Path toPath,
             final TargetCommand command) throws IOException {
         if (command.getOwner() != null) {
             changeOwner(toPath, command.getOwner());
         }
-        
-        if (command.getGroup()!= null) {
+
+        if (command.getGroup() != null) {
             changeGroup(toPath, command.getGroup());
         }
-        
-        if (command.getMode()!= null) {
+
+        if (command.getMode() != null) {
             changeMode(toPath, command.getMode());
         }
     }
-    
-    public static void mkdirs(Path p) throws IOException {
+
+    /**
+     * Creates directories.
+     * @param p the directory path to create.
+     * @throws IOException if an error occurs.
+     * @see Files#createDirectories(java.nio.file.Path,
+     * java.nio.file.attribute.FileAttribute...)
+     */
+    public static void mkdirs(final Path p) throws IOException {
         log.debug("mkdirs {}", p);
         Files.createDirectories(p);
     }
-        
-    public static void changeOwner(Path p, String ownerName) throws IOException {
+
+    /**
+     * Changes the owner of the given path.
+     * @param p the path to change the owner of.
+     * @param ownerName the new owner name for the path.
+     * @throws IOException if an error occurs.
+     */
+    public static void changeOwner(final Path p,
+            final String ownerName) throws IOException {
         log.debug("chown {} to {}", p, ownerName);
         FileSystem fileSystem = p.getFileSystem();
         UserPrincipalLookupService lookupService
@@ -77,23 +91,44 @@ public final class FileUtils {
         UserPrincipal owner = lookupService.lookupPrincipalByName(ownerName);
         Files.setOwner(p, owner);
     }
-    
-    public static void changeGroup(final Path p, final String groupName) throws IOException {
+
+    /**
+     * Changes the group of the given path.
+     * @param p the path to change the group of.
+     * @param groupName  the new group name for the path.
+     * @throws IOException if an error occurs.
+     */
+    public static void changeGroup(final Path p,
+            final String groupName) throws IOException {
         log.debug("chgrp {} to {}", p, groupName);
         FileSystem fileSystem = p.getFileSystem();
         UserPrincipalLookupService lookupService
                 = fileSystem.getUserPrincipalLookupService();
-        GroupPrincipal group = lookupService.lookupPrincipalByGroupName(groupName);
-        Files.getFileAttributeView(p, PosixFileAttributeView.class, LinkOption.NOFOLLOW_LINKS).setGroup(group);
+        GroupPrincipal group = lookupService
+                .lookupPrincipalByGroupName(groupName);
+        Files.getFileAttributeView(p,
+                PosixFileAttributeView.class, LinkOption.NOFOLLOW_LINKS)
+                .setGroup(group);
     }
-    
-    public static void changeMode(final Path p, final String mode) throws IOException {
+
+    /**
+     * Change the access mode for the given path.
+     * @param p the path to change the access mode for.
+     * @param mode the new access mode, for example {@code rwx---rwx}.
+     * @throws IOException if an error occurs.
+     */
+    public static void changeMode(final Path p,
+            final String mode) throws IOException {
         log.debug("chmod {} to {}", p, mode);
-        Set<PosixFilePermission> permissions = PosixFilePermissions.fromString(mode);
-        Files.getFileAttributeView(p, PosixFileAttributeView.class, LinkOption.NOFOLLOW_LINKS).setPermissions(permissions);
+        Set<PosixFilePermission> permissions =
+                PosixFilePermissions.fromString(mode);
+        Files.getFileAttributeView(p,
+                PosixFileAttributeView.class, LinkOption.NOFOLLOW_LINKS)
+                .setPermissions(permissions);
     }
-    
-    /** Deletes a path and its children. 
+
+    /** Deletes a path and its children.
+     * @param p the path to delete.
      * @throws BuildException in case of an IO exception.
      */
     public static void deleteRecursive(final Path p) {
@@ -109,7 +144,8 @@ public final class FileUtils {
                 Files.delete(p);
             }
         } catch (IOException exception) {
-            throw new BuildException("Error deleting recursively: " + p, exception);
+            throw new BuildException("Error deleting recursively: " + p,
+                    exception);
         }
     }
 }
