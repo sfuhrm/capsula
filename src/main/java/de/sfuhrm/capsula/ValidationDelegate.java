@@ -37,16 +37,23 @@ public class ValidationDelegate {
         validator = factory.getValidator();
     }
 
-        /** Validates the given object. Prints all constraint violations.
+    /**
+     * Validates the given object. Prints all constraint violations.
+     *
+     * @param o the object to validate.
      * @return the set of constraint violations detected.
      */
-    public <T> Set<ConstraintViolation<T>> validate(T o) {
+    public final <T> Set<ConstraintViolation<T>> validate(final T o) {
         final Set<ConstraintViolation<T>> violations = validator.validate(o);
         if (violations.size() > 0) {
             System.err.println("YAML config contains errors:");
             violations.forEach(u -> {
                 log.error("Validation error for {} {}. ", u.getPropertyPath().toString(), u.getMessage());
-                System.err.println("  \"" + u.getPropertyPath().toString() + "\"" + " " + u.getMessage()+" (value: "+u.getInvalidValue()+")");
+                System.err.printf("  \"%s\"" + " %s (value: %s)%n",
+                        u.getPropertyPath().toString(),
+                        u.getMessage(),
+                        u.getInvalidValue()
+                        );
             });
 
             System.err.printf("Got %d validation errors%n", violations.size());
