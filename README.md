@@ -39,8 +39,7 @@ Capsula is easily extensible because it uses a simple templating approach per pl
 ## Project status statement
 
 The project is at the moment **experimental**. 
-It is **not** recommended to use it if you're not sure what
-you're doing.
+It can build simple packages for Debian and Redhat like distributions.
 
 Releasing the project at this stage is to enable other people
 to participate.
@@ -133,9 +132,20 @@ The following TODOs are open programming tasks as known for today:
 
 Links that might be useful or not:
 
-* [Debian Package maintainer guide](https://www.debian.org/doc/manuals/maint-guide/first.en.html) describes how to create
-  packages. A short packaging tutorial is [here](https://vincent.bernat.im/en/blog/2016-pragmatic-debian-packaging).
-* [RPM Spec file info](http://ftp.rpm.org/max-rpm/s1-rpm-build-creating-spec-file.html) and [RPM Package guide](http://www.thegeekstuff.com/2015/02/rpm-build-package-example/) is for CentOS.
+### Debian
+* [Debian Policy](https://www.debian.org/doc/debian-policy/)
+* [Debian Building Tutorial](https://wiki.debian.org/BuildingTutorial#).
+* [Debian Package maintainer guide](https://www.debian.org/doc/manuals/maint-guide/first.en.html).
+* [Debian Virtual Package names](https://www.debian.org/doc/packaging-manuals/virtual-package-names-list.txt) contains 
+  the virtual names for the JDK packages.
+* [Pragmatic Debian packaging](https://vincent.bernat.im/en/blog/2016-pragmatic-debian-packaging).
+
+### Redhat
+* [RPM Spec file info](http://ftp.rpm.org/max-rpm/s1-rpm-build-creating-spec-file.html).
+* [RPM Build Package example](http://www.thegeekstuff.com/2015/02/rpm-build-package-example/).
+* [How to create an RPM package](https://fedoraproject.org/wiki/How_to_create_an_RPM_package).
+
+### Others
 * [Alpine package](https://wiki.alpinelinux.org/wiki/Creating_an_Alpine_package) guide.
 * [Slackware package](https://docs.slackware.com/howtos:slackware_admin:building_a_package) guide.
 
