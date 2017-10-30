@@ -28,5 +28,5 @@ import lombok.Setter;
  */
 public class Redhat extends Distribution {
     @Getter @Setter @NotNull @NotBlank
-    private String section;    
+    private String group;
 }

@@ -6,7 +6,7 @@ Name: ${capsula.redhat.packageName}
 Version: ${version.version}
 Release: ${version.releaseNumber}
 License: ${capsula.license}
-Group: Utilities/System
+Group: ${capsula.redhat.group}
 Source: ${capsula.redhat.packageName}-${version.version}.tar.gz
 Packager: ${capsula.maintainer.name} <${capsula.maintainer.email}>
 <@relations name="Requires" list=capsula.redhat.relationsFor("depends")/>

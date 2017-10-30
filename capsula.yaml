@@ -19,7 +19,7 @@ targets: # which platforms to build an archive for
 - debian_stretch
 gitUrl: https://github.com/sfuhrm/capsula.git
 redhat:
-  section: devel
+  group: Utilities/System
   relations:
   - pkg: docker
   - pkg: git
