@@ -38,16 +38,19 @@ import lombok.extern.slf4j.Slf4j;
  * @author Stephan Fuhrmann
  */
 @Slf4j
-public class FileUtils {
+public final class FileUtils {
 
+    /** No instance allowed. */
     private FileUtils() {
     }
-    
+
     /** Does owner/group/permission changes for a target path.
      * @param toPath direct target path to modify.
      * @param command  the command to take the owner/group/permissions from.
+     * @throws IOException when one of the operations didn't succeed.
      */
-    public static void applyTargetFileModifications(final Path toPath, final TargetCommand command) throws IOException {
+    public static void applyTargetFileModifications(final Path toPath, 
+            final TargetCommand command) throws IOException {
         if (command.getOwner() != null) {
             changeOwner(toPath, command.getOwner());
         }
@@ -75,7 +78,7 @@ public class FileUtils {
         Files.setOwner(p, owner);
     }
     
-    public static void changeGroup(Path p, String groupName) throws IOException {
+    public static void changeGroup(final Path p, final String groupName) throws IOException {
         log.debug("chgrp {} to {}", p, groupName);
         FileSystem fileSystem = p.getFileSystem();
         UserPrincipalLookupService lookupService
@@ -84,16 +87,16 @@ public class FileUtils {
         Files.getFileAttributeView(p, PosixFileAttributeView.class, LinkOption.NOFOLLOW_LINKS).setGroup(group);
     }
     
-    public static void changeMode(Path p, String mode) throws IOException {
+    public static void changeMode(final Path p, final String mode) throws IOException {
         log.debug("chmod {} to {}", p, mode);
         Set<PosixFilePermission> permissions = PosixFilePermissions.fromString(mode);
         Files.getFileAttributeView(p, PosixFileAttributeView.class, LinkOption.NOFOLLOW_LINKS).setPermissions(permissions);
     }
     
-        /** Deletes a path and its children. 
+    /** Deletes a path and its children. 
      * @throws BuildException in case of an IO exception.
      */
-    public static void deleteRecursive(Path p) {
+    public static void deleteRecursive(final Path p) {
         try {
             if (Files.isRegularFile(p)) {
                 log.debug("Deleting file {}", p);
