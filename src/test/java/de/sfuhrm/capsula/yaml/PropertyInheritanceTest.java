@@ -27,7 +27,7 @@ import org.junit.Test;
  * @author Stephan Fuhrmann
  */
 public class PropertyInheritanceTest {
-    class A {
+    static class A {
         @Getter @Setter
         String a;
         
@@ -35,7 +35,7 @@ public class PropertyInheritanceTest {
         Integer b;
     }
     
-    class CopyOfA {
+    static class CopyOfA {
         @Getter @Setter
         String a;
         
@@ -43,7 +43,7 @@ public class PropertyInheritanceTest {
         Integer b;
     }
     
-    class AwithoutB {
+    static class AwithoutB {
         @Getter @Setter
         String a;
     }
