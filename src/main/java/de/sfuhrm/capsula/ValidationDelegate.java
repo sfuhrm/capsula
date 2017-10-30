@@ -30,6 +30,7 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 public class ValidationDelegate {
+    /** Bean validator to use. */
     private final Validator validator;
 
     public ValidationDelegate() {
@@ -40,6 +41,7 @@ public class ValidationDelegate {
     /**
      * Validates the given object. Prints all constraint violations.
      *
+     * @param <T> the class of the object to check and the constraint violations.
      * @param o the object to validate.
      * @return the set of constraint violations detected.
      */
@@ -48,7 +50,8 @@ public class ValidationDelegate {
         if (violations.size() > 0) {
             System.err.println("YAML config contains errors:");
             violations.forEach(u -> {
-                log.error("Validation error for {} {}. ", u.getPropertyPath().toString(), u.getMessage());
+                log.error("Validation error for {} {}. ", 
+                        u.getPropertyPath().toString(), u.getMessage());
                 System.err.printf("  \"%s\"" + " %s (value: %s)%n",
                         u.getPropertyPath().toString(),
                         u.getMessage(),
@@ -61,5 +64,5 @@ public class ValidationDelegate {
             log.debug("Object validated");
         }
         return violations;
-    }    
+    }
 }
