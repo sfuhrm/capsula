@@ -61,7 +61,7 @@ public class Params {
     private List<String> targets;
     
     @Getter
-    @Option(name = "-list-targets", aliases = {"-T"}, usage = "List the currently available targets and exit.")
+    @Option(name = "-list-targets", aliases = {"-T"}, usage = "List the currently available targets and exit.", help = true)
     private boolean listTargets;
 
     @Getter
