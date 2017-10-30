@@ -94,16 +94,17 @@ public class Capsula {
         }
         
         public List<String> getLicenseText() throws IOException {
-            InputStream inputStream = new java.net.URL(getLicenseTextUrl()).openStream();
-            InputStreamReader inputStreamReader = new InputStreamReader(inputStream, Charset.forName("UTF-8"));
-            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-            List<String> lines = new ArrayList<>();
-            String line;
-            
-            while (null != (line = bufferedReader.readLine())) {
-                lines.add(line);
+            try (InputStream inputStream = new java.net.URL(getLicenseTextUrl()).openStream();
+                    InputStreamReader inputStreamReader = new InputStreamReader(inputStream, Charset.forName("UTF-8"));
+                    BufferedReader bufferedReader = new BufferedReader(inputStreamReader)) {
+                List<String> lines = new ArrayList<>();
+                String line;
+
+                while (null != (line = bufferedReader.readLine())) {
+                    lines.add(line);
+                }
+                return lines;
             }
-            return lines;
         }
         
         public String getDebianFile() {
