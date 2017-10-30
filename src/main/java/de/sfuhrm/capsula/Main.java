@@ -44,12 +44,9 @@ import org.xml.sax.SAXException;
 public class Main {
 
     private final Params params;
-    private final Validator validator;
 
     public Main(Params params) {
         this.params = Objects.requireNonNull(params);
-        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-        validator = factory.getValidator();
     }
     
     /** Reads the descriptor and fills auto-generated fields in it.
@@ -75,28 +72,6 @@ public class Main {
         
         return build;
     }
-
-    /** Validates the given object. Prints all constraint violations.
-     * @return the set of constraint violations detected.
-     */
-    private <T> Set<ConstraintViolation<T>> validate(T o) {
-        final Set<ConstraintViolation<T>> violations = validator.validate(o);
-        if (violations.size() > 0) {
-            System.err.println("YAML config contains errors:");
-            violations.forEach(u -> {
-                log.error("Validation error for {} {}. ", u.getPropertyPath().toString(), u.getMessage());
-                System.err.println("  \"" + u.getPropertyPath().toString() + "\"" + " " + u.getMessage()+" (value: "+u.getInvalidValue()+")");
-            });
-
-            System.err.printf("Got %d validation errors\n", violations.size());
-        } else {
-            log.debug("Object validated");
-            if (params.isValidate() || params.isDebug()) {
-                System.err.println("Got no validation errors");
-            }
-        }
-        return violations;
-    }    
         
     public static void main(String[] args) throws IOException, JAXBException, SAXException {
         Params params = Params.parse(args);
@@ -106,8 +81,12 @@ public class Main {
 
         Main main = new Main(params);
         Capsula build = main.readDescriptor();
-        Set<ConstraintViolation<Capsula>> constraintViolations = main.validate(build);
+        ValidationDelegate validationDelegate = new ValidationDelegate();
+        Set<ConstraintViolation<Capsula>> constraintViolations = validationDelegate.validate(build);
         if (!constraintViolations.isEmpty() || params.isValidate()) {
+            if (constraintViolations.isEmpty()) {
+                System.err.println("YAML descriptor contains no errors.");
+            }
             return;
         }
         
