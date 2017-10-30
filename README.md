@@ -65,6 +65,12 @@ if not, you have to build Capsula and run it like this
     mvn clean package
     java -jar target/capsula-0.0.1-SNAPSHOT-jar-with-dependencies.jar -f capsula.yaml -o out/
 
+## How to edit a configuration
+
+Find out which group your package belongs in Redhat world:
+
+    docker run fedora yum grouplist
+
 ## How to test installation of a created package
 
 It is recommended to test the produced package. At least the
