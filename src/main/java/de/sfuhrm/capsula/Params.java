@@ -59,7 +59,8 @@ public class Params {
     @Option(name = "-list-targets", aliases = {"-T"}, usage = "List the currently available targets and exit.", help = true)
     private boolean listTargets;
     @Getter
-    @Option(name = "-parallel", aliases = {"-p"}, usage = "Execute the targets in parallel. This may need much memory.")
+    @Option(name = "-parallel", aliases = {"-p"}, usage = "Execute the targets in parallel. This may need much memory. "
+            + "Please note that the console output will be almost useless with parallel execution.")
     private boolean parallel;
     @Getter
     @Option(name = "-stop-after", usage = "Stop after the given proessing stage.")
