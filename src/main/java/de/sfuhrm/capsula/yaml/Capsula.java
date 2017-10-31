@@ -16,6 +16,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 package de.sfuhrm.capsula.yaml;
+
 import de.sfuhrm.capsula.yaml.command.Command;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -36,32 +37,65 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import lombok.Getter;
 import org.hibernate.validator.constraints.URL;
+
 /**
  * Descriptor file for a application to generate a package for.
+ *
  * @author Stephan Fuhrmann
  */
 public class Capsula {
-    /** The name of the package to gernerate. */
-    @Getter @NotNull @NotBlank
+
+    /**
+     * The name of the package to gernerate.
+     */
+    @Getter
+    @NotNull
+    @NotBlank
     private String packageName;
-    /** The author of the software in the package. */
-    @Getter @NotNull @Valid
+    /**
+     * The author of the software in the package.
+     */
+    @Getter
+    @NotNull
+    @Valid
     private NameEmail author;
-    /** The maintainer of the package. */
-    @Getter @NotNull @Valid
+    /**
+     * The maintainer of the package.
+     */
+    @Getter
+    @NotNull
+    @Valid
     private NameEmail maintainer;
-    /** The homepage of the project. */
-    @Getter @NotNull @NotBlank @URL
+    /**
+     * The homepage of the project.
+     */
+    @Getter
+    @NotNull
+    @NotBlank
+    @URL
     private String homepage;
-    /** Where to get the project source code. */
-    @Getter @NotNull @URL
+    /**
+     * Where to get the project source code.
+     */
+    @Getter
+    @NotNull
+    @URL
     private String gitUrl;
-    /** Short summary what this project is. */
-    @Getter @NotNull @NotBlank
+    /**
+     * Short summary what this project is.
+     */
+    @Getter
+    @NotNull
+    @NotBlank
     private String shortSummary;
-    /** Long multi-line description of the project. */
-    @Getter @NotNull @Size(min = 1)
+    /**
+     * Long multi-line description of the project.
+     */
+    @Getter
+    @NotNull
+    @Size(min = 1)
     private List<String> longDescription;
+
     public enum License {
         GPL_30("GPL-3.0", "GPL-3", "https://www.gnu.org/licenses/gpl-3.0.txt"),
         LGPL_30("LGPL-3.0", "LGPL-3", "https://www.gnu.org/licenses/lgpl-3.0.txt"),
@@ -74,11 +108,13 @@ public class Capsula {
         @Getter
         private final String licenseName;
         private final String debianName;
+
         private License(final String inName, final String inDebianName, final String inLicenseTextUrl) {
             this.licenseName = Objects.requireNonNull(inName);
             this.debianName = Objects.requireNonNull(inDebianName);
             this.licenseTextUrl = Objects.requireNonNull(inLicenseTextUrl);
         }
+
         public List<String> getLicenseText() throws IOException {
             try (InputStream inputStream = new java.net.URL(getLicenseTextUrl()).openStream();
                     InputStreamReader inputStreamReader = new InputStreamReader(inputStream, Charset.forName("UTF-8"));
@@ -91,32 +127,57 @@ public class Capsula {
                 return lines;
             }
         }
+
         public String getDebianFile() {
             return "/usr/share/common-licenses/" + debianName;
         }
     };
-    /** The license for the project. */
-    @Getter @NotNull @Valid
+    /**
+     * The license for the project.
+     */
+    @Getter
+    @NotNull
+    @Valid
     private License license;
-    /** Debian specific information. */
-    @Getter @NotNull @Valid
+    /**
+     * Debian specific information.
+     */
+    @Getter
+    @NotNull
+    @Valid
     private Debian debian;
-    /** Redhat specific information. */
-    @Getter @NotNull @Valid
+    /**
+     * Redhat specific information.
+     */
+    @Getter
+    @NotNull
+    @Valid
     private Redhat redhat;
-    /** Which targets to create packages for. */
-    @Getter @Valid @Size(min = 1)
+    /**
+     * Which targets to create packages for.
+     */
+    @Getter
+    @Valid
+    @Size(min = 1)
     private Set<String> targets;
-    /** A changelog with newest versions coming first. The first
-     * version is the version to generate.
+    /**
+     * A changelog with newest versions coming first. The first version is the
+     * version to generate.
      */
-    @Getter @Valid @Size(min = 1)
+    @Getter
+    @Valid
+    @Size(min = 1)
     private List<VersionWithChanges> versions;
-    /** Installation commmands.
+    /**
+     * Installation commmands.
      */
-    @Getter @Valid @NotNull
+    @Getter
+    @Valid
+    @NotNull
     private List<Command> install;
-    /** Calculates {@link Version#releaseNumber} fields.
+
+    /**
+     * Calculates {@link Version#releaseNumber} fields.
      */
     public void calculateReleaseNumbers() {
         for (VersionWithChanges versionWithChanges : versions) {
@@ -129,7 +190,10 @@ public class Capsula {
             versionWithChanges.setReleaseNumber(index);
         }
     }
-    /** Get the project directory name from the GIT URL. */
+
+    /**
+     * Get the project directory name from the GIT URL.
+     */
     public String getGitProject() throws MalformedURLException {
         Pattern p = Pattern.compile(".*/([^/]*)\\.git");
         Matcher m = p.matcher(getGitUrl());

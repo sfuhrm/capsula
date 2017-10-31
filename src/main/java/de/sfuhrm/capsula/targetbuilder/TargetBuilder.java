@@ -16,6 +16,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 package de.sfuhrm.capsula.targetbuilder;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import de.sfuhrm.capsula.FileUtils;
@@ -35,32 +36,39 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.Callable;
 import javax.validation.ConstraintViolation;
-import javax.validation.Validator;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.log4j.MDC;
+
 /**
  * Builds for one build target using a layout file.
+ *
  * @see Layout
  * @author Stephan Fuhrmann
  */
 @Slf4j
 public class TargetBuilder implements Callable<TargetBuilder.Result> {
-    /** Where the layout file is in. Can be read-only. */
+
+    /**
+     * Where the layout file is in. Can be read-only.
+     */
     @Getter
     private final Path layoutDirectory;
-    /** The path to the layout file itself. */
+    /**
+     * The path to the layout file itself.
+     */
     @Getter
     private Path layoutFilePath;
-    /** The file to the target directory where the building happens.
-     * This is usually a temporary directory. Must be writable!
+    /**
+     * The file to the target directory where the building happens. This is
+     * usually a temporary directory. Must be writable!
      */
     @Getter
     private Path targetPath;
-    /** The environment for this target builder.
-     * Has the following variables set:
+    /**
+     * The environment for this target builder. Has the following variables set:
      * <ul>
      * <li> capsula: the object from the config file
      * <li> version: the first version from the config file ("this" version)
@@ -71,32 +79,46 @@ public class TargetBuilder implements Callable<TargetBuilder.Result> {
      */
     @Getter
     private Map<String, Object> environment;
-    /** The generic configuration file. */
+    /**
+     * The generic configuration file.
+     */
     @Getter
     private final Capsula build;
-    /** The configuration for building this target. */
+    /**
+     * The configuration for building this target.
+     */
     private Layout layout;
-    /** Name of the layout config file in the directory.
+    /**
+     * Name of the layout config file in the directory.
+     *
      * @see #readLayout()
      */
     private final static String LAYOUT_YAML = "layout.yaml";
-    /** Name of the environment config file in the directory.
+    /**
+     * Name of the environment config file in the directory.
+     *
      * @see #readEnvironment()
      */
     private final static String ENVIRONMENT_YAML = "environment.yaml";
-    /** Delegate for template generation. Is used for all templating tasks,
-     * also when reading the layout/environment files.
+    /**
+     * Delegate for template generation. Is used for all templating tasks, also
+     * when reading the layout/environment files.
      */
     private TemplateDelegate templateDelegate;
-    /** The name of the target. */
+    /**
+     * The name of the target.
+     */
     private final String targetName;
     private Path layoutTmp;
     private Path environmentTmp;
+
     /**
      * Creates an instance.
+     *
      * @param build the build descriptor for all builds.
      * @param targetName the name of this target.
-     * @param layoutDirectory the directory the layout and templates are located in.
+     * @param layoutDirectory the directory the layout and templates are located
+     * in.
      * @throws IOException if something goes wrong while initialization.
      */
     public TargetBuilder(Capsula build, String targetName, Path layoutDirectory) throws IOException {
@@ -104,19 +126,22 @@ public class TargetBuilder implements Callable<TargetBuilder.Result> {
         this.targetName = Objects.requireNonNull(targetName);
         log.debug("Layout directory is {}", layoutDirectory);
         this.layoutDirectory = Objects.requireNonNull(layoutDirectory, "directory is null");
-        if (! Files.isDirectory(layoutDirectory)) {
-            throw new IllegalStateException(layoutDirectory+" is not a directory");
+        if (!Files.isDirectory(layoutDirectory)) {
+            throw new IllegalStateException(layoutDirectory + " is not a directory");
         }
         layoutFilePath = layoutDirectory.resolve(LAYOUT_YAML);
         log.debug("Layout file is {}", layoutFilePath);
-        if (! Files.isRegularFile(layoutFilePath)) {
-            throw new IllegalStateException(layoutFilePath+" is not a file");
+        if (!Files.isRegularFile(layoutFilePath)) {
+            throw new IllegalStateException(layoutFilePath + " is not a file");
         }
         targetPath = Files.createTempDirectory(this.targetName).toAbsolutePath();
         log.debug("Target path is {}", targetPath);
         templateDelegate = new TemplateDelegate(this);
     }
-    /** Reads the layout, processes it as a template and parses it.
+
+    /**
+     * Reads the layout, processes it as a template and parses it.
+     *
      * @return the parsed layout file as an object.
      */
     public Layout readLayout() throws IOException {
@@ -127,20 +152,24 @@ public class TargetBuilder implements Callable<TargetBuilder.Result> {
         ValidationDelegate validationDelegate = new ValidationDelegate();
         Set<ConstraintViolation<Layout>> constraintViolations = validationDelegate.validate(myLayout);
         if (!constraintViolations.isEmpty()) {
-            throw new BuildException(LAYOUT_YAML+" contains errors.");
+            throw new BuildException(LAYOUT_YAML + " contains errors.");
         }
         return myLayout;
     }
-    /** Reads the environment from the file. */
-    public Map<String,String> readEnvironment() throws IOException {
+
+    /**
+     * Reads the environment from the file.
+     */
+    public Map<String, String> readEnvironment() throws IOException {
         ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
         environmentTmp = Files.createTempFile("environment", "yaml");
         templateDelegate.template(ENVIRONMENT_YAML, environmentTmp.toString(), Optional.empty());
-        Map<String,String> env = mapper.readValue(environmentTmp.toFile(), Map.class);
+        Map<String, String> env = mapper.readValue(environmentTmp.toFile(), Map.class);
         return env;
     }
-    /** Initialize the preset variables that can be used in the
-     * template.
+
+    /**
+     * Initialize the preset variables that can be used in the template.
      */
     private void initEnvironment() {
         environment = new HashMap<>();
@@ -149,16 +178,17 @@ public class TargetBuilder implements Callable<TargetBuilder.Result> {
         environment.put("source", layoutDirectory);
         environment.put("target", targetPath);
         try {
-            Map<String,String> fileEnv = readEnvironment();
+            Map<String, String> fileEnv = readEnvironment();
             environment.putAll(fileEnv);
         }
         catch (FileNotFoundException ex) {
             log.info("Environment file {} not found, going on without", ENVIRONMENT_YAML);
         }
         catch (IOException ex) {
-            throw new BuildException("Error while loading "+ENVIRONMENT_YAML, ex);
+            throw new BuildException("Error while loading " + ENVIRONMENT_YAML, ex);
         }
     }
+
     public void copyPackageFilesTo(Path out) throws IOException {
         Objects.requireNonNull(layout, "layout needs to be non-null");
         for (String file : layout.getPackages()) {
@@ -167,6 +197,7 @@ public class TargetBuilder implements Callable<TargetBuilder.Result> {
             Files.copy(fromPath, toPath, StandardCopyOption.REPLACE_EXISTING);
         }
     }
+
     @Override
     public Result call() throws Exception {
         initEnvironment();
@@ -178,7 +209,7 @@ public class TargetBuilder implements Callable<TargetBuilder.Result> {
                 CopyDelegate delegate = new CopyDelegate(this);
                 delegate.copy(cmd.getCopy());
             }
-            if (cmd.getTemplate()!= null) {
+            if (cmd.getTemplate() != null) {
                 TemplateDelegate delegate = templateDelegate;
                 delegate.template(cmd.getTemplate().getFrom(), cmd.getTemplate().getTo(), Optional.of(cmd.getTemplate()));
             }
@@ -186,7 +217,7 @@ public class TargetBuilder implements Callable<TargetBuilder.Result> {
                 RunDelegate delegate = new RunDelegate(this);
                 delegate.run(cmd.getRun());
             }
-            if (cmd.getMkdir()!= null) {
+            if (cmd.getMkdir() != null) {
                 MkdirDelegate delegate = new MkdirDelegate(this);
                 delegate.mkdir(cmd.getMkdir());
             }
@@ -196,18 +227,26 @@ public class TargetBuilder implements Callable<TargetBuilder.Result> {
         result.setSuccess(true); // TBD never used?
         return result;
     }
-    /** Deletes the target directory.
+
+    /**
+     * Deletes the target directory.
+     *
      * @throws BuildException in case of an IO exception.
      */
     public void cleanup() {
         FileUtils.deleteRecursive(targetPath);
-        if (Files.exists(environmentTmp))
+        if (Files.exists(environmentTmp)) {
             FileUtils.deleteRecursive(environmentTmp);
-        if (Files.exists(layoutTmp))
+        }
+        if (Files.exists(layoutTmp)) {
             FileUtils.deleteRecursive(layoutTmp);
+        }
     }
+
     static class Result {
-        @Getter @Setter(AccessLevel.PRIVATE)
+
+        @Getter
+        @Setter(AccessLevel.PRIVATE)
         private boolean success;
     }
 }

@@ -16,28 +16,40 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 package de.sfuhrm.capsula.yaml.command;
+
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
+
 /**
  * A comand having a source and target file.
+ *
  * @author Stephan Fuhrmann
  */
 public class TargetCommand {
+
     private final int MODE_GROUPS = 3;
     private final int GROUP_BITS = 3;
 
-    @Getter @Setter @NotNull
+    @Getter
+    @Setter
+    @NotNull
     private String to;
-    @Getter @Setter @Size(min = 1)
+    @Getter
+    @Setter
+    @Size(min = 1)
     private String owner;
-    @Getter @Setter @Size(min = 1)
+    @Getter
+    @Setter
+    @Size(min = 1)
     private String group;
-    @Getter @Setter @Pattern(regexp = "([r-][w-][x-]){" + MODE_GROUPS + "}")
+    @Getter
+    @Setter
+    @Pattern(regexp = "([r-][w-][x-]){" + MODE_GROUPS + "}")
     private String mode;
-        
+
     public String getOctal() {
         String myMode = getMode();
         int value = 0;

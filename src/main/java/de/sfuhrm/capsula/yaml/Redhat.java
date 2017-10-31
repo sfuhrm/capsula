@@ -16,15 +16,22 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 package de.sfuhrm.capsula.yaml;
+
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
+
 /**
  * Specific descriptor for Redhat distribution.
+ *
  * @author Stephan Fuhrmann
  */
 public class Redhat extends Distribution {
-    @Getter @Setter @NotNull @NotBlank
+
+    @Getter
+    @Setter
+    @NotNull
+    @NotBlank
     private String group;
 }

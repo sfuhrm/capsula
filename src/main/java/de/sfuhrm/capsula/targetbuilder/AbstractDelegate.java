@@ -16,6 +16,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 package de.sfuhrm.capsula.targetbuilder;
+
 import de.sfuhrm.capsula.FileUtils;
 import de.sfuhrm.capsula.yaml.command.TargetCommand;
 import java.io.IOException;
@@ -24,19 +25,26 @@ import java.util.Objects;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
+
 /**
- * Abstract base class for delegates.
- * It is holding a reference to the {@link #targetBuilder TargetBuilder}.
+ * Abstract base class for delegates. It is holding a reference to the
+ * {@link #targetBuilder TargetBuilder}.
+ *
  * @author Stephan Fuhrmann
  */
 @Slf4j
 public class AbstractDelegate {
+
     @Getter(AccessLevel.PROTECTED)
     private final TargetBuilder targetBuilder;
+
     public AbstractDelegate(TargetBuilder targetBuilder) {
         this.targetBuilder = Objects.requireNonNull(targetBuilder);
     }
-    /** Does owner/group/permission changes for a target path.
+
+    /**
+     * Does owner/group/permission changes for a target path.
+     *
      * @param command abstract target path description in the target command.
      */
     protected void applyTargetFileModifications(TargetCommand command) throws IOException {

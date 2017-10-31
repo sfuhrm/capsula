@@ -16,29 +16,38 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 package de.sfuhrm.capsula.yaml;
+
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import lombok.Getter;
+
 /**
  * Specific descriptor for Debian distribution.
+ *
  * @see https://www.debian.org/doc/manuals/maint-guide/dreq.de.html
  * @author Stephan Fuhrmann
  */
 public class Debian extends Distribution {
+
     enum Priority {
         optional,
         required,
         important,
         standard
     };
-    @Getter @NotNull
+    @Getter
+    @NotNull
     private Priority priority = Priority.optional;
-    @Getter @NotNull @NotBlank
+    @Getter
+    @NotNull
+    @NotBlank
     private String section;
+
     enum Architecture {
         any,
         all
     };
-    @Getter @NotNull
+    @Getter
+    @NotNull
     private Architecture architecture;
 }

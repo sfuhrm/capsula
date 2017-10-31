@@ -16,6 +16,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 package de.sfuhrm.capsula.yaml;
+
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.validation.Valid;
@@ -23,16 +24,28 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
+
 /**
  * An abstract linux distribution.
+ *
  * @author Stephan Fuhrmann
  */
 public class Distribution {
-    @Getter @Setter @NotNull @NotBlank
+
+    @Getter
+    @Setter
+    @NotNull
+    @NotBlank
     private String packageName; // inherited
-    @Getter @Setter @NotNull @Valid
+    @Getter
+    @Setter
+    @NotNull
+    @Valid
     private List<Relation> relations;
-    /** Get relations of a certain type.
+
+    /**
+     * Get relations of a certain type.
+     *
      * @param type the type as can be found in {@link Relation.RelationType}.
      * @return the sublist of relations of the given type.
      */

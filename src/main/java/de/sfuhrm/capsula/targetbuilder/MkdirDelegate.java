@@ -16,6 +16,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 package de.sfuhrm.capsula.targetbuilder;
+
 import de.sfuhrm.capsula.FileUtils;
 import de.sfuhrm.capsula.yaml.command.MkdirCommand;
 import java.io.IOException;
@@ -24,15 +25,19 @@ import java.nio.file.Path;
 import java.util.Objects;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.log4j.MDC;
+
 /**
  * Delegate for making a directory.
+ *
  * @author Stephan Fuhrmann
  */
 @Slf4j
 class MkdirDelegate extends AbstractDelegate {
+
     public MkdirDelegate(TargetBuilder targetBuilder) {
         super(targetBuilder);
     }
+
     public void mkdir(MkdirCommand command) {
         try {
             MDC.put("to", command.getTo());
@@ -46,10 +51,12 @@ class MkdirDelegate extends AbstractDelegate {
                 throw new BuildException("Target is not within target directory: " + toPath);
             }
             mkdirs(toPath, getTargetBuilder().getTargetPath(), command);
-        } catch (IOException ex) {
+        }
+        catch (IOException ex) {
             throw new BuildException("Problem in mkdir", ex);
         }
     }
+
     private void mkdirs(Path p, Path targetPath, MkdirCommand command) throws IOException {
         log.debug("mkdirs {}", p);
         Files.createDirectories(p);

@@ -16,17 +16,25 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 package de.sfuhrm.capsula.yaml;
+
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import lombok.Getter;
+
 /**
  * Author/maintainer name and email address.
+ *
  * @author Stephan Fuhrmann
  */
 public class NameEmail {
-    @Getter @NotNull @Pattern(regexp = ".* .*")
+
+    @Getter
+    @NotNull
+    @Pattern(regexp = ".* .*")
     private String name;
-    @Getter @NotNull @Email
+    @Getter
+    @NotNull
+    @Email
     private String email;
 }

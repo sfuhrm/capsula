@@ -16,13 +16,18 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 package de.sfuhrm.capsula.yaml.command;
+
 import javax.validation.constraints.NotNull;
 import lombok.Getter;
+
 /**
  * A command having a source and target file.
+ *
  * @author Stephan Fuhrmann
  */
 public class SourceAndTargetCommand extends TargetCommand {
-    @Getter @NotNull
+
+    @Getter
+    @NotNull
     private String from;
 }

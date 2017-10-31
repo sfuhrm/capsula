@@ -16,6 +16,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 package de.sfuhrm.capsula.targetbuilder;
+
 import de.sfuhrm.capsula.FileUtils;
 import de.sfuhrm.capsula.yaml.command.TargetCommand;
 import freemarker.template.Configuration;
@@ -32,13 +33,17 @@ import java.util.Objects;
 import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.log4j.MDC;
+
 /**
  * Delegate for template generation.
+ *
  * @author Stephan Fuhrmann
  */
 @Slf4j
 class TemplateDelegate extends AbstractDelegate {
+
     private final Configuration cfg;
+
     public TemplateDelegate(TargetBuilder targetBuilder) throws IOException {
         super(targetBuilder);
         cfg = new Configuration(Configuration.VERSION_2_3_23);
@@ -48,6 +53,7 @@ class TemplateDelegate extends AbstractDelegate {
         cfg.setLogTemplateExceptions(false);
         cfg.setLocale(Locale.US);
     }
+
     public void template(String from, String to, Optional<TargetCommand> cmd) throws IOException {
         MDC.put("from", from);
         MDC.put("to", to);
@@ -56,7 +62,7 @@ class TemplateDelegate extends AbstractDelegate {
         Path toPath = getTargetBuilder().getTargetPath().resolve(to);
         try {
             Template temp = cfg.getTemplate(from);
-            if (! Files.exists(toPath.getParent())) {
+            if (!Files.exists(toPath.getParent())) {
                 Files.createDirectories(toPath.getParent());
             }
             try (Writer out = Files.newBufferedWriter(toPath, Charset.forName("UTF-8"))) {
@@ -65,7 +71,8 @@ class TemplateDelegate extends AbstractDelegate {
             if (cmd.isPresent()) {
                 FileUtils.applyTargetFileModifications(toPath, cmd.get());
             }
-        } catch (TemplateException ex) {
+        }
+        catch (TemplateException ex) {
             throw new BuildException("Template problem for " + from, ex);
         }
     }

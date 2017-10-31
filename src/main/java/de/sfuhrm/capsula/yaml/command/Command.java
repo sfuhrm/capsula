@@ -16,19 +16,27 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 package de.sfuhrm.capsula.yaml.command;
+
 import javax.validation.Valid;
 import lombok.Getter;
+
 /**
  * A single command. Identified by the command field set.
+ *
  * @author Stephan Fuhrmann
  */
 public class Command {
-    @Getter @Valid
+
+    @Getter
+    @Valid
     private CopyCommand copy;
-    @Getter @Valid
+    @Getter
+    @Valid
     private TemplateCommand template;
-    @Getter @Valid
+    @Getter
+    @Valid
     private RunCommand run;
-    @Getter @Valid
+    @Getter
+    @Valid
     private MkdirCommand mkdir;
 }

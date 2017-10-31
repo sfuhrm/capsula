@@ -16,6 +16,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 package de.sfuhrm.capsula;
+
 import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.List;
@@ -25,14 +26,17 @@ import org.kohsuke.args4j.Argument;
 import org.kohsuke.args4j.CmdLineException;
 import org.kohsuke.args4j.CmdLineParser;
 import org.kohsuke.args4j.Option;
+
 /**
- * The command line parameters as a POJO.
- * Must be created using {@link #parse(java.lang.String[]) }.
+ * The command line parameters as a POJO. Must be created using {@link #parse(java.lang.String[])
+ * }.
+ *
  * @see #parse(java.lang.String[])
  * @author Stephan Fuhrmann
  */
 @Slf4j
 public class Params {
+
     @Getter
     @Option(name = "-help", aliases = {"-h"}, usage = "Show this command line help.", help = true)
     private boolean help;
@@ -57,13 +61,15 @@ public class Params {
     @Getter
     @Argument
     private List<String> arguments;
-    /** Parse the command line options.
+
+    /**
+     * Parse the command line options.
+     *
      * @param args the command line args as passed to the main method of the
      * program.
-     * @return the parsed command line options or {@code null} if
-     * the program needs to exit. {@code null} will be returned
-     * if the command lines are wrong or the command line help
-     * was displayed.
+     * @return the parsed command line options or {@code null} if the program
+     * needs to exit. {@code null} will be returned if the command lines are
+     * wrong or the command line help was displayed.
      */
     public static Params parse(final String[] args) {
         Params result = new Params();
@@ -78,7 +84,8 @@ public class Params {
                 return null;
             }
             return result;
-        } catch (CmdLineException ex) {
+        }
+        catch (CmdLineException ex) {
             log.warn("Error in parsing", ex);
             System.err.println(ex.getMessage());
             cmdLineParser.printUsage(System.err);

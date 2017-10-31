@@ -16,21 +16,26 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 package de.sfuhrm.capsula.targetbuilder;
+
 import de.sfuhrm.capsula.yaml.command.RunCommand;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Objects;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.log4j.MDC;
+
 /**
  * Delegate for running a command.
+ *
  * @author Stephan Fuhrmann
  */
 @Slf4j
 class RunDelegate extends AbstractDelegate {
+
     public RunDelegate(TargetBuilder targetBuilder) throws IOException {
         super(targetBuilder);
     }
+
     public void run(RunCommand command) throws IOException {
         try {
             MDC.put("cmd", command.getCommand());
@@ -51,7 +56,8 @@ class RunDelegate extends AbstractDelegate {
             if (exitValue != 0) {
                 throw new BuildException(cmdString + " returned exit value " + exitValue);
             }
-        } catch (InterruptedException ex) {
+        }
+        catch (InterruptedException ex) {
             throw new BuildException(command.getCommand(), ex);
         }
     }

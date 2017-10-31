@@ -16,6 +16,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 package de.sfuhrm.capsula;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import de.sfuhrm.capsula.targetbuilder.BuildException;
@@ -30,6 +31,7 @@ import javax.validation.ConstraintViolation;
 import javax.xml.bind.JAXBException;
 import lombok.extern.slf4j.Slf4j;
 import org.xml.sax.SAXException;
+
 /**
  * The main class that gets executed from command line.
  *
@@ -37,11 +39,15 @@ import org.xml.sax.SAXException;
  */
 @Slf4j
 public class Main {
+
     private final Params params;
+
     public Main(final Params myParams) {
         this.params = Objects.requireNonNull(myParams);
     }
-    /** Reads the descriptor and fills auto-generated fields in it.
+
+    /**
+     * Reads the descriptor and fills auto-generated fields in it.
      */
     private Capsula readDescriptor() throws IOException {
         ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
@@ -60,6 +66,7 @@ public class Main {
         }
         return build;
     }
+
     public static void main(final String[] args) throws IOException, JAXBException, SAXException {
         final Params params = Params.parse(args);
         if (params == null) {
@@ -84,25 +91,27 @@ public class Main {
                 .stream()
                 .filter(t -> params.getTargets() == null || params.getTargets().contains(t))
                 .forEach(t -> {
-            try {
-                log.debug("Target {}", t);
-                final Path targetPath = targetLocator.extractTargetToTmp(t);
-                TargetBuilder builder = new TargetBuilder(build, t, targetPath);
-                try {
-                    builder.call();
-                    builder.copyPackageFilesTo(params.getOut());
-                } finally {
-                    if (params.isDebug()) {
-                        System.err.println("DEBUG: Target directory: " + builder.getTargetPath());
-                    } else {
-                        log.debug("Cleaning up builder");
-                        builder.cleanup();
-                        FileUtils.deleteRecursive(targetPath);
+                    try {
+                        log.debug("Target {}", t);
+                        final Path targetPath = targetLocator.extractTargetToTmp(t);
+                        TargetBuilder builder = new TargetBuilder(build, t, targetPath);
+                        try {
+                            builder.call();
+                            builder.copyPackageFilesTo(params.getOut());
+                        }
+                        finally {
+                            if (params.isDebug()) {
+                                System.err.println("DEBUG: Target directory: " + builder.getTargetPath());
+                            } else {
+                                log.debug("Cleaning up builder");
+                                builder.cleanup();
+                                FileUtils.deleteRecursive(targetPath);
+                            }
+                        }
                     }
-                }
-            } catch (Exception ex) {
-                throw new BuildException("Problem in builder " + t, ex);
-            }
-        });
+                    catch (Exception ex) {
+                        throw new BuildException("Problem in builder " + t, ex);
+                    }
+                });
     }
 }

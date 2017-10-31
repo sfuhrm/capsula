@@ -16,6 +16,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 package de.sfuhrm.capsula.targetbuilder;
+
 import de.sfuhrm.capsula.FileUtils;
 import de.sfuhrm.capsula.yaml.command.CopyCommand;
 import java.io.IOException;
@@ -24,15 +25,19 @@ import java.nio.file.Path;
 import java.util.Objects;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.log4j.MDC;
+
 /**
  * Delegate for copying one file or directory.
+ *
  * @author Stephan Fuhrmann
  */
 @Slf4j
 class CopyDelegate extends AbstractDelegate {
+
     public CopyDelegate(TargetBuilder targetBuilder) {
         super(targetBuilder);
     }
+
     public void copy(CopyCommand command) {
         MDC.put("from", command.getFrom());
         MDC.put("to", command.getTo());
@@ -60,11 +65,13 @@ class CopyDelegate extends AbstractDelegate {
             throw new BuildException("Unknown file type: " + fromPath);
         }
     }
+
     private void mkdirs(Path p, CopyCommand command) throws IOException {
         log.debug("mkdirs {}", p);
         Files.createDirectories(p);
         applyTargetFileModifications(command); // TODO this just changes the deepest path
     }
+
     private void copyRecursive(Path from, Path to, CopyCommand command) {
         try {
             if (Files.isRegularFile(from)) {
@@ -83,7 +90,8 @@ class CopyDelegate extends AbstractDelegate {
                     copyRecursive(p, target.resolve(p.getFileName()), command);
                 });
             }
-        } catch (IOException exception) {
+        }
+        catch (IOException exception) {
             throw new BuildException("Exception while copying from " + from + " to " + to, exception);
         }
     }

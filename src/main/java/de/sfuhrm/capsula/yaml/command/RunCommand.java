@@ -16,14 +16,20 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 package de.sfuhrm.capsula.yaml.command;
+
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import lombok.Getter;
+
 /**
  * Run a command.
+ *
  * @author Stephan Fuhrmann
  */
 public class RunCommand {
-    @Getter @NotNull @NotBlank
+
+    @Getter
+    @NotNull
+    @NotBlank
     private String command;
 }

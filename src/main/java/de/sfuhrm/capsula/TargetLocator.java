@@ -16,6 +16,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 package de.sfuhrm.capsula;
+
 import com.google.common.io.ByteSource;
 import com.google.common.reflect.ClassPath;
 import java.io.IOException;
@@ -27,23 +28,32 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
+
 /**
  * Locates possible build targets in the class path.
+ *
  * @author Stephan Fuhrmann
  */
 @Slf4j
 public final class TargetLocator {
-    /** The prefix of targets in the classpath. */
+
+    /**
+     * The prefix of targets in the classpath.
+     */
     private static final String TARGETS = "targets";
-    /** All class path resources. */
+    /**
+     * All class path resources.
+     */
     private static Set<ClassPath.ResourceInfo> resourceInfos;
-    /** Get the class path resources containing targets.
+
+    /**
+     * Get the class path resources containing targets.
+     *
      * @return a set of resource infos for resources inside the
      * {@link TargetLocator#TARGETS} hierarchy.
      * @throws IOException if an IO problem occurs.
      */
-    private static synchronized
-        Set<ClassPath.ResourceInfo> getClassPathResources() throws IOException {
+    private static synchronized Set<ClassPath.ResourceInfo> getClassPathResources() throws IOException {
         if (resourceInfos == null) {
             ClassPath classPath = ClassPath.from(Main.class.getClassLoader());
             resourceInfos = classPath.getResources()
@@ -53,11 +63,14 @@ public final class TargetLocator {
         }
         return resourceInfos;
     }
-    /** Extracts the target folder from the JAR archive to a temporary
-     * file on disk.
+
+    /**
+     * Extracts the target folder from the JAR archive to a temporary file on
+     * disk.
+     *
      * @param target the target name to extract.
-     * @return the name of the temporary directory where the target
-     * was extracted to.
+     * @return the name of the temporary directory where the target was
+     * extracted to.
      * @throws IOException if an IO problem occurs.
      */
     public Path extractTargetToTmp(final String target) throws IOException {
@@ -85,7 +98,10 @@ public final class TargetLocator {
         }
         return targetPath;
     }
-    /** Opens a stream for the given resource.
+
+    /**
+     * Opens a stream for the given resource.
+     *
      * @param target the target name to get the resource for.
      * @param resource the resource name inside the target hierarchy to get.
      * @return a stream for reading the resource.
@@ -96,14 +112,17 @@ public final class TargetLocator {
         Optional<ByteSource> byteSource = getClassPathResources()
                 .stream()
                 .filter(ri -> ri.getResourceName()
-                        .equals(TARGETS + "/" + target + "/" + resource))
+                .equals(TARGETS + "/" + target + "/" + resource))
                 .map(ri -> ri.asByteSource())
                 .findFirst();
-        return byteSource.orElseThrow(() ->
-                new IOException("Can't find " + target + "/" + resource))
+        return byteSource.orElseThrow(()
+                -> new IOException("Can't find " + target + "/" + resource))
                 .openStream();
     }
-    /** Get the list of possible target resources from the classpath.
+
+    /**
+     * Get the list of possible target resources from the classpath.
+     *
      * @param target the target to get the resources for.
      * @return the set of resource names / file names for this target.
      * @throws IOException if an IO problem occurs.
@@ -113,11 +132,14 @@ public final class TargetLocator {
         return getClassPathResources()
                 .stream()
                 .filter(ri -> ri.getResourceName()
-                        .startsWith(TARGETS + "/" + target))
+                .startsWith(TARGETS + "/" + target))
                 .map(ri -> ri.getResourceName().split("/")[2])
                 .collect(Collectors.toSet());
     }
-    /** Get the list of possible targets from the classpath.
+
+    /**
+     * Get the list of possible targets from the classpath.
+     *
      * @return a set of target names.
      * @throws IOException if an IO problem occurs.
      */
