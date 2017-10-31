@@ -74,7 +74,7 @@ public class Capsula {
         @Getter
         private final String licenseName;
         private final String debianName;
-        private License(String inName, String inDebianName, String inLicenseTextUrl) {
+        private License(final String inName, final String inDebianName, final String inLicenseTextUrl) {
             this.licenseName = Objects.requireNonNull(inName);
             this.debianName = Objects.requireNonNull(inDebianName);
             this.licenseTextUrl = Objects.requireNonNull(inLicenseTextUrl);
