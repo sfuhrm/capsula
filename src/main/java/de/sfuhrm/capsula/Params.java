@@ -64,7 +64,7 @@ public class Params {
     private boolean parallel;
     @Getter
     @Option(name = "-stop-after", usage = "Stop after the given proessing stage.")
-    private Stage stopAfter;
+    private Stage stopAfter = Stage.ALL;
     @Getter
     @Argument
     private List<String> arguments;
