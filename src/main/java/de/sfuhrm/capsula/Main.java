@@ -27,6 +27,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Stream;
 import javax.validation.ConstraintViolation;
 import javax.xml.bind.JAXBException;
 import lombok.extern.slf4j.Slf4j;
@@ -93,8 +94,11 @@ public class Main {
         if (params.getStopAfter().compareTo(Stage.READ_DESCRIPTOR) <= 0) {
             return;
         }
-        build.getTargets()
-                .stream()
+        final Stream<String> targetStream = params.isParallel() ?
+                build.getTargets().parallelStream() :
+                build.getTargets().stream();
+
+        targetStream
                 .filter(t -> params.getTargets() == null || params.getTargets().contains(t))
                 .forEach(t -> {
                     try {
