@@ -65,7 +65,7 @@ public class Params {
      * if the command lines are wrong or the command line help
      * was displayed.
      */
-    public static Params parse(String[] args) {
+    public static Params parse(final String[] args) {
         Params result = new Params();
         CmdLineParser cmdLineParser = new CmdLineParser(result);
         try {

@@ -26,23 +26,27 @@ import lombok.Setter;
  * @author Stephan Fuhrmann
  */
 public class TargetCommand {
+    private final int MODE_GROUPS = 3;
+    private final int GROUP_BITS = 3;
+
     @Getter @Setter @NotNull
     private String to;
     @Getter @Setter @Size(min = 1)
     private String owner;
     @Getter @Setter @Size(min = 1)
     private String group;
-    @Getter @Setter @Pattern(regexp = "([r-][w-][x-]){3}")
+    @Getter @Setter @Pattern(regexp = "([r-][w-][x-]){" + MODE_GROUPS + "}")
     private String mode;
+        
     public String getOctal() {
         String myMode = getMode();
         int value = 0;
-        for (int i = 0; i < 3; i++) {
-            int offset = 3 * i;
-            for (int j = 0; j < 3; j++) {
-                char c = myMode.charAt(offset + j);
-                int bitValue = 2 - j;
-                value |= c != '-' ? (1<<bitValue) << (3*(2-i)) : 0;
+        for (int group = 0; group < MODE_GROUPS; group++) {
+            int offset = GROUP_BITS * group;
+            for (int bit = 0; bit < GROUP_BITS; bit++) {
+                char c = myMode.charAt(offset + bit);
+                int bitValue = 2 - bit;
+                value |= c != '-' ? (1 << bitValue) << (GROUP_BITS * (2 - group)) : 0;
             }
         }
         return String.format("%04o", value);

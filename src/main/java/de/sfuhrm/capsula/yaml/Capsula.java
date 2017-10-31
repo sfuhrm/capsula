@@ -74,10 +74,10 @@ public class Capsula {
         @Getter
         private final String licenseName;
         private final String debianName;
-        private License(String name, String debianName, String licenseTextUrl) {
-            this.licenseName = Objects.requireNonNull(name);
-            this.debianName = Objects.requireNonNull(debianName);
-            this.licenseTextUrl = Objects.requireNonNull(licenseTextUrl);
+        private License(String inName, String inDebianName, String inLicenseTextUrl) {
+            this.licenseName = Objects.requireNonNull(inName);
+            this.debianName = Objects.requireNonNull(inDebianName);
+            this.licenseTextUrl = Objects.requireNonNull(inLicenseTextUrl);
         }
         public List<String> getLicenseText() throws IOException {
             try (InputStream inputStream = new java.net.URL(getLicenseTextUrl()).openStream();
@@ -92,7 +92,7 @@ public class Capsula {
             }
         }
         public String getDebianFile() {
-            return "/usr/share/common-licenses/"+debianName;
+            return "/usr/share/common-licenses/" + debianName;
         }
     };
     /** The license for the project. */
@@ -136,7 +136,7 @@ public class Capsula {
         if (m.matches()) {
             return m.group(1);
         } else {
-            throw new IllegalArgumentException("Can not determine got project from url '"+getGitUrl()+"'");
+            throw new IllegalArgumentException("Can not determine got project from url '" + getGitUrl() + "'");
         }
     }
 }

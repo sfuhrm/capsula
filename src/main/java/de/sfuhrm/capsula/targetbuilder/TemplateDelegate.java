@@ -66,7 +66,7 @@ class TemplateDelegate extends AbstractDelegate {
                 FileUtils.applyTargetFileModifications(toPath, cmd.get());
             }
         } catch (TemplateException ex) {
-            throw new BuildException("Template problem for "+from, ex);
+            throw new BuildException("Template problem for " + from, ex);
         }
     }
 }

@@ -79,7 +79,8 @@ public class PropertyInheritance {
                     Method parentRead = parentProperties.get(p.getName()).getReadMethod();
                     Method childWrite = p.getWriteMethod();
                     if (childWrite == null) {
-                        throw new InheritanceException("Child class "+child.getClass().getName()+" write method for "+p.getName()+" missing");
+                        throw new InheritanceException("Child class " + 
+                    child.getClass().getName() + " write method for " + p.getName() + " missing");
                     }
                     Object value = parentRead.invoke(parent);
                     childWrite.invoke(child, value);

@@ -26,7 +26,7 @@ import lombok.Setter;
  * @author Stephan Fuhrmann
  */
 public class Relation {
-    /** The name of the other package */
+    /** The name of the related package in the distributions repository. */
     @Getter @Setter @NotEmpty
     private String pkg;
      /** This is the the release number for this version. The first release gets number 1. */
@@ -58,7 +58,7 @@ public class Relation {
         le("<=");
         @Getter
         private final String operator;
-        private VersionOperator(String op) {
+        private VersionOperator(final String op) {
             this.operator = Objects.requireNonNull(op);
         }
     }

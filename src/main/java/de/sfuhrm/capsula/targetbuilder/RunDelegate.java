@@ -49,7 +49,7 @@ class RunDelegate extends AbstractDelegate {
             int exitValue = process.exitValue();
             log.debug("Exit value for cmd {} is {}", cmdString, exitValue);
             if (exitValue != 0) {
-                throw new BuildException(cmdString+" returned exit value "+exitValue);
+                throw new BuildException(cmdString + " returned exit value " + exitValue);
             }
         } catch (InterruptedException ex) {
             throw new BuildException(command.getCommand(), ex);

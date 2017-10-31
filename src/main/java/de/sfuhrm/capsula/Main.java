@@ -38,8 +38,8 @@ import org.xml.sax.SAXException;
 @Slf4j
 public class Main {
     private final Params params;
-    public Main(Params params) {
-        this.params = Objects.requireNonNull(params);
+    public Main(final Params myParams) {
+        this.params = Objects.requireNonNull(myParams);
     }
     /** Reads the descriptor and fills auto-generated fields in it.
      */
@@ -60,13 +60,13 @@ public class Main {
         }
         return build;
     }
-    public static void main(String[] args) throws IOException, JAXBException, SAXException {
-        Params params = Params.parse(args);
+    public static void main(final String[] args) throws IOException, JAXBException, SAXException {
+        final Params params = Params.parse(args);
         if (params == null) {
             return;
         }
-        Main main = new Main(params);
-        Capsula build = main.readDescriptor();
+        final Main main = new Main(params);
+        final Capsula build = main.readDescriptor();
         ValidationDelegate validationDelegate = new ValidationDelegate();
         Set<ConstraintViolation<Capsula>> constraintViolations = validationDelegate.validate(build);
         if (!constraintViolations.isEmpty() || params.isValidate()) {
@@ -75,7 +75,7 @@ public class Main {
             }
             return;
         }
-        TargetLocator targetLocator = new TargetLocator();
+        final TargetLocator targetLocator = new TargetLocator();
         if (params.isListTargets()) {
             System.out.println(targetLocator.getTargets());
             return;
@@ -86,7 +86,7 @@ public class Main {
                 .forEach(t -> {
             try {
                 log.debug("Target {}", t);
-                Path targetPath = targetLocator.extractTargetToTmp(t);
+                final Path targetPath = targetLocator.extractTargetToTmp(t);
                 TargetBuilder builder = new TargetBuilder(build, t, targetPath);
                 try {
                     builder.call();
