@@ -59,6 +59,9 @@ public class Params {
     @Option(name = "-list-targets", aliases = {"-T"}, usage = "List the currently available targets and exit.", help = true)
     private boolean listTargets;
     @Getter
+    @Option(name = "-stop-after", usage = "Stop after the given proessing stage.")
+    private Stage stopAfter;
+    @Getter
     @Argument
     private List<String> arguments;
 

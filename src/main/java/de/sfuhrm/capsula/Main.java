@@ -73,6 +73,7 @@ public class Main {
             return;
         }
         final Main main = new Main(params);
+        log.debug("Stage entered: {}", Stage.READ_DESCRIPTOR);
         final Capsula build = main.readDescriptor();
         ValidationDelegate validationDelegate = new ValidationDelegate();
         Set<ConstraintViolation<Capsula>> constraintViolations = validationDelegate.validate(build);
@@ -82,9 +83,14 @@ public class Main {
             }
             return;
         }
+        log.debug("Stage passed: {}", Stage.READ_DESCRIPTOR);
         final TargetLocator targetLocator = new TargetLocator();
         if (params.isListTargets()) {
             System.out.println(targetLocator.getTargets());
+            return;
+        }
+        log.debug("Stop after: {}", params.getStopAfter());
+        if (params.getStopAfter().compareTo(Stage.READ_DESCRIPTOR) <= 0) {
             return;
         }
         build.getTargets()
@@ -94,18 +100,24 @@ public class Main {
                     try {
                         log.debug("Target {}", t);
                         final Path targetPath = targetLocator.extractTargetToTmp(t);
-                        TargetBuilder builder = new TargetBuilder(build, t, targetPath);
+                        TargetBuilder builder = new TargetBuilder(build, t, targetPath, params.getStopAfter());
                         try {
                             builder.call();
-                            builder.copyPackageFilesTo(params.getOut());
+                            if (params.getStopAfter().compareTo(Stage.BUILD) >= 0) {
+                                builder.copyPackageFilesTo(params.getOut());
+                            }
                         }
                         finally {
                             if (params.isDebug()) {
                                 System.err.println("DEBUG: Target directory: " + builder.getTargetPath());
                             } else {
                                 log.debug("Cleaning up builder");
-                                builder.cleanup();
-                                FileUtils.deleteRecursive(targetPath);
+                                if (params.getStopAfter().compareTo(Stage.CLEANUP) >= 0) {
+                                    log.debug("Stage entered: {}", Stage.CLEANUP);
+                                    builder.cleanup();
+                                    FileUtils.deleteRecursive(targetPath);
+                                    log.debug("Stage passed: {}", Stage.CLEANUP);
+                                }
                             }
                         }
                     }

@@ -20,10 +20,11 @@ package de.sfuhrm.capsula.targetbuilder;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import de.sfuhrm.capsula.FileUtils;
+import de.sfuhrm.capsula.Stage;
 import de.sfuhrm.capsula.ValidationDelegate;
 import de.sfuhrm.capsula.yaml.Capsula;
-import de.sfuhrm.capsula.yaml.command.Command;
 import de.sfuhrm.capsula.yaml.Layout;
+import de.sfuhrm.capsula.yaml.command.Command;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -111,17 +112,19 @@ public class TargetBuilder implements Callable<TargetBuilder.Result> {
     private final String targetName;
     private Path layoutTmp;
     private Path environmentTmp;
+    private Stage stopAfter;
 
     /**
      * Creates an instance.
      *
      * @param build the build descriptor for all builds.
      * @param targetName the name of this target.
-     * @param layoutDirectory the directory the layout and templates are located
+     * @param layoutDirectory the directory the layout and templates are located.
      * in.
+     * @param stopAfter the stage after which to stop.
      * @throws IOException if something goes wrong while initialization.
      */
-    public TargetBuilder(Capsula build, String targetName, Path layoutDirectory) throws IOException {
+    public TargetBuilder(Capsula build, String targetName, Path layoutDirectory, Stage stopAfter) throws IOException {
         this.build = Objects.requireNonNull(build);
         this.targetName = Objects.requireNonNull(targetName);
         log.debug("Layout directory is {}", layoutDirectory);
@@ -137,6 +140,7 @@ public class TargetBuilder implements Callable<TargetBuilder.Result> {
         targetPath = Files.createTempDirectory(this.targetName).toAbsolutePath();
         log.debug("Target path is {}", targetPath);
         templateDelegate = new TemplateDelegate(this);
+        this.stopAfter = Objects.requireNonNull(stopAfter, "stopAfter");
     }
 
     /**
@@ -204,28 +208,46 @@ public class TargetBuilder implements Callable<TargetBuilder.Result> {
         layout = readLayout(); // must be AFTER initEnvironment()
         MDC.put("layout", layout.getName());
         environment.put("layout", layout);
-        for (Command cmd : layout.getPrepare()) {
-            if (cmd.getCopy() != null) {
-                CopyDelegate delegate = new CopyDelegate(this);
-                delegate.copy(cmd.getCopy());
+        if (stopAfter.compareTo(Stage.PREPARE) >= 0) {
+            log.debug("Stage entered: {}", Stage.PREPARE);
+            for (Command cmd : layout.getPrepare()) {
+                execute(cmd);
             }
-            if (cmd.getTemplate() != null) {
-                TemplateDelegate delegate = templateDelegate;
-                delegate.template(cmd.getTemplate().getFrom(), cmd.getTemplate().getTo(), Optional.of(cmd.getTemplate()));
+            log.debug("Stage passed: {}", Stage.PREPARE);
+        }
+
+        if (stopAfter.compareTo(Stage.BUILD) >= 0) {
+            log.debug("Stage entered: {}", Stage.BUILD);
+            for (Command cmd : layout.getBuild()) {
+                execute(cmd);
             }
-            if (cmd.getRun() != null) {
-                RunDelegate delegate = new RunDelegate(this);
-                delegate.run(cmd.getRun());
-            }
-            if (cmd.getMkdir() != null) {
-                MkdirDelegate delegate = new MkdirDelegate(this);
-                delegate.mkdir(cmd.getMkdir());
-            }
+            log.debug("Stage passed: {}", Stage.BUILD);
         }
         MDC.remove("layout");
         Result result = new Result();
         result.setSuccess(true); // TBD never used?
         return result;
+    }
+
+    /** Executes the given command.
+     */
+    private void execute(final Command cmd) throws IOException {
+        if (cmd.getCopy() != null) {
+            CopyDelegate delegate = new CopyDelegate(this);
+            delegate.copy(cmd.getCopy());
+        }
+        if (cmd.getTemplate() != null) {
+            TemplateDelegate delegate = templateDelegate;
+            delegate.template(cmd.getTemplate().getFrom(), cmd.getTemplate().getTo(), Optional.of(cmd.getTemplate()));
+        }
+        if (cmd.getRun() != null) {
+            RunDelegate delegate = new RunDelegate(this);
+            delegate.run(cmd.getRun());
+        }
+        if (cmd.getMkdir() != null) {
+            MkdirDelegate delegate = new MkdirDelegate(this);
+            delegate.mkdir(cmd.getMkdir());
+        }
     }
 
     /**

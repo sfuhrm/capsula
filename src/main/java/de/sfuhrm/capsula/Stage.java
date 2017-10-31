@@ -15,32 +15,21 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
-package de.sfuhrm.capsula.yaml;
-
-import de.sfuhrm.capsula.yaml.command.Command;
-import java.util.List;
-import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import lombok.Getter;
+package de.sfuhrm.capsula;
 
 /**
- * Layout file for one Linux distribution target.
- *
+ * The stage of processing.
  * @author Stephan Fuhrmann
  */
-public class Layout {
-
-    @NotNull
-    @Getter
-    @NotBlank
-    private String name;
-    @Getter
-    @Valid
-    private List<Command> prepare;
-    @Getter
-    @Valid
-    private List<Command> build;
-    @Getter
-    private List<String> packages;
+public enum Stage {
+    /** Read the descriptor. */
+    READ_DESCRIPTOR,
+    /** Prepare the docker build directory. */
+    PREPARE,
+    /** Build the package. */
+    BUILD,
+    /** Cleanup. */
+    CLEANUP,
+    /** Finish. */
+    ALL;
 }

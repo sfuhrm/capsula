@@ -42,12 +42,18 @@ debian:
   - pkg: java8-runtime-headless
 # Version history of the package. Used for Debian changelogs.
 versions:
-- version: 0.0.2 # TBD this needs to match the debian version as a string
+- version: 0.1.1
+  release: 1
+  date: 2017-10-31T21:10:00+01:00
+  changes:
+  - Stop-after a certain processing stage.
+  - Changed layout of layout.yaml for the stop-after feature to make sense.
+- version: 0.0.2
   release: 1
   date: 2017-10-30T01:42:00+02:00
   changes:
   - Next experimental version
-- version: 0.0.1 # TBD this needs to match the debian version as a string
+- version: 0.0.1
   release: 1
   date: 2017-10-21T20:00:00+02:00
   changes:
