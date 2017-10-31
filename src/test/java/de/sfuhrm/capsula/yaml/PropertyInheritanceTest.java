@@ -16,31 +16,46 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 package de.sfuhrm.capsula.yaml;
+
 import lombok.Getter;
 import lombok.Setter;
 import static org.junit.Assert.*;
 import org.junit.Test;
+
 /**
  * Tests the {@link PropertyInheritance}.
+ *
  * @author Stephan Fuhrmann
  */
 public class PropertyInheritanceTest {
+
     static class A {
-        @Getter @Setter
+
+        @Getter
+        @Setter
         String a;
-        @Getter @Setter
+        @Getter
+        @Setter
         Integer b;
     }
+
     static class CopyOfA {
-        @Getter @Setter
+
+        @Getter
+        @Setter
         String a;
-        @Getter @Setter
+        @Getter
+        @Setter
         Integer b;
     }
+
     static class AwithoutB {
-        @Getter @Setter
+
+        @Getter
+        @Setter
         String a;
     }
+
     @Test
     public void testInheritWithAllCopy() {
         A a = new A();
@@ -53,6 +68,7 @@ public class PropertyInheritanceTest {
         assertEquals("foo", coa.getA());
         assertEquals(Integer.valueOf(42), coa.getB());
     }
+
     @Test
     public void testInheritWithNoCopy() {
         A a = new A();
@@ -67,6 +83,7 @@ public class PropertyInheritanceTest {
         assertEquals("bar", coa.getA());
         assertEquals(Integer.valueOf(43), coa.getB());
     }
+
     @Test
     public void testInheritWithPartialA() {
         A a = new A();

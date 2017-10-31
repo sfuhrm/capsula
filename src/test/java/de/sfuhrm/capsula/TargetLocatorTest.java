@@ -16,17 +16,21 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 package de.sfuhrm.capsula;
+
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 import static org.junit.Assert.*;
 import org.junit.Test;
+
 /**
  * Tests the {@link TargetLocator}.
+ *
  * @author Stephan Fuhrmann
  */
 public class TargetLocatorTest {
+
     @Test
     public void testGetTargets() throws IOException {
         TargetLocator locator = new TargetLocator();
