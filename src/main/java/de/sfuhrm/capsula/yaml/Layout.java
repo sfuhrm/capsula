@@ -16,14 +16,12 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 package de.sfuhrm.capsula.yaml;
-
 import de.sfuhrm.capsula.yaml.command.Command;
 import java.util.List;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import lombok.Getter;
-
 /**
  * Layout file for one Linux distribution target.
  * @author Stephan Fuhrmann
@@ -31,10 +29,8 @@ import lombok.Getter;
 public class Layout {
     @NotNull @Getter @NotBlank
     private String name;
-    
     @Getter @Valid
     private List<Command> prepare;
-    
     @Getter
-    private List<String> packages;    
+    private List<String> packages;
 }

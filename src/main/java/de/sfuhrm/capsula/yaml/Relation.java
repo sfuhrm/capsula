@@ -16,13 +16,11 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 package de.sfuhrm.capsula.yaml;
-
 import java.util.Objects;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
-
 /**
  * Relation definition to other packages.
  * @author Stephan Fuhrmann
@@ -30,19 +28,15 @@ import lombok.Setter;
 public class Relation {
     /** The name of the other package */
     @Getter @Setter @NotEmpty
-    private String pkg;    
-        
+    private String pkg;
      /** This is the the release number for this version. The first release gets number 1. */
     @Getter @Setter @NotNull
     private RelationType type = RelationType.depends;
-    
     @Getter @Setter
     private VersionOperator op;
-    
     /** The reference version. */
     @Getter @Setter
     private String version;
-    
     /**
      * @see https://www.debian.org/doc/manuals/maint-guide/dreq.en.html
      * @see http://rpm.org/user_doc/dependencies.html
@@ -56,19 +50,16 @@ public class Relation {
         provides,
         replaces;
     }
-    
     public enum VersionOperator {
         eq("="),
         gt(">"),
         ge(">="),
         lt("<"),
         le("<=");
-
         @Getter
         private final String operator;
-        
         private VersionOperator(String op) {
             this.operator = Objects.requireNonNull(op);
-        }                
+        }
     }
 }

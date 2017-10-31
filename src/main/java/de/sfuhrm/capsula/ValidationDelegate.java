@@ -16,14 +16,12 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 package de.sfuhrm.capsula;
-
 import java.util.Set;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 import lombok.extern.slf4j.Slf4j;
-
 /**
  * Validates an object tree using Bean validation.
  * @author Stephan Fuhrmann
@@ -32,12 +30,10 @@ import lombok.extern.slf4j.Slf4j;
 public class ValidationDelegate {
     /** Bean validator to use. */
     private final Validator validator;
-
     public ValidationDelegate() {
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         validator = factory.getValidator();
     }
-
     /**
      * Validates the given object. Prints all constraint violations.
      *
@@ -50,7 +46,7 @@ public class ValidationDelegate {
         if (violations.size() > 0) {
             System.err.println("YAML config contains errors:");
             violations.forEach(u -> {
-                log.error("Validation error for {} {}. ", 
+                log.error("Validation error for {} {}. ",
                         u.getPropertyPath().toString(), u.getMessage());
                 System.err.printf("  \"%s\"" + " %s (value: %s)%n",
                         u.getPropertyPath().toString(),
@@ -58,7 +54,6 @@ public class ValidationDelegate {
                         u.getInvalidValue()
                         );
             });
-
             System.err.printf("Got %d validation errors%n", violations.size());
         } else {
             log.debug("Object validated");

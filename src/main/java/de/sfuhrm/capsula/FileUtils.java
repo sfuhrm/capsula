@@ -16,7 +16,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 package de.sfuhrm.capsula;
-
 import de.sfuhrm.capsula.targetbuilder.BuildException;
 import de.sfuhrm.capsula.yaml.command.TargetCommand;
 import java.io.IOException;
@@ -32,18 +31,15 @@ import java.nio.file.attribute.UserPrincipal;
 import java.nio.file.attribute.UserPrincipalLookupService;
 import java.util.Set;
 import lombok.extern.slf4j.Slf4j;
-
 /**
  * Changes file attributes.
  * @author Stephan Fuhrmann
  */
 @Slf4j
 public final class FileUtils {
-
     /** No instance allowed. */
     private FileUtils() {
     }
-
     /** Does owner/group/permission changes for a target path.
      * @param toPath direct target path to modify.
      * @param command  the command to take the owner/group/permissions from.
@@ -54,16 +50,13 @@ public final class FileUtils {
         if (command.getOwner() != null) {
             changeOwner(toPath, command.getOwner());
         }
-
         if (command.getGroup() != null) {
             changeGroup(toPath, command.getGroup());
         }
-
         if (command.getMode() != null) {
             changeMode(toPath, command.getMode());
         }
     }
-
     /**
      * Creates directories.
      * @param p the directory path to create.
@@ -75,7 +68,6 @@ public final class FileUtils {
         log.debug("mkdirs {}", p);
         Files.createDirectories(p);
     }
-
     /**
      * Changes the owner of the given path.
      * @param p the path to change the owner of.
@@ -91,7 +83,6 @@ public final class FileUtils {
         UserPrincipal owner = lookupService.lookupPrincipalByName(ownerName);
         Files.setOwner(p, owner);
     }
-
     /**
      * Changes the group of the given path.
      * @param p the path to change the group of.
@@ -110,7 +101,6 @@ public final class FileUtils {
                 PosixFileAttributeView.class, LinkOption.NOFOLLOW_LINKS)
                 .setGroup(group);
     }
-
     /**
      * Change the access mode for the given path.
      * @param p the path to change the access mode for.
@@ -126,7 +116,6 @@ public final class FileUtils {
                 PosixFileAttributeView.class, LinkOption.NOFOLLOW_LINKS)
                 .setPermissions(permissions);
     }
-
     /** Deletes a path and its children.
      * @param p the path to delete.
      * @throws BuildException in case of an IO exception.

@@ -16,7 +16,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 package de.sfuhrm.capsula;
-
 import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.List;
@@ -26,49 +25,39 @@ import org.kohsuke.args4j.Argument;
 import org.kohsuke.args4j.CmdLineException;
 import org.kohsuke.args4j.CmdLineParser;
 import org.kohsuke.args4j.Option;
-
 /**
  * The command line parameters as a POJO.
  * Must be created using {@link #parse(java.lang.String[]) }.
- * @see #parse(java.lang.String[]) 
+ * @see #parse(java.lang.String[])
  * @author Stephan Fuhrmann
  */
 @Slf4j
 public class Params {
-    
     @Getter
     @Option(name = "-help", aliases = {"-h"}, usage = "Show this command line help.", help = true)
     private boolean help;
-    
     @Getter
     @Option(name = "-descriptor", aliases = {"-f"}, usage = "YAML descriptor for the application packaging. Describes the package and how to install the components.", metaVar = "YAML", required = true)
     private Path descriptor;
-    
     @Getter
     @Option(name = "-debug", aliases = {"-d"}, usage = "Show more debugging output. Will keep temporary files instead of deleting them.")
     private boolean debug;
-    
     @Getter
     @Option(name = "-validate", aliases = {"-c"}, usage = "Validate YAML descriptor file and exit.")
     private boolean validate;
-    
     @Getter
     @Option(name = "-out", required = true, aliases = {"-o"}, usage = "The output directory to write the generated packages to.")
     private Path out;
-    
     @Getter
     @Option(name = "-targets", aliases = {"-t"}, usage = "Restrict the targets created to the given names.")
     private List<String> targets;
-    
     @Getter
     @Option(name = "-list-targets", aliases = {"-T"}, usage = "List the currently available targets and exit.", help = true)
     private boolean listTargets;
-
     @Getter
     @Argument
     private List<String> arguments;
-    
-    /** Parse the command line options. 
+    /** Parse the command line options.
      * @param args the command line args as passed to the main method of the
      * program.
      * @return the parsed command line options or {@code null} if
@@ -83,14 +72,11 @@ public class Params {
             if (log.isDebugEnabled()) {
                 log.debug("Args: {}", Arrays.toString(args));
             }
-            
             cmdLineParser.parseArgument(args);
-            
             if (result.help) {
                 cmdLineParser.printUsage(System.err);
                 return null;
             }
-                        
             return result;
         } catch (CmdLineException ex) {
             log.warn("Error in parsing", ex);

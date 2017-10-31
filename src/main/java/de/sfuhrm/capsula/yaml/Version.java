@@ -16,12 +16,10 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 package de.sfuhrm.capsula.yaml;
-
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
-
 /**
  * Version information.
  * @author Stephan Fuhrmann
@@ -30,11 +28,9 @@ public class Version {
     /** This is the source tar version by the author. */
     @Getter @Setter @NotNull @NotBlank
     private String version;
-    
      /** This is the packaging release by the maintainer. */
     @Getter @Setter @NotNull @NotBlank
     private String release;
-    
      /** This is the the release number for this version. The first release gets number 1. */
     @Getter @Setter
     private int releaseNumber;

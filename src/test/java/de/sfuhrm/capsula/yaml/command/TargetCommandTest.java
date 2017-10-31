@@ -16,10 +16,8 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 package de.sfuhrm.capsula.yaml.command;
-
 import static org.junit.Assert.*;
 import org.junit.Test;
-
 /**
  * Tests the {@link TargetCommand}.
  * @author Stephan Fuhrmann
@@ -31,42 +29,36 @@ public class TargetCommandTest {
         t.setMode("---------");
         assertEquals("0000", t.getOctal());
     }
-    
     @Test
     public void getOctalWithOwnerRead() {
         TargetCommand t = new TargetCommand();
         t.setMode("r--------");
         assertEquals("0400", t.getOctal());
     }
-    
     @Test
     public void getOctalWithGroupRead() {
         TargetCommand t = new TargetCommand();
         t.setMode("---r-----");
         assertEquals("0040", t.getOctal());
     }
-    
     @Test
     public void getOctalWithOtherRead() {
         TargetCommand t = new TargetCommand();
         t.setMode("------r--");
         assertEquals("0004", t.getOctal());
     }
-    
     @Test
     public void getOctalWithOtherRWX() {
         TargetCommand t = new TargetCommand();
         t.setMode("------rwx");
         assertEquals("0007", t.getOctal());
     }
-    
     @Test
     public void getOctalWithFull() {
         TargetCommand t = new TargetCommand();
         t.setMode("rwxrwxrwx");
         assertEquals("0777", t.getOctal());
     }
-    
     @Test
     public void getOctalWith644() {
         TargetCommand t = new TargetCommand();

@@ -16,7 +16,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 package de.sfuhrm.capsula.yaml;
-
 import java.util.Date;
 import java.util.List;
 import javax.validation.Valid;
@@ -24,19 +23,15 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PastOrPresent;
 import lombok.Getter;
 import lombok.Setter;
-
 /**
  * Version with maintainer and list of changes.
  * @author Stephan Fuhrmann
  */
 public class VersionWithChanges extends Version {
-    
     @Getter @Setter @NotNull @Valid
     private NameEmail maintainer;
-   
-    @Getter @NotNull    
+    @Getter @NotNull
     private List<String> changes;
-    
     @Getter @NotNull @PastOrPresent
     private Date date;
 }

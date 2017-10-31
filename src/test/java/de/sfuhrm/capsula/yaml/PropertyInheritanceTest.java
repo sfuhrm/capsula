@@ -16,12 +16,10 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 package de.sfuhrm.capsula.yaml;
-
 import lombok.Getter;
 import lombok.Setter;
 import static org.junit.Assert.*;
 import org.junit.Test;
-
 /**
  * Tests the {@link PropertyInheritance}.
  * @author Stephan Fuhrmann
@@ -30,24 +28,19 @@ public class PropertyInheritanceTest {
     static class A {
         @Getter @Setter
         String a;
-        
         @Getter @Setter
         Integer b;
     }
-    
     static class CopyOfA {
         @Getter @Setter
         String a;
-        
         @Getter @Setter
         Integer b;
     }
-    
     static class AwithoutB {
         @Getter @Setter
         String a;
     }
-    
     @Test
     public void testInheritWithAllCopy() {
         A a = new A();
@@ -55,13 +48,11 @@ public class PropertyInheritanceTest {
         a.setA("foo");
         a.setB(42);
         PropertyInheritance.inherit(a, coa);
-        
         assertEquals("foo", a.getA());
         assertEquals(Integer.valueOf(42), a.getB());
         assertEquals("foo", coa.getA());
         assertEquals(Integer.valueOf(42), coa.getB());
     }
-    
     @Test
     public void testInheritWithNoCopy() {
         A a = new A();
@@ -71,13 +62,11 @@ public class PropertyInheritanceTest {
         coa.setA("bar");
         coa.setB(43);
         PropertyInheritance.inherit(a, coa);
-        
         assertEquals("foo", a.getA());
         assertEquals(Integer.valueOf(42), a.getB());
         assertEquals("bar", coa.getA());
         assertEquals(Integer.valueOf(43), coa.getB());
     }
-    
     @Test
     public void testInheritWithPartialA() {
         A a = new A();
@@ -85,7 +74,6 @@ public class PropertyInheritanceTest {
         a.setA("foo");
         a.setB(42);
         PropertyInheritance.inherit(a, aWithoutB);
-        
         assertEquals("foo", a.getA());
         assertEquals(Integer.valueOf(42), a.getB());
         assertEquals("foo", aWithoutB.getA());

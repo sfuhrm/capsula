@@ -16,17 +16,14 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 package de.sfuhrm.capsula.targetbuilder;
-
 /**
  * Application internal exception while building.
  * @author Stephan Fuhrmann
  */
 public class BuildException extends RuntimeException {
-
     public BuildException(String message) {
         super(message);
     }
-    
     public BuildException(String message, Throwable cause) {
         super(message, cause);
     }

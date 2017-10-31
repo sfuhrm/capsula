@@ -16,7 +16,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 package de.sfuhrm.capsula.yaml;
-
 import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
@@ -28,7 +27,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
-
 /**
  * Inheritance for properties.
  * @author Stephan Fuhrmann
@@ -37,18 +35,14 @@ import lombok.extern.slf4j.Slf4j;
 public class PropertyInheritance {
     private PropertyInheritance () {
     }
-    
     public static class InheritanceException extends RuntimeException {
-
         public InheritanceException(Throwable inner) {
             super(inner);
         }
-        
         public InheritanceException(String inner) {
             super(inner);
         }
     }
-    
     private static Object readProperty(Method readMethod, Object o) {
         try {
             return readMethod.invoke(o);
@@ -57,8 +51,7 @@ public class PropertyInheritance {
             throw new InheritanceException(ex);
         }
     }
-    
-    /** 
+    /**
      * Inherits all properties from the parent object to the child object.
      * All null child properties will be looked up in the parent. If the
      * parent has a value for the property, it fills the child.
@@ -71,13 +64,11 @@ public class PropertyInheritance {
         try {
             final BeanInfo parentDescriptor = Introspector.getBeanInfo(parent.getClass());
             final BeanInfo childDescriptor = Introspector.getBeanInfo(child.getClass());
-            
             // map of parent properties
-            Map<String, PropertyDescriptor> parentProperties = 
+            Map<String, PropertyDescriptor> parentProperties =
                     Arrays.asList(parentDescriptor.getPropertyDescriptors())
                     .stream()
                     .collect(Collectors.toMap(p -> p.getName(), p -> p));
-            
             // try to fill all null child properties with the parent
             Arrays.asList(childDescriptor.getPropertyDescriptors())
                     .stream()
