@@ -13,7 +13,7 @@ Linux platforms supported:
 
 ### Sample session for building
 
-The following video shows building a Debian and a Redhat package from the examples.
+The following video shows building a Debian and a Fedora package from the examples.
 
 [![Building a tool sample video](https://raw.githubusercontent.com/sfuhrm/capsula/master/images/Youtube.png)](https://www.youtube.com/watch?v=Dbo7BumrZ3A)
 
@@ -45,7 +45,7 @@ Capsula is easily extensible because it uses a simple templating approach per pl
 ## Project status statement
 
 The project is at the moment **experimental**. 
-It can build simple packages for Debian and Redhat like distributions.
+It can build simple packages for Debian and Fedora like distributions.
 
 Releasing the project at this stage is to enable other people
 to participate.
@@ -72,7 +72,7 @@ if not, you have to build Capsula and run it like this
 
 ## How to edit a configuration
 
-Find out which group your package belongs in Redhat world:
+Find out which group your package belongs in Fedora world:
 
     docker run fedora yum grouplist
 
