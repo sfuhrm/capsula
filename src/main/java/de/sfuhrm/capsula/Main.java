@@ -88,7 +88,9 @@ public class Main {
         log.debug("Stage passed: {}", Stage.READ_DESCRIPTOR);
 
 
-        Path myTempDir = Files.createTempDirectory("capsula");
+        Path myBuildDir = params.getBuildDirectory() != null ?
+                params.getBuildDirectory() :
+                Files.createTempDirectory("capsula");
         final TargetLocator targetLocator = new TargetLocator();
         if (params.isListTargets()) {
             System.out.println(targetLocator.getTargets());
@@ -107,8 +109,8 @@ public class Main {
                 .forEach(t -> {
                     try {
                         log.debug("Target {}", t);
-                        final Path targetPath = targetLocator.extractTargetToTmp(myTempDir, t);
-                        TargetBuilder builder = new TargetBuilder(build, myTempDir, t, targetPath, params.getStopAfter());
+                        final Path targetPath = targetLocator.extractTargetToTmp(myBuildDir, t);
+                        TargetBuilder builder = new TargetBuilder(build, myBuildDir, t, targetPath, params.getStopAfter());
                         try {
                             builder.call();
                             if (params.getStopAfter().compareTo(Stage.COPY_RESULT) >= 0) {
@@ -131,7 +133,7 @@ public class Main {
         log.debug("Cleaning up");
         if (!params.isDebug() && params.getStopAfter().compareTo(Stage.CLEANUP) >= 0) {
             log.debug("Stage entered: {}", Stage.CLEANUP);
-            FileUtils.deleteRecursive(myTempDir);
+            FileUtils.deleteRecursive(myBuildDir);
             log.debug("Stage passed: {}", Stage.CLEANUP);
         }
     }

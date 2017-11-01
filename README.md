@@ -111,7 +111,6 @@ the unmet dependencies need to be fetched:
 
 The following TODOs are open programming tasks as known for today:
 
-* Optionally build not to tmp,  but a given directory.
 * Optionally use a fixed directory for targets instead of inside JAR. This
   would safe you the tool build cycle in plugin development.
 * Proper log4j config for packages.

@@ -50,6 +50,10 @@ public class Params {
     @Option(name = "-validate", aliases = {"-c"}, usage = "Validate YAML descriptor file and exit.")
     private boolean validate;
     @Getter
+    @Option(name = "-build-dir", aliases = {"-B"}, usage = "The optional build directory to write the temporary building files to. "
+            + "When this option is not given a directory in the temporary directory is created.")
+    private Path buildDirectory;
+    @Getter
     @Option(name = "-out", required = true, aliases = {"-o"}, usage = "The output directory to write the generated packages to.")
     private Path out;
     @Getter
