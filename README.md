@@ -111,23 +111,7 @@ the unmet dependencies need to be fetched:
 
 The following TODOs are open programming tasks as known for today:
 
-* Optionally use a fixed directory for targets instead of inside JAR. This
-  would safe you the tool build cycle in plugin development.
-* Proper log4j config for packages.
-* Redirect docker output to log4j.
-* Documentation for usage.
-* Documentation for YAML format.
-* Could somehow tag which Git commit was used for building.
-* Reusing of users .m2 directory for speeding up maven runs a lot. The .m2
-  directory would go to /root/.m2 but should not contain any special settings.
-* Add support for Gradle, Ant (?) besides Maven.
-* Test installation of packages on each platform. This is a little difficult
-  because a package could require other apt sources (like capsula does for docker).
-* Scaffolding of the YAML configuration for your program.
-* YAML scaffolding using an existing pom file.
-* Support app icons.
-* Testing.
-* Support for different JDK/JRE depencendies. At the moment this can be done using the relations.
+[https://github.com/sfuhrm/capsula/issues](Github issues for Capsula project)
 
 ## Milestones
 
