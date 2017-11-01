@@ -89,10 +89,6 @@ You can use Docker for this very easily. Please note that I have replaced
 the package name to test with a generic bash expression that expands to a
 pattern:
 
-### Fedora
-
-    docker run -v$PWD/out:/out fedora yum install -y /out/$(cd out;ls *.noarch.rpm)
-
 ### Debian
 
 For Debian it is a little more difficult because dependencies require a loaded
@@ -106,6 +102,10 @@ Debian Jessie is more complicated. First the index needs to be loaded, then the 
 the unmet dependencies need to be fetched:
 
     docker run -v$PWD/out:/out debian:8 /bin/bash -c "apt-get update; dpkg -i /out/$(cd out;ls *_all.deb); apt-get install -f --no-install-recommends -y"
+
+### Fedora
+
+    docker run -v$PWD/out:/out fedora yum install -y /out/$(cd out;ls *.noarch.rpm)
 
 ## TODOs
 
@@ -157,7 +157,7 @@ Links that might be useful or not:
   the virtual names for the JDK packages.
 * [Pragmatic Debian packaging](https://vincent.bernat.im/en/blog/2016-pragmatic-debian-packaging).
 
-### Redhat
+### Fedora
 * [RPM Spec file info](http://ftp.rpm.org/max-rpm/s1-rpm-build-creating-spec-file.html).
 * [RPM Build Package example](http://www.thegeekstuff.com/2015/02/rpm-build-package-example/).
 * [How to create an RPM package](https://fedoraproject.org/wiki/How_to_create_an_RPM_package).
