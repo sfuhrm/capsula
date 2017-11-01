@@ -107,8 +107,10 @@ public class Main {
                         TargetBuilder builder = new TargetBuilder(build, t, targetPath, params.getStopAfter());
                         try {
                             builder.call();
-                            if (params.getStopAfter().compareTo(Stage.BUILD) >= 0) {
+                            if (params.getStopAfter().compareTo(Stage.COPY_RESULT) >= 0) {
+                                log.debug("Stage entered: {}", Stage.COPY_RESULT);
                                 builder.copyPackageFilesTo(params.getOut());
+                                log.debug("Stage passed: {}", Stage.COPY_RESULT);
                             }
                         }
                         finally {

@@ -28,6 +28,8 @@ public enum Stage {
     PREPARE,
     /** Build the package. */
     BUILD,
+    /** Copy result files. */
+    COPY_RESULT,
     /** Cleanup. */
     CLEANUP,
     /** Finish. */
