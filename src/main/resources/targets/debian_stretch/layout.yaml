@@ -13,7 +13,7 @@ prepare:
 - run:
     command: mv ${capsula.gitProject} ${capsula.debian.packageName}_${version.version}
 - run:
-    command: docker run -v${target}:/target -w/target ${image} tar -czvf ${capsula.debian.packageName}_${version.version}.orig.tar.gz ${capsula.debian.packageName}_${version.version}
+    command: tar -czvf ${target}/${capsula.debian.packageName}_${version.version}.orig.tar.gz ${capsula.debian.packageName}_${version.version}   
 - mkdir:
     to: ${capsula.debian.packageName}_${version.version}/debian/${capsula.debian.packageName}/DEBIAN
     mode: rwxrwxrwx
