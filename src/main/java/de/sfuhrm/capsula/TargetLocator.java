@@ -73,8 +73,8 @@ public final class TargetLocator {
      * extracted to.
      * @throws IOException if an IO problem occurs.
      */
-    public Path extractTargetToTmp(final String target) throws IOException {
-        Path targetPath = Files.createTempDirectory(target).toAbsolutePath();
+    public Path extractTargetToTmp(final Path tempParent, final String target) throws IOException {
+        Path targetPath = Files.createTempDirectory(tempParent, target).toAbsolutePath();
         log.debug("Target {} will be extracted to {}", target, targetPath);
         Set<String> targets = getTargets();
         log.debug("Targets in classpath: {}", targets);

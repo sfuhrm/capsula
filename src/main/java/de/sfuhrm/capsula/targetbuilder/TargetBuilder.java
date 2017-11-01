@@ -19,7 +19,6 @@ package de.sfuhrm.capsula.targetbuilder;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
-import de.sfuhrm.capsula.FileUtils;
 import de.sfuhrm.capsula.Stage;
 import de.sfuhrm.capsula.ValidationDelegate;
 import de.sfuhrm.capsula.yaml.Capsula;
@@ -51,6 +50,12 @@ import org.apache.log4j.MDC;
  */
 @Slf4j
 public class TargetBuilder implements Callable<TargetBuilder.Result> {
+
+    /**
+     * Where to create temp directories.
+     */
+    @Getter
+    private final Path tempRoot;
 
     /**
      * Where the layout file is in. Can be read-only.
@@ -118,14 +123,16 @@ public class TargetBuilder implements Callable<TargetBuilder.Result> {
      * Creates an instance.
      *
      * @param build the build descriptor for all builds.
+     * @param tempRoot the root directory where to create temp directories.
      * @param targetName the name of this target.
      * @param layoutDirectory the directory the layout and templates are located.
      * in.
      * @param stopAfter the stage after which to stop.
      * @throws IOException if something goes wrong while initialization.
      */
-    public TargetBuilder(Capsula build, String targetName, Path layoutDirectory, Stage stopAfter) throws IOException {
+    public TargetBuilder(Capsula build, Path tempRoot, String targetName, Path layoutDirectory, Stage stopAfter) throws IOException {
         this.build = Objects.requireNonNull(build);
+        this.tempRoot = Objects.requireNonNull(tempRoot);
         this.targetName = Objects.requireNonNull(targetName);
         log.debug("Layout directory is {}", layoutDirectory);
         this.layoutDirectory = Objects.requireNonNull(layoutDirectory, "directory is null");
@@ -137,7 +144,7 @@ public class TargetBuilder implements Callable<TargetBuilder.Result> {
         if (!Files.isRegularFile(layoutFilePath)) {
             throw new IllegalStateException(layoutFilePath + " is not a file");
         }
-        targetPath = Files.createTempDirectory(this.targetName).toAbsolutePath();
+        targetPath = Files.createTempDirectory(tempRoot, this.targetName).toAbsolutePath();
         log.debug("Target path is {}", targetPath);
         templateDelegate = new TemplateDelegate(this);
         this.stopAfter = Objects.requireNonNull(stopAfter, "stopAfter");
@@ -150,7 +157,7 @@ public class TargetBuilder implements Callable<TargetBuilder.Result> {
      */
     public Layout readLayout() throws IOException {
         ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
-        layoutTmp = Files.createTempFile("layout", "yaml");
+        layoutTmp = Files.createTempFile(tempRoot, "layout", ".yaml");
         templateDelegate.template(LAYOUT_YAML, layoutTmp.toString(), Optional.empty());
         Layout myLayout = mapper.readValue(layoutTmp.toFile(), Layout.class);
         ValidationDelegate validationDelegate = new ValidationDelegate();
@@ -166,7 +173,7 @@ public class TargetBuilder implements Callable<TargetBuilder.Result> {
      */
     public Map<String, String> readEnvironment() throws IOException {
         ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
-        environmentTmp = Files.createTempFile("environment", "yaml");
+        environmentTmp = Files.createTempFile(tempRoot, "environment", ".yaml");
         templateDelegate.template(ENVIRONMENT_YAML, environmentTmp.toString(), Optional.empty());
         Map<String, String> env = mapper.readValue(environmentTmp.toFile(), Map.class);
         return env;
@@ -248,21 +255,6 @@ public class TargetBuilder implements Callable<TargetBuilder.Result> {
         if (cmd.getMkdir() != null) {
             MkdirDelegate delegate = new MkdirDelegate(this);
             delegate.mkdir(cmd.getMkdir());
-        }
-    }
-
-    /**
-     * Deletes the target directory.
-     *
-     * @throws BuildException in case of an IO exception.
-     */
-    public void cleanup() {
-        FileUtils.deleteRecursive(targetPath);
-        if (Files.exists(environmentTmp)) {
-            FileUtils.deleteRecursive(environmentTmp);
-        }
-        if (Files.exists(layoutTmp)) {
-            FileUtils.deleteRecursive(layoutTmp);
         }
     }
 

@@ -24,6 +24,7 @@ import de.sfuhrm.capsula.targetbuilder.TargetBuilder;
 import de.sfuhrm.capsula.yaml.Capsula;
 import de.sfuhrm.capsula.yaml.PropertyInheritance;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Objects;
 import java.util.Set;
@@ -85,6 +86,9 @@ public class Main {
             return;
         }
         log.debug("Stage passed: {}", Stage.READ_DESCRIPTOR);
+
+
+        Path myTempDir = Files.createTempDirectory("capsula");
         final TargetLocator targetLocator = new TargetLocator();
         if (params.isListTargets()) {
             System.out.println(targetLocator.getTargets());
@@ -103,8 +107,8 @@ public class Main {
                 .forEach(t -> {
                     try {
                         log.debug("Target {}", t);
-                        final Path targetPath = targetLocator.extractTargetToTmp(t);
-                        TargetBuilder builder = new TargetBuilder(build, t, targetPath, params.getStopAfter());
+                        final Path targetPath = targetLocator.extractTargetToTmp(myTempDir, t);
+                        TargetBuilder builder = new TargetBuilder(build, myTempDir, t, targetPath, params.getStopAfter());
                         try {
                             builder.call();
                             if (params.getStopAfter().compareTo(Stage.COPY_RESULT) >= 0) {
@@ -116,14 +120,6 @@ public class Main {
                         finally {
                             if (params.isDebug()) {
                                 System.err.println("DEBUG: Target directory: " + builder.getTargetPath());
-                            } else {
-                                log.debug("Cleaning up builder");
-                                if (params.getStopAfter().compareTo(Stage.CLEANUP) >= 0) {
-                                    log.debug("Stage entered: {}", Stage.CLEANUP);
-                                    builder.cleanup();
-                                    FileUtils.deleteRecursive(targetPath);
-                                    log.debug("Stage passed: {}", Stage.CLEANUP);
-                                }
                             }
                         }
                     }
@@ -131,5 +127,12 @@ public class Main {
                         throw new BuildException("Problem in builder " + t, ex);
                     }
                 });
+
+        log.debug("Cleaning up");
+        if (!params.isDebug() && params.getStopAfter().compareTo(Stage.CLEANUP) >= 0) {
+            log.debug("Stage entered: {}", Stage.CLEANUP);
+            FileUtils.deleteRecursive(myTempDir);
+            log.debug("Stage passed: {}", Stage.CLEANUP);
+        }
     }
 }
