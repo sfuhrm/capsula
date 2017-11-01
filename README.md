@@ -15,7 +15,7 @@ Linux platforms supported:
 
 The following video shows building a Debian and a Redhat package from the examples.
 
-[![Building a tool sample video](https://img.youtube.com/vi/Dbo7BumrZ3A/0.jpg)](https://www.youtube.com/watch?v=Dbo7BumrZ3A)
+[![Building a tool sample video](https://raw.githubusercontent.com/sfuhrm/capsula/master/images/Youtube.png)](https://www.youtube.com/watch?v=Dbo7BumrZ3A)
 
 ### The Capsula process
 
