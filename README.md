@@ -7,9 +7,9 @@ The name 'Capsula' is latin for the english word 'capsule'.
 
 Linux platforms supported:
 
-* [Debian](https://www.debian.org/)
-* [CentOS](https://www.centos.org/)
-* and many more
+* [Debian](https://www.debian.org/)-derived systems: Debian, Ubuntu, Mint.
+* [Fedora](https://www.centos.org/)-derived systems: Fedora, CentOS.
+* and many more to come.
 
 ### Sample session for building
 
@@ -137,6 +137,14 @@ The following TODOs are open programming tasks as known for today:
 * [Finished] Milestone 3: Package dependencies.
 * [Finished] Milestone 4: Move template directories.
 * Milestone 5: TBD.
+
+## Related Docker Hub images
+
+The following Docker Hub images are used by this project and built from
+the [Github source tree](https://github.com/sfuhrm/capsula):
+
+* [sfuhrm/capsula-debian-stretch](https://hub.docker.com/r/sfuhrm/capsula-debian-stretch/)
+* [sfuhrm/capsula-centos-7](https://hub.docker.com/r/sfuhrm/capsula-centos-7/)
 
 ## Links
 
