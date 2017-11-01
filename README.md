@@ -119,7 +119,8 @@ The following TODOs are open programming tasks as known for today:
 * Documentation for usage.
 * Documentation for YAML format.
 * Could somehow tag which Git commit was used for building.
-* Reusing of users .m2 directory for speeding up maven runs a lot.
+* Reusing of users .m2 directory for speeding up maven runs a lot. The .m2
+  directory would go to /root/.m2 but should not contain any special settings.
 * Add support for Gradle, Ant (?) besides Maven.
 * Test installation of packages on each platform. This is a little difficult
   because a package could require other apt sources (like capsula does for docker).
