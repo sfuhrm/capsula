@@ -111,7 +111,11 @@ the unmet dependencies need to be fetched:
 
 The following TODOs are open programming tasks as known for today:
 
+* Optionally build not to tmp,  but a given directory.
+* Optionally use a fixed directory for targets instead of inside JAR. This
+  would safe you the tool build cycle in plugin development.
 * Proper log4j config for packages.
+* Redirect docker output to log4j.
 * Documentation for usage.
 * Documentation for YAML format.
 * Could somehow tag which Git commit was used for building.
