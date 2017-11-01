@@ -51,8 +51,10 @@ build:
 - run:
     command: docker build . -t ${image}
 </#if>
+# build the package
 - run:
     command: docker run -v${target}:/target -w/target/${pkgdir} ${image} debuild -us -uc
+# change the permissions to super open so I can delete the build directories later
 - run:
     command: docker run -v${target}:/target -w/target/${pkgdir} ${image} chmod -R a+rwx .
 packages:

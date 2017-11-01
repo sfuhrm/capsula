@@ -33,13 +33,18 @@ build:
 - run:
     command: docker build . -t ${image}
 </#if>
+# rpmbuild will complain if the archive has a unmappable UID. It was created
+# on the host, not the container.
 - run:
     command: docker run -v${target}:/target -v${target}/root/rpmbuild:/root/rpmbuild -w/target ${image} chown root:root /target/${capsula.redhat.packageName}-${version.version}.spec /target/root/rpmbuild/SOURCES/${capsula.redhat.packageName}-${version.version}.tar.gz 
+# build the package
 - run:
     command: docker run -v${target}:/target -v${target}/root/rpmbuild:/root/rpmbuild -w/target ${image} rpmbuild -ba ${capsula.redhat.packageName}-${version.version}.spec
+# change the permissions to super open so I can delete the build directories later
 - run:
     command: docker run -v${target}:/target -w/target ${image} chmod -R a+rwx .
 packages:
 - root/rpmbuild/RPMS/noarch/${capsula.redhat.packageName}-${version.version}-${version.releaseNumber}.noarch.rpm
-- root/rpmbuild/SRPMS/${capsula.redhat.packageName}-${version.version}-${version.releaseNumber}.src.rpm
+# the source package makes no sense (?!)
+#- root/rpmbuild/SRPMS/${capsula.redhat.packageName}-${version.version}-${version.releaseNumber}.src.rpm
 
