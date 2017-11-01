@@ -42,6 +42,11 @@ debian:
   - pkg: java8-runtime-headless
 # Version history of the package. Used for Debian changelogs.
 versions:
+- version: 0.1.2
+  release: 1
+  date: 2017-11-01T11:42:00+01:00
+  changes:
+  - Using DockerHub built images instead of building them.
 - version: 0.1.1
   release: 1
   date: 2017-10-31T21:10:00+01:00
@@ -62,7 +67,7 @@ versions:
 # Where to install what on the target system?
 install:
 - copy:
-    from: target/capsula-0.1.1-SNAPSHOT-jar-with-dependencies.jar
+    from: target/capsula-0.1.2-SNAPSHOT-jar-with-dependencies.jar
     to: /usr/share/capsula/capsula-jar-with-dependencies.jar
     owner: root
     group: root

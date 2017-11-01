@@ -23,9 +23,16 @@ prepare:
 - run:
     command: chmod a+rw root/rpmbuild/SOURCES/${capsula.redhat.packageName}-${version.version}.tar.gz 
 build:
-# build docker image
+# pull or build docker image
+<#if use_dockerhub>
+<#assign image = dockerhub_image>
+- run:
+    command: docker pull ${dockerhub_image}
+<#else>
+<#assign image = image_label>
 - run:
     command: docker build . -t ${image}
+</#if>
 - run:
     command: docker run -v${target}:/target -v${target}/root/rpmbuild:/root/rpmbuild -w/target ${image} chown root:root /target/${capsula.redhat.packageName}-${version.version}.spec /target/root/rpmbuild/SOURCES/${capsula.redhat.packageName}-${version.version}.tar.gz 
 - run:

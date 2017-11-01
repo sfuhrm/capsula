@@ -1,1 +1,4 @@
-image: centos_7_jpkg
+dockerhub_image: sfuhrm/capsula-centos-7
+dockerhub_url: https://hub.docker.com/r/sfuhrm/capsula-centos-7/
+image_label: capsula-centos-7
+use_dockerhub: true
