@@ -198,6 +198,7 @@ public class TargetBuilder implements Callable<TargetBuilder.Result> {
         for (String file : layout.getPackages()) {
             Path fromPath = getTargetPath().resolve(file);
             Path toPath = out.resolve(fromPath.getFileName());
+            log.info("Copying file {} to {}", fromPath, toPath);
             Files.copy(fromPath, toPath, StandardCopyOption.REPLACE_EXISTING);
         }
     }
