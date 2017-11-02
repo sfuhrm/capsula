@@ -158,8 +158,9 @@ public class TargetBuilder implements Callable<TargetBuilder.Result> {
      * Reads the layout, processes it as a template and parses it.
      *
      * @return the parsed layout file as an object.
+     * @throws IOException in case of an I/O problem.
      */
-    public Layout readLayout() throws IOException {
+    private Layout readLayout() throws IOException {
         ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
         Path layoutTmp = Files.createTempFile(tempRoot, "layout", ".yaml").toAbsolutePath();
         templateDelegate.template(LAYOUT_YAML, layoutTmp.toString(), Optional.empty());
@@ -174,8 +175,11 @@ public class TargetBuilder implements Callable<TargetBuilder.Result> {
 
     /**
      * Reads the environment from the file.
+     * @return the environment read from the {@link #ENVIRONMENT_YAML environment.yaml}
+     * file.
+     * @throws IOException in case of an I/O problem.
      */
-    public Map<String, Object> readEnvironment() throws IOException {
+    private Map<String, Object> readEnvironment() throws IOException {
         ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
         TypeReference<HashMap<String,Object>> typeRef
             = new TypeReference<HashMap<String,Object>>() {};
@@ -207,6 +211,11 @@ public class TargetBuilder implements Callable<TargetBuilder.Result> {
         }
     }
 
+    /** Copies the generated package files to the given path.
+     * @param out the path to copy the package files to.
+     * @see Layout#packages
+     * @throws IOException in case of an I/O problem.
+     */
     public void copyPackageFilesTo(Path out) throws IOException {
         Objects.requireNonNull(layout, "layout needs to be non-null");
         for (String file : layout.getPackages()) {
