@@ -155,6 +155,7 @@ Links that might be useful or not:
 ### Others
 * [Alpine package](https://wiki.alpinelinux.org/wiki/Creating_an_Alpine_package) guide.
 * [Slackware package](https://docs.slackware.com/howtos:slackware_admin:building_a_package) guide.
+* [Arch Linux build system](https://wiki.archlinux.org/index.php/Arch_Build_System).
 
 ## License
 
