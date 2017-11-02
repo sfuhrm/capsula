@@ -3,7 +3,7 @@ jdk:
   - openjdk8
   - oraclejdk8
   - oraclejdk9
-install: mvn install -Dgpg.skip
+#install: mvn install -Dgpg.skip
 jobs:
   include:
     # compile the sources
