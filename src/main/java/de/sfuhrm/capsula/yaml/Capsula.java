@@ -22,14 +22,11 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.MalformedURLException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
@@ -79,8 +76,9 @@ public class Capsula {
      */
     @Getter
     @NotNull
-    @URL
-    private String gitUrl;
+    @Valid
+    private GitRepository git;
+
     /**
      * Short summary what this project is.
      */
@@ -188,19 +186,6 @@ public class Capsula {
             int indexInverse = sameVersion.indexOf(versionWithChanges);
             int index = total - indexInverse - 1;
             versionWithChanges.setReleaseNumber(index);
-        }
-    }
-
-    /**
-     * Get the project directory name from the GIT URL.
-     */
-    public String getGitProject() throws MalformedURLException {
-        Pattern p = Pattern.compile(".*/([^/]*)\\.git");
-        Matcher m = p.matcher(getGitUrl());
-        if (m.matches()) {
-            return m.group(1);
-        } else {
-            throw new IllegalArgumentException("Can not determine got project from url '" + getGitUrl() + "'");
         }
     }
 }

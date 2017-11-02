@@ -17,7 +17,9 @@ license: GPL_20 # license the project is in
 targets: # which platforms to build an archive for
 - centos_7
 - debian_stretch
-gitUrl: https://github.com/sfuhrm/capsula.git
+git:
+  gitUrl: https://github.com/sfuhrm/capsula.git
+  branch: master
 redhat:
   group: Utilities/System
   relations:

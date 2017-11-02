@@ -6,12 +6,12 @@ prepare:
     to: Dockerfile
 # clone project
 - run:
-    command: git clone ${capsula.gitUrl}
+    command: git clone ${capsula.git.gitUrl} --branch ${capsula.git.branch}
 # remove .git files
 - run:
-    command: rm -fr ${capsula.gitProject}/.git ${capsula.gitProject}/.gitignore
+    command: rm -fr ${capsula.git.gitProject}/.git ${capsula.git.gitProject}/.gitignore
 - run:
-    command: mv ${capsula.gitProject} ${capsula.debian.packageName}_${version.version}
+    command: mv ${capsula.git.gitProject} ${capsula.debian.packageName}_${version.version}
 - run:
     command: tar -czvf ${target}/${capsula.debian.packageName}_${version.version}.orig.tar.gz ${capsula.debian.packageName}_${version.version}   
 - mkdir:

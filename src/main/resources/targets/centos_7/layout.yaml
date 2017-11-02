@@ -9,12 +9,12 @@ prepare:
     to: ${capsula.redhat.packageName}-${version.version}.spec
 # clone project
 - run:
-    command: git clone ${capsula.gitUrl}
+    command: git clone ${capsula.git.gitUrl} --branch ${capsula.git.branch}
 # remove .git files
 - run:
-    command: rm -fr ${capsula.gitProject}/.git ${capsula.gitProject}/.gitignore    
+    command: rm -fr ${capsula.git.gitProject}/.git ${capsula.git.gitProject}/.gitignore
 - run:
-    command: mv ${capsula.gitProject} ${capsula.redhat.packageName}-${version.version}
+    command: mv ${capsula.git.gitProject} ${capsula.redhat.packageName}-${version.version}
   # make rpm builder directorys (see https://wiki.centos.org/HowTos/SetupRpmBuildEnvironment)
 - run:
     command: mkdir -p root/rpmbuild/BUILD root/rpmbuild/RPMS root/rpmbuild/SOURCES root/rpmbuild/SRPMS   

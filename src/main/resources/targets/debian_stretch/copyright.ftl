@@ -1,7 +1,7 @@
 Format-Specification: http://svn.debian.org/wsvn/dep/web/deps/dep5.mdwn?op=file&rev=135
 Name: ${capsula.debian.packageName}
 Maintainer: ${capsula.maintainer.name} <${capsula.maintainer.email}>
-Source: ${capsula.gitUrl}
+Source: ${capsula.git.gitUrl}
 
 Copyright: 2017 ${capsula.author.name} <${capsula.author.email}>
 License: ${capsula.license.licenseName}
