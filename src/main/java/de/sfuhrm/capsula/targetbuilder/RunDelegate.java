@@ -19,6 +19,7 @@ package de.sfuhrm.capsula.targetbuilder;
 
 import de.sfuhrm.capsula.yaml.command.RunCommand;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.Objects;
 import lombok.extern.slf4j.Slf4j;
@@ -38,16 +39,34 @@ class RunDelegate extends AbstractDelegate {
 
     public void run(RunCommand command) throws IOException {
         try {
-            MDC.put("cmd", command.getCommand());
             Objects.requireNonNull(command.getCommand(), "command is null");
             String[] cmdArray = command.getCommand().split(" ");
+            MDC.put("cmd", cmdArray[0]);
             String cmdString = Arrays.toString(cmdArray);
             ProcessBuilder builder = new ProcessBuilder(cmdArray);
             log.info("Starting command {}", command.getCommand());
+
             Process process = builder
                     .directory(getTargetBuilder().getTargetPath().toFile())
-                    .inheritIO()
+                    .redirectError(ProcessBuilder.Redirect.PIPE)
+                    .redirectOutput(ProcessBuilder.Redirect.PIPE)
                     .start();
+
+            InputStreamConsumer stdin = new InputStreamConsumer(
+                    process.getInputStream(),
+                    line -> {log.info(line);},
+                    Charset.forName("UTF-8"));
+
+            InputStreamConsumer stderr = new InputStreamConsumer(
+                    process.getErrorStream(),
+                    line -> {log.warn(line);},
+                    Charset.forName("UTF-8"));
+
+            Thread stdinThread = new Thread(stdin);
+            stdinThread.start();
+            Thread stderrThread = new Thread(stderr);
+            stderrThread.start();
+
             log.debug("Waiting for cmd {}", cmdString);
             process.waitFor();
             log.debug("Finished waiting for cmd {}", cmdString);
@@ -62,5 +81,9 @@ class RunDelegate extends AbstractDelegate {
         catch (InterruptedException ex) {
             throw new BuildException(command.getCommand(), ex);
         }
+        finally {
+            MDC.remove("cmd");
+        }
     }
+
 }
