@@ -17,6 +17,7 @@
  */
 package de.sfuhrm.capsula.targetbuilder;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import de.sfuhrm.capsula.Stage;
@@ -174,11 +175,14 @@ public class TargetBuilder implements Callable<TargetBuilder.Result> {
     /**
      * Reads the environment from the file.
      */
-    public Map<String, String> readEnvironment() throws IOException {
+    public Map<String, Object> readEnvironment() throws IOException {
         ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
+        TypeReference<HashMap<String,Object>> typeRef
+            = new TypeReference<HashMap<String,Object>>() {};
+
         Path environmentTmp = Files.createTempFile(tempRoot, "environment", ".yaml").toAbsolutePath();
         templateDelegate.template(ENVIRONMENT_YAML, environmentTmp.toString(), Optional.empty());
-        Map<String, String> env = mapper.readValue(environmentTmp.toFile(), Map.class);
+        Map<String, Object> env = mapper.readValue(environmentTmp.toFile(), typeRef);
         return env;
     }
 
