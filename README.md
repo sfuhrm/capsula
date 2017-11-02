@@ -11,6 +11,12 @@ Linux platforms supported:
 * [Fedora](https://www.centos.org/)-derived systems: Fedora, CentOS.
 * and many more to come.
 
+### Downloading & installation
+
+The current version can be downloaded for Debian and Fedora derived systems here:
+
+https://github.com/sfuhrm/capsula/releases
+
 ### Sample session for building
 
 The following video shows building a Debian and a Fedora package from the examples.
