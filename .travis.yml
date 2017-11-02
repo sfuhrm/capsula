@@ -7,6 +7,9 @@ jdk:
   - oraclejdk8
   - oraclejdk9
 #install: mvn install -Dgpg.skip
+#
+# Build stages Beta.
+# See: https://docs.travis-ci.com/user/build-stages/
 jobs:
   include:
     # compile the sources
