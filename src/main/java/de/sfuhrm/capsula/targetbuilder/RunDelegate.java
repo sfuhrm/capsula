@@ -62,9 +62,11 @@ class RunDelegate extends AbstractDelegate {
                     line -> {log.warn(line);},
                     Charset.forName("UTF-8"));
 
-            Thread stdinThread = new Thread(stdin);
+            Thread stdinThread = new Thread(stdin,
+                    getTargetBuilder().getTargetName() + "-stdin");
             stdinThread.start();
-            Thread stderrThread = new Thread(stderr);
+            Thread stderrThread = new Thread(stderr,
+                    getTargetBuilder().getTargetName() + "-stderr");
             stderrThread.start();
 
             log.debug("Waiting for cmd {}", cmdString);

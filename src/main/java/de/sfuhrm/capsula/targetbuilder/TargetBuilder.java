@@ -114,6 +114,7 @@ public class TargetBuilder implements Callable<TargetBuilder.Result> {
     /**
      * The name of the target.
      */
+    @Getter
     private final String targetName;
 
     /** Stop processing after this stage. */
