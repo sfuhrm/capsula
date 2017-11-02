@@ -47,7 +47,10 @@ class TemplateDelegate extends AbstractDelegate {
     public TemplateDelegate(TargetBuilder targetBuilder) throws IOException {
         super(targetBuilder);
         cfg = new Configuration(Configuration.VERSION_2_3_23);
-        cfg.setDirectoryForTemplateLoading(targetBuilder.getLayoutDirectory().toFile());
+        cfg.setDirectoryForTemplateLoading(targetBuilder
+                .getLayoutDirectory()
+                .toAbsolutePath()
+                .toFile());
         cfg.setDefaultEncoding("UTF-8");
         cfg.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
         cfg.setLogTemplateExceptions(false);
