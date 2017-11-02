@@ -73,3 +73,12 @@ ${entry.run.command}
 ${entry.copy.to}
 </#if>
 </#list>
+
+<#-- https://docs-old.fedoraproject.org/en-US/Fedora_Draft_Documentation/0.1/html/Packagers_Guide/chap-Packagers_Guide-Spec_File_Reference-Preamble.html -->
+%changelog
+<#list capsula.versions as version>
+* ${version.date?string('EEE MMM dd yyyy')} ${capsula.maintainer.name} <${capsula.maintainer.email}> (${version.version}-${version.releaseNumber})
+<#list version.changes as change>
+- ${change}
+</#list>
+</#list>
