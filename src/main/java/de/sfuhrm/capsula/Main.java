@@ -89,8 +89,8 @@ public class Main {
 
 
         Path myBuildDir = params.getBuildDirectory() != null ?
-                params.getBuildDirectory() :
-                Files.createTempDirectory("capsula");
+                params.getBuildDirectory().toAbsolutePath() :
+                Files.createTempDirectory("capsula").toAbsolutePath();
         final TargetLocator targetLocator = new TargetLocator();
         if (params.isListTargets()) {
             System.out.println(targetLocator.getTargets());

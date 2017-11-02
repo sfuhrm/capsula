@@ -160,7 +160,7 @@ public class TargetBuilder implements Callable<TargetBuilder.Result> {
      */
     public Layout readLayout() throws IOException {
         ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
-        Path layoutTmp = Files.createTempFile(tempRoot, "layout", ".yaml");
+        Path layoutTmp = Files.createTempFile(tempRoot, "layout", ".yaml").toAbsolutePath();
         templateDelegate.template(LAYOUT_YAML, layoutTmp.toString(), Optional.empty());
         Layout myLayout = mapper.readValue(layoutTmp.toFile(), Layout.class);
         ValidationDelegate validationDelegate = new ValidationDelegate();
@@ -176,7 +176,7 @@ public class TargetBuilder implements Callable<TargetBuilder.Result> {
      */
     public Map<String, String> readEnvironment() throws IOException {
         ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
-        Path environmentTmp = Files.createTempFile(tempRoot, "environment", ".yaml");
+        Path environmentTmp = Files.createTempFile(tempRoot, "environment", ".yaml").toAbsolutePath();
         templateDelegate.template(ENVIRONMENT_YAML, environmentTmp.toString(), Optional.empty());
         Map<String, String> env = mapper.readValue(environmentTmp.toFile(), Map.class);
         return env;
