@@ -115,8 +115,8 @@ public class TargetBuilder implements Callable<TargetBuilder.Result> {
      * The name of the target.
      */
     private final String targetName;
-    private Path layoutTmp;
-    private Path environmentTmp;
+
+    /** Stop processing after this stage. */
     private Stage stopAfter;
 
     /**
@@ -157,7 +157,7 @@ public class TargetBuilder implements Callable<TargetBuilder.Result> {
      */
     public Layout readLayout() throws IOException {
         ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
-        layoutTmp = Files.createTempFile(tempRoot, "layout", ".yaml");
+        Path layoutTmp = Files.createTempFile(tempRoot, "layout", ".yaml");
         templateDelegate.template(LAYOUT_YAML, layoutTmp.toString(), Optional.empty());
         Layout myLayout = mapper.readValue(layoutTmp.toFile(), Layout.class);
         ValidationDelegate validationDelegate = new ValidationDelegate();
@@ -173,7 +173,7 @@ public class TargetBuilder implements Callable<TargetBuilder.Result> {
      */
     public Map<String, String> readEnvironment() throws IOException {
         ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
-        environmentTmp = Files.createTempFile(tempRoot, "environment", ".yaml");
+        Path environmentTmp = Files.createTempFile(tempRoot, "environment", ".yaml");
         templateDelegate.template(ENVIRONMENT_YAML, environmentTmp.toString(), Optional.empty());
         Map<String, String> env = mapper.readValue(environmentTmp.toFile(), Map.class);
         return env;
