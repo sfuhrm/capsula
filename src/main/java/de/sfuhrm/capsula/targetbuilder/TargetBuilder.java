@@ -196,7 +196,7 @@ public class TargetBuilder implements Callable<TargetBuilder.Result> {
         environment.put("source", layoutDirectory);
         environment.put("target", targetPath);
         try {
-            Map<String, String> fileEnv = readEnvironment();
+            Map<String, Object> fileEnv = readEnvironment();
             environment.putAll(fileEnv);
         }
         catch (FileNotFoundException ex) {
