@@ -274,7 +274,7 @@ public class TargetBuilder implements Callable<TargetBuilder.Result> {
         }
     }
 
-    static class Result {
+    public static class Result {
 
         @Getter
         @Setter(AccessLevel.PRIVATE)
