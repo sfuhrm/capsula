@@ -111,7 +111,7 @@ the unmet dependencies need to be fetched:
 
 The following TODOs are open programming tasks as known for today:
 
-[https://github.com/sfuhrm/capsula/issues](Github issues for Capsula project)
+[Github issues for Capsula project](https://github.com/sfuhrm/capsula/issues)
 
 ## Milestones
 
