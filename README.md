@@ -96,7 +96,7 @@ package index. This can be done in one run:
 
 Latest Debian:
 
-    docker run -v$PWD/out:/out debian /bin/bash -c "apt-get update; apt-get install /out/$(cd out;ls *_all.deb)"
+    docker run -v$PWD/out:/out debian /bin/bash -c "apt-get update; apt-get install -y --no-install-recommends /out/$(cd out;ls *_all.deb)"
 
 Debian Jessie is more complicated. First the index needs to be loaded, then the package needs to be installed and then
 the unmet dependencies need to be fetched:
