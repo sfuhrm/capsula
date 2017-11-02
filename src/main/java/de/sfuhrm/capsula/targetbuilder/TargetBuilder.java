@@ -221,7 +221,7 @@ public class TargetBuilder implements Callable<TargetBuilder.Result> {
             if (stopAfter.compareTo(Stage.PREPARE) >= 0) {
                 log.debug("Stage entered: {}", Stage.PREPARE);
                 for (Command cmd : layout.getPrepare()) {
-                    execute(cmd, layout.getPrepare().indexOf(cmd));
+                    execute(cmd, "p" + layout.getPrepare().indexOf(cmd));
                 }
                 log.debug("Stage passed: {}", Stage.PREPARE);
             }
@@ -229,7 +229,7 @@ public class TargetBuilder implements Callable<TargetBuilder.Result> {
             if (stopAfter.compareTo(Stage.BUILD) >= 0) {
                 log.debug("Stage entered: {}", Stage.BUILD);
                 for (Command cmd : layout.getBuild()) {
-                    execute(cmd, layout.getBuild().indexOf(cmd));
+                    execute(cmd, "b" + layout.getBuild().indexOf(cmd));
                 }
                 log.debug("Stage passed: {}", Stage.BUILD);
             }
@@ -243,8 +243,8 @@ public class TargetBuilder implements Callable<TargetBuilder.Result> {
 
     /** Executes the given command.
      */
-    private void execute(final Command cmd, final int commandIndex) throws IOException {
-        MDC.put("cmdIdx", commandIndex);
+    private void execute(final Command cmd, final String commandId) throws IOException {
+        MDC.put("cmdId", commandId);
         try {
             if (cmd.getCopy() != null) {
                 CopyDelegate delegate = new CopyDelegate(this);
@@ -263,7 +263,7 @@ public class TargetBuilder implements Callable<TargetBuilder.Result> {
                 delegate.mkdir(cmd.getMkdir());
             }
         } finally {
-            MDC.remove("cmdIdx");
+            MDC.remove("cmdId");
         }
     }
 
