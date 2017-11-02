@@ -75,7 +75,8 @@ public final class TargetLocator {
      * @throws IOException if an IO problem occurs.
      */
     public Path extractTargetToTmp(final Path tempParent, final String target) throws IOException {
-        Path targetPath = Files.createTempDirectory(tempParent, target).toAbsolutePath();
+        Path targetPath = Files.createTempDirectory(
+                tempParent, target + "-layout").toAbsolutePath();
         log.debug("Target {} will be extracted to {}", target, targetPath);
         Set<String> targets = getTargets();
         log.debug("Targets in classpath: {}", targets);

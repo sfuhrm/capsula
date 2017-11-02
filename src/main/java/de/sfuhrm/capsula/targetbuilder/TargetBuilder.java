@@ -79,7 +79,8 @@ public class TargetBuilder implements Callable<TargetBuilder.Result> {
      * <li> capsula: the object from the config file
      * <li> version: the first version from the config file ("this" version)
      * <li> source: the layout directory
-     * <li> target: the target directory where the build is performed
+     * <li> target: the target directory where the build is performed.
+     * <li> layout: the layout config file
      * <li> ... and everything from <code>environment.yaml</code>
      * </ul>
      */
@@ -145,7 +146,8 @@ public class TargetBuilder implements Callable<TargetBuilder.Result> {
         if (!Files.isRegularFile(layoutFilePath)) {
             throw new IllegalStateException(layoutFilePath + " is not a file");
         }
-        targetPath = Files.createTempDirectory(tempRoot, this.targetName).toAbsolutePath();
+        targetPath = Files.createTempDirectory(tempRoot,
+                this.targetName + "-build").toAbsolutePath();
         log.debug("Target path is {}", targetPath);
         templateDelegate = new TemplateDelegate(this);
         this.stopAfter = Objects.requireNonNull(stopAfter, "stopAfter");
