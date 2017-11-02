@@ -12,7 +12,7 @@ longDescription: # long description of package content
 - ""
 - Current supported Linux distributions are
 - debian_stretch
-homepage: http://github.com/sfuhrm # homepage of the project
+homepage: http://github.com/sfuhrm/capsula # homepage of the project
 license: GPL_20 # license the project is in
 targets: # which platforms to build an archive for
 - centos_7
