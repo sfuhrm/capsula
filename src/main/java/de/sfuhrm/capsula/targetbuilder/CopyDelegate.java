@@ -41,28 +41,33 @@ class CopyDelegate extends AbstractDelegate {
     public void copy(CopyCommand command) {
         MDC.put("from", command.getFrom());
         MDC.put("to", command.getTo());
-        Objects.requireNonNull(command.getFrom(), "from is null");
-        Objects.requireNonNull(command.getTo(), "to is null");
-        Path fromPath = getTargetBuilder().getLayoutDirectory().resolve(command.getFrom());
-        Path toPath = getTargetBuilder().getTargetPath().resolve(command.getTo());
-        log.info("Copying {} to {}", command.getFrom(), command.getTo());
-        log.debug("Copying path {} to {}", fromPath, toPath);
-        if (!Files.exists(fromPath)) {
-            throw new BuildException("Source does not exist: " + fromPath);
-        }
-        if (!fromPath.startsWith(getTargetBuilder().getLayoutDirectory())) {
-            throw new BuildException("Source is not within layout directory: " + fromPath);
-        }
-        if (Files.exists(toPath)) {
-            throw new BuildException("Target does exist: " + toPath);
-        }
-        if (!toPath.startsWith(getTargetBuilder().getTargetPath())) {
-            throw new BuildException("Target is not within target directory: " + toPath);
-        }
-        if (Files.isDirectory(fromPath) || Files.isRegularFile(fromPath)) {
-            copyRecursive(fromPath, toPath, command);
-        } else {
-            throw new BuildException("Unknown file type: " + fromPath);
+        try {
+            Objects.requireNonNull(command.getFrom(), "from is null");
+            Objects.requireNonNull(command.getTo(), "to is null");
+            Path fromPath = getTargetBuilder().getLayoutDirectory().resolve(command.getFrom());
+            Path toPath = getTargetBuilder().getTargetPath().resolve(command.getTo());
+            log.info("Copying {} to {}", command.getFrom(), command.getTo());
+            log.debug("Copying path {} to {}", fromPath, toPath);
+            if (!Files.exists(fromPath)) {
+                throw new BuildException("Source does not exist: " + fromPath);
+            }
+            if (!fromPath.startsWith(getTargetBuilder().getLayoutDirectory())) {
+                throw new BuildException("Source is not within layout directory: " + fromPath);
+            }
+            if (Files.exists(toPath)) {
+                throw new BuildException("Target does exist: " + toPath);
+            }
+            if (!toPath.startsWith(getTargetBuilder().getTargetPath())) {
+                throw new BuildException("Target is not within target directory: " + toPath);
+            }
+            if (Files.isDirectory(fromPath) || Files.isRegularFile(fromPath)) {
+                copyRecursive(fromPath, toPath, command);
+            } else {
+                throw new BuildException("Unknown file type: " + fromPath);
+            }
+        } finally {
+            MDC.remove("from");
+            MDC.remove("to");
         }
     }
 

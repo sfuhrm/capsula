@@ -214,26 +214,30 @@ public class TargetBuilder implements Callable<TargetBuilder.Result> {
     public Result call() throws Exception {
         initEnvironment();
         layout = readLayout(); // must be AFTER initEnvironment()
-        MDC.put("layout", layout.getName());
-        environment.put("layout", layout);
-        if (stopAfter.compareTo(Stage.PREPARE) >= 0) {
-            log.debug("Stage entered: {}", Stage.PREPARE);
-            for (Command cmd : layout.getPrepare()) {
-                execute(cmd);
+        Result result;
+        try {
+            MDC.put("layout", layout.getName());
+            environment.put("layout", layout);
+            if (stopAfter.compareTo(Stage.PREPARE) >= 0) {
+                log.debug("Stage entered: {}", Stage.PREPARE);
+                for (Command cmd : layout.getPrepare()) {
+                    execute(cmd);
+                }
+                log.debug("Stage passed: {}", Stage.PREPARE);
             }
-            log.debug("Stage passed: {}", Stage.PREPARE);
-        }
 
-        if (stopAfter.compareTo(Stage.BUILD) >= 0) {
-            log.debug("Stage entered: {}", Stage.BUILD);
-            for (Command cmd : layout.getBuild()) {
-                execute(cmd);
+            if (stopAfter.compareTo(Stage.BUILD) >= 0) {
+                log.debug("Stage entered: {}", Stage.BUILD);
+                for (Command cmd : layout.getBuild()) {
+                    execute(cmd);
+                }
+                log.debug("Stage passed: {}", Stage.BUILD);
             }
-            log.debug("Stage passed: {}", Stage.BUILD);
+            result = new Result();
+            result.setSuccess(true); // TBD never used?
+        } finally {
+            MDC.remove("layout");
         }
-        MDC.remove("layout");
-        Result result = new Result();
-        result.setSuccess(true); // TBD never used?
         return result;
     }
 

@@ -55,6 +55,9 @@ class MkdirDelegate extends AbstractDelegate {
         catch (IOException ex) {
             throw new BuildException("Problem in mkdir", ex);
         }
+        finally {
+            MDC.remove("to");
+        }
     }
 
     private void mkdirs(Path p, Path targetPath, MkdirCommand command) throws IOException {

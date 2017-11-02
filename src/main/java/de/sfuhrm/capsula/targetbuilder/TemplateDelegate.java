@@ -73,7 +73,12 @@ class TemplateDelegate extends AbstractDelegate {
             }
         }
         catch (TemplateException ex) {
+            log.error("Template exception", ex);
             throw new BuildException("Template problem for " + from, ex);
+        }
+        finally {
+            MDC.remove("from");
+            MDC.remove("to");
         }
     }
 }
