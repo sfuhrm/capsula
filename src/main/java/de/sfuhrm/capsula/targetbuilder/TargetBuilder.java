@@ -147,8 +147,8 @@ public class TargetBuilder implements Callable<TargetBuilder.Result> {
         if (!Files.isRegularFile(layoutFilePath)) {
             throw new IllegalStateException(layoutFilePath + " is not a file");
         }
-        targetPath = Files.createTempDirectory(tempRoot,
-                this.targetName + "-build").toAbsolutePath();
+        targetPath = Files.createDirectory(
+                tempRoot.resolve(this.targetName + "-build")).toAbsolutePath();
         log.debug("Target path is {}", targetPath);
         templateDelegate = new TemplateDelegate(this);
         this.stopAfter = Objects.requireNonNull(stopAfter, "stopAfter");
