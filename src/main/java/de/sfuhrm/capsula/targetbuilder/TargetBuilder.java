@@ -221,7 +221,7 @@ public class TargetBuilder implements Callable<TargetBuilder.Result> {
             if (stopAfter.compareTo(Stage.PREPARE) >= 0) {
                 log.debug("Stage entered: {}", Stage.PREPARE);
                 for (Command cmd : layout.getPrepare()) {
-                    execute(cmd);
+                    execute(cmd, layout.getPrepare().indexOf(cmd));
                 }
                 log.debug("Stage passed: {}", Stage.PREPARE);
             }
@@ -229,7 +229,7 @@ public class TargetBuilder implements Callable<TargetBuilder.Result> {
             if (stopAfter.compareTo(Stage.BUILD) >= 0) {
                 log.debug("Stage entered: {}", Stage.BUILD);
                 for (Command cmd : layout.getBuild()) {
-                    execute(cmd);
+                    execute(cmd, layout.getBuild().indexOf(cmd));
                 }
                 log.debug("Stage passed: {}", Stage.BUILD);
             }
@@ -243,22 +243,27 @@ public class TargetBuilder implements Callable<TargetBuilder.Result> {
 
     /** Executes the given command.
      */
-    private void execute(final Command cmd) throws IOException {
-        if (cmd.getCopy() != null) {
-            CopyDelegate delegate = new CopyDelegate(this);
-            delegate.copy(cmd.getCopy());
-        }
-        if (cmd.getTemplate() != null) {
-            TemplateDelegate delegate = templateDelegate;
-            delegate.template(cmd.getTemplate().getFrom(), cmd.getTemplate().getTo(), Optional.of(cmd.getTemplate()));
-        }
-        if (cmd.getRun() != null) {
-            RunDelegate delegate = new RunDelegate(this);
-            delegate.run(cmd.getRun());
-        }
-        if (cmd.getMkdir() != null) {
-            MkdirDelegate delegate = new MkdirDelegate(this);
-            delegate.mkdir(cmd.getMkdir());
+    private void execute(final Command cmd, final int commandIndex) throws IOException {
+        MDC.put("cmdIdx", commandIndex);
+        try {
+            if (cmd.getCopy() != null) {
+                CopyDelegate delegate = new CopyDelegate(this);
+                delegate.copy(cmd.getCopy());
+            }
+            if (cmd.getTemplate() != null) {
+                TemplateDelegate delegate = templateDelegate;
+                delegate.template(cmd.getTemplate().getFrom(), cmd.getTemplate().getTo(), Optional.of(cmd.getTemplate()));
+            }
+            if (cmd.getRun() != null) {
+                RunDelegate delegate = new RunDelegate(this);
+                delegate.run(cmd.getRun());
+            }
+            if (cmd.getMkdir() != null) {
+                MkdirDelegate delegate = new MkdirDelegate(this);
+                delegate.mkdir(cmd.getMkdir());
+            }
+        } finally {
+            MDC.remove("cmdIdx");
         }
     }
 
