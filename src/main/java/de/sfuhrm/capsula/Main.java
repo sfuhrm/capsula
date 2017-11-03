@@ -73,7 +73,7 @@ public class Main {
     }
 
     public Optional<Capsula> readAndValidateDescriptor() throws IOException {
-            log.debug("Stage entered: {}", Stage.READ_DESCRIPTOR);
+        log.debug("Stage entered: {}", Stage.READ_DESCRIPTOR);
         final Capsula build = readDescriptor();
         ValidationDelegate validationDelegate = new ValidationDelegate();
         Set<ConstraintViolation<Capsula>> constraintViolations = validationDelegate.validate(build);
@@ -113,8 +113,8 @@ public class Main {
     }
 
     /** Delete temporary directory. */
-    private static void cleanup(final Params params1, Path myBuildDir) {
-        if (!params1.isDebug() && params1.getStopAfter().compareTo(Stage.CLEANUP) >= 0) {
+    private void cleanup(Path myBuildDir) {
+        if (!params.isDebug() && params.getStopAfter().compareTo(Stage.CLEANUP) >= 0) {
             log.debug("Stage entered: {}", Stage.CLEANUP);
             FileUtils.deleteRecursive(myBuildDir);
             log.debug("Stage passed: {}", Stage.CLEANUP);
@@ -151,6 +151,6 @@ public class Main {
                 );
 
         log.debug("Cleaning up");
-        cleanup(params, myBuildDir);
+        main.cleanup(myBuildDir);
     }
 }
