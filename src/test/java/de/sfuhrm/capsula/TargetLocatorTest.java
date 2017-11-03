@@ -42,7 +42,7 @@ public class TargetLocatorTest {
         TargetLocator locator = new TargetLocator();
         Set<String> targets = locator.getTargets();
         // this needs to be adjusted when adding more targets
-        assertEquals(new HashSet<String>(Arrays.asList(CENTOS_7, "debian_stretch")), targets);
+        assertEquals(new HashSet<>(Arrays.asList(CENTOS_7, "debian_stretch")), targets);
     }
 
     @Test
