@@ -37,9 +37,9 @@ fed to a Docker container which builds the package.
 
 The requirements are:
 
-* [Java 8+](http://www.oracle.com/technetwork/java/index.html) runtime
-* [Docker](https://www.docker.com/) installation
-* Git command line client
+* [Java 8+](http://www.oracle.com/technetwork/java/index.html) runtime.
+* [Docker](https://www.docker.com/) installation. The free Docker CE (Community Edition) is sufficient.
+* Git command line client.
 
 Capsula requires a running *Docker* installation on the host. Docker is used for each
 platform to create a package. The package creation tools are usually only available on
