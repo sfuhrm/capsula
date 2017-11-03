@@ -20,15 +20,16 @@ jobs:
     - stage: smoketest
       script:
       # just validate the descriptor
-      - java -jar target/capsula-$VERSION-jar-with-dependencies.jar -c -f capsula.yaml -o out
-      # build templates
-      - java -jar target/capsula-$VERSION-jar-with-dependencies.jar -f capsula.yaml -o out -stop-after PREPARE
+      - java -jar target/capsula-$VERSION-jar-with-dependencies.jar -c -f $DESCRIPTOR -o out
       # read descriptor, google-java-format
-      - java -jar target/capsula-$VERSION-jar-with-dependencies.jar -f examples/google-java-format.yaml -o out -stop-after READ_DESCRIPTOR
+      - java -jar target/capsula-$VERSION-jar-with-dependencies.jar -f $DESCRIPTOR -o out -stop-after READ_DESCRIPTOR
       # build templates, google-java-format
-      - java -jar target/capsula-$VERSION-jar-with-dependencies.jar -f examples/google-java-format.yaml -o out -stop-after PREPARE
+      - java -jar target/capsula-$VERSION-jar-with-dependencies.jar -f $DESCRIPTOR -o out -stop-after PREPARE
       # build templates, google-java-format, this time parallel
-      - java -jar target/capsula-$VERSION-jar-with-dependencies.jar -f examples/google-java-format.yaml -o out -parallel -stop-after PREPARE
+      - java -jar target/capsula-$VERSION-jar-with-dependencies.jar -f $DESCRIPTOR -o out -parallel -stop-after PREPARE
+      env:
+      - DESCRIPTOR=capsula.yaml
+      - DESCRIPTOR=examples/google-java-format.yaml
     # Release on GitHub, see https://docs.travis-ci.com/user/build-stages/deploy-github-releases/
     - stage: GitHub Release
       script: echo "Deploying to GitHub releases ..."
