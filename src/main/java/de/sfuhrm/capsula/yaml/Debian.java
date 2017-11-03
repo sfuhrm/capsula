@@ -50,4 +50,24 @@ public class Debian extends Distribution {
     @Getter
     @NotNull
     private Architecture architecture;
+
+    /**
+     * @see https://www.debian.org/doc/manuals/developers-reference/ch05.en.html#distribution
+     */
+    @Getter
+    @NotNull
+    private String distribution = "unstable";
+
+    enum Urgency {
+        high,
+        medium,
+        low;
+    };
+
+    /**
+     * @see https://www.debian.org/doc/manuals/developers-reference/ch05.en.html
+     */
+    @Getter
+    @NotNull
+    private Urgency urgency = Urgency.medium;
 }
