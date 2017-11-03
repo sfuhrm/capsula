@@ -15,11 +15,20 @@ jobs:
     # compile the sources
     - stage: compile
       script: mvn clean install -Dgpg.skip
-    # this will start doing an archive for itself but stop after expanding the templates
+    # This will run certain combinations of parameters and configs.
+    # Note that it because of missing docker it can only run to the stage PREPARE.
     - stage: smoketest
       script:
+      # just validate the descriptor
+      - java -jar target/capsula-$VERSION-jar-with-dependencies.jar -c -f capsula.yaml -o out
+      # build templates
       - java -jar target/capsula-$VERSION-jar-with-dependencies.jar -f capsula.yaml -o out -stop-after PREPARE
+      # read descriptor, google-java-format
+      - java -jar target/capsula-$VERSION-jar-with-dependencies.jar -f examples/google-java-format.yaml -o out -stop-after READ_DESCRIPTOR
+      # build templates, google-java-format
       - java -jar target/capsula-$VERSION-jar-with-dependencies.jar -f examples/google-java-format.yaml -o out -stop-after PREPARE
+      # build templates, google-java-format, this time parallel
+      - java -jar target/capsula-$VERSION-jar-with-dependencies.jar -f examples/google-java-format.yaml -o out -parallel -stop-after PREPARE
     # Release on GitHub, see https://docs.travis-ci.com/user/build-stages/deploy-github-releases/
     - stage: GitHub Release
       script: echo "Deploying to GitHub releases ..."
