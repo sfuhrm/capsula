@@ -33,7 +33,7 @@ import org.junit.Test;
  *
  * @author Stephan Fuhrmann
  */
-public class TargetLocatorTest {
+public class TargetLocatorIntegration {
 
     public String CENTOS_7 = "centos_7";
 
