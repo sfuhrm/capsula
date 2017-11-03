@@ -18,9 +18,13 @@
 package de.sfuhrm.capsula;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 import static org.junit.Assert.*;
 import org.junit.Test;
 
@@ -31,11 +35,34 @@ import org.junit.Test;
  */
 public class TargetLocatorTest {
 
+    public String CENTOS_7 = "centos_7";
+
     @Test
     public void testGetTargets() throws IOException {
         TargetLocator locator = new TargetLocator();
         Set<String> targets = locator.getTargets();
         // this needs to be adjusted when adding more targets
-        assertEquals(new HashSet<String>(Arrays.asList("centos_7", "debian_stretch")), targets);
+        assertEquals(new HashSet<String>(Arrays.asList(CENTOS_7, "debian_stretch")), targets);
+    }
+
+    @Test
+    public void testExtractTargetToTmp() throws IOException {
+        Path tmp = null;
+        try {
+            tmp = Files.createTempDirectory("targetlocatortest");
+            TargetLocator locator = new TargetLocator();
+            locator.extractTargetToTmp(tmp, CENTOS_7);
+
+            List<Path> paths = Files.walk(tmp)
+                    .filter(p -> Files.isRegularFile(p))
+                    .collect(Collectors.toList());
+
+            // at the moment there are 4 files in the centos_7 folder
+            assertEquals(4, paths.size());
+        } finally {
+            if (tmp != null) {
+                FileUtils.deleteRecursive(tmp);
+            }
+        }
     }
 }
