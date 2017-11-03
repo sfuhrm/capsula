@@ -23,11 +23,11 @@ The following video shows building a Debian and a Fedora package from the exampl
 
 [![Building a tool sample video](https://raw.githubusercontent.com/sfuhrm/capsula/master/images/Youtube.png)](https://www.youtube.com/watch?v=Dbo7BumrZ3A)
 
-### The Capsula process
+### Process overview
 
 The process is described in the following picture:
 
-![Capsula Process](https://raw.githubusercontent.com/sfuhrm/capsula/master/images/Capsula-Process-SF-1.png "Capsula Process")
+![Process overview](https://raw.githubusercontent.com/sfuhrm/capsula/master/images/Capsula-Process-SF-1.png "Capsula Process")
 
 The descriptor file is generic. For each target platform, the descriptor is used together with distribution
 dependant templates to build a distribution specific package descriptor. The package definition is then
@@ -52,6 +52,10 @@ Capsula is easily extensible because it uses a simple templating approach per pl
 
 The project is at the moment **experimental**. 
 It can build simple packages for Debian and Fedora like distributions.
+The [packages](https://github.com/sfuhrm/capsula/releases) are built with
+the software.
+
+The format of the descriptor file **will** change until version v1.0.0.
 
 Releasing the project at this stage is to enable other people
 to participate.
