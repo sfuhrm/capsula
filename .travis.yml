@@ -28,8 +28,8 @@ jobs:
       # build templates, google-java-format, this time parallel
       - java -jar target/capsula-$VERSION-jar-with-dependencies.jar -f $DESCRIPTOR -o out -parallel -stop-after PREPARE
       env:
-      - DESCRIPTOR=capsula.yaml
-      - DESCRIPTOR=examples/google-java-format.yaml
+        - DESCRIPTOR=capsula.yaml
+        - DESCRIPTOR=examples/google-java-format.yaml
     # Release on GitHub, see https://docs.travis-ci.com/user/build-stages/deploy-github-releases/
     - stage: GitHub Release
       script: echo "Deploying to GitHub releases ..."
