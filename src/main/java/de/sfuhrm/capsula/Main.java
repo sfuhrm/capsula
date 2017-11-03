@@ -27,6 +27,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
 import javax.validation.ConstraintViolation;
@@ -43,9 +44,11 @@ import org.xml.sax.SAXException;
 public class Main {
 
     private final Params params;
+    private final TargetLocator targetLocator;
 
     public Main(final Params myParams) {
         this.params = Objects.requireNonNull(myParams);
+        this.targetLocator = new TargetLocator();
     }
 
     /**
@@ -69,72 +72,85 @@ public class Main {
         return build;
     }
 
-    public static void main(final String[] args) throws IOException, JAXBException, SAXException {
-        final Params params = Params.parse(args);
-        if (params == null) {
-            return;
-        }
-        final Main main = new Main(params);
-        log.debug("Stage entered: {}", Stage.READ_DESCRIPTOR);
-        final Capsula build = main.readDescriptor();
+    public Optional<Capsula> readAndValidateDescriptor() throws IOException {
+            log.debug("Stage entered: {}", Stage.READ_DESCRIPTOR);
+        final Capsula build = readDescriptor();
         ValidationDelegate validationDelegate = new ValidationDelegate();
         Set<ConstraintViolation<Capsula>> constraintViolations = validationDelegate.validate(build);
         if (!constraintViolations.isEmpty() || params.isValidate()) {
             if (constraintViolations.isEmpty()) {
                 System.err.println("YAML descriptor contains no errors.");
             }
-            return;
+            return Optional.empty();
         }
         log.debug("Stage passed: {}", Stage.READ_DESCRIPTOR);
+        return Optional.of(build);
+    }
 
+    /** Build for one target. */
+    private void buildTarget(String target, Capsula build, Path myBuildDir) throws BuildException {
+        try {
+            log.debug("Target {}", target);
+            final Path targetPath = targetLocator.extractTargetToTmp(myBuildDir, target);
+            TargetBuilder builder = new TargetBuilder(build, myBuildDir, target, targetPath, params.getStopAfter());
+            try {
+                builder.call();
+                if (params.getStopAfter().compareTo(Stage.COPY_RESULT) >= 0) {
+                    log.debug("Stage entered: {}", Stage.COPY_RESULT);
+                    builder.copyPackageFilesTo(params.getOut());
+                    log.debug("Stage passed: {}", Stage.COPY_RESULT);
+                }
+            }
+            finally {
+                if (params.isDebug()) {
+                    System.err.println("DEBUG: Target directory: " + builder.getTargetPath());
+                }
+            }
+        }
+        catch (Exception ex) {
+            throw new BuildException("Problem in builder " + target, ex);
+        }
+    }
+
+    /** Delete temporary directory. */
+    private static void cleanup(final Params params1, Path myBuildDir) {
+        if (!params1.isDebug() && params1.getStopAfter().compareTo(Stage.CLEANUP) >= 0) {
+            log.debug("Stage entered: {}", Stage.CLEANUP);
+            FileUtils.deleteRecursive(myBuildDir);
+            log.debug("Stage passed: {}", Stage.CLEANUP);
+        }
+    }
+
+    public static void main(final String[] args) throws IOException, JAXBException, SAXException {
+        final Params params = Params.parse(args);
+        if (params == null) {
+            return;
+        }
+        final Main main = new Main(params);
 
         Path myBuildDir = params.getBuildDirectory() != null ?
                 params.getBuildDirectory().toAbsolutePath() :
                 Files.createTempDirectory("capsula").toAbsolutePath();
-        final TargetLocator targetLocator = new TargetLocator();
         if (params.isListTargets()) {
-            System.out.println(targetLocator.getTargets());
+            System.out.println(main.targetLocator.getTargets());
             return;
         }
         log.debug("Stop after: {}", params.getStopAfter());
-        if (params.getStopAfter().compareTo(Stage.READ_DESCRIPTOR) <= 0) {
+        Optional<Capsula> buildOptional = main.readAndValidateDescriptor();
+        if (!buildOptional.isPresent() || params.getStopAfter().compareTo(Stage.READ_DESCRIPTOR) <= 0) {
             return;
         }
+        Capsula build = buildOptional.get();
         final Stream<String> targetStream = params.isParallel() ?
                 build.getTargets().parallelStream() :
                 build.getTargets().stream();
 
         targetStream
                 .filter(t -> params.getTargets() == null || params.getTargets().contains(t))
-                .forEach(t -> {
-                    try {
-                        log.debug("Target {}", t);
-                        final Path targetPath = targetLocator.extractTargetToTmp(myBuildDir, t);
-                        TargetBuilder builder = new TargetBuilder(build, myBuildDir, t, targetPath, params.getStopAfter());
-                        try {
-                            builder.call();
-                            if (params.getStopAfter().compareTo(Stage.COPY_RESULT) >= 0) {
-                                log.debug("Stage entered: {}", Stage.COPY_RESULT);
-                                builder.copyPackageFilesTo(params.getOut());
-                                log.debug("Stage passed: {}", Stage.COPY_RESULT);
-                            }
-                        }
-                        finally {
-                            if (params.isDebug()) {
-                                System.err.println("DEBUG: Target directory: " + builder.getTargetPath());
-                            }
-                        }
-                    }
-                    catch (Exception ex) {
-                        throw new BuildException("Problem in builder " + t, ex);
-                    }
-                });
+                .forEach(t -> main.buildTarget(t, build, myBuildDir)
+                );
 
         log.debug("Cleaning up");
-        if (!params.isDebug() && params.getStopAfter().compareTo(Stage.CLEANUP) >= 0) {
-            log.debug("Stage entered: {}", Stage.CLEANUP);
-            FileUtils.deleteRecursive(myBuildDir);
-            log.debug("Stage passed: {}", Stage.CLEANUP);
-        }
+        cleanup(params, myBuildDir);
     }
 }
