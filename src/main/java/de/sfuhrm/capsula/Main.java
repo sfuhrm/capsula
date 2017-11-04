@@ -136,7 +136,11 @@ public class Main {
             return;
         }
         log.debug("Stop after: {}", params.getStopAfter());
-        Optional<Capsula> buildOptional = main.readAndValidateDescriptor();
+        main.buildTargets(params, myBuildDir);
+    }
+
+    private void buildTargets(Params params, Path myBuildDir) throws IOException {
+        Optional<Capsula> buildOptional = readAndValidateDescriptor();
         if (!buildOptional.isPresent() || params.getStopAfter().compareTo(Stage.READ_DESCRIPTOR) <= 0) {
             return;
         }
@@ -147,10 +151,10 @@ public class Main {
 
         targetStream
                 .filter(t -> params.getTargets() == null || params.getTargets().contains(t))
-                .forEach(t -> main.buildTarget(t, build, myBuildDir)
+                .forEach(t -> buildTarget(t, build, myBuildDir)
                 );
 
         log.debug("Cleaning up");
-        main.cleanup(myBuildDir);
+        cleanup(myBuildDir);
     }
 }
