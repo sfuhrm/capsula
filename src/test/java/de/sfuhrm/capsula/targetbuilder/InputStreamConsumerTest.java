@@ -9,8 +9,15 @@ import java.nio.file.Path;
 import java.util.*;
 import java.util.stream.Collectors;
 import static org.junit.Assert.*;
+
+import de.sfuhrm.capsula.TargetLocator;
 import org.junit.Test;
 
+/**
+ * Tests the {@link InputStreamConsumer}.
+ *
+ * @author Stephan Fuhrmann
+ */
 public class InputStreamConsumerTest {
     @Test
     public void testRun() {
