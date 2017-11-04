@@ -23,4 +23,20 @@ public class ParamsTest {
         Params p = Params.parse(new String[] { "-h"});
         assertNull(p);
     }
+
+    @Test
+    public void testParseWithRequiredMissing() {
+        Params p = Params.parse(new String[] { });
+        assertNull(p);
+    }
+
+    @Test
+    public void testParseWithResult() {
+        Params p = Params.parse(new String[] {
+                "-out", "/tmp",
+                "-descriptor", "capsula.yaml"
+        });
+        assertEquals("/tmp", p.getOut());
+        assertEquals("capsula.yaml", p.getDescriptor());
+    }
 }
