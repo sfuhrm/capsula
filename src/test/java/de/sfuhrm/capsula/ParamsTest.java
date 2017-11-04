@@ -36,7 +36,7 @@ public class ParamsTest {
                 "-out", "/tmp",
                 "-descriptor", "capsula.yaml"
         });
-        assertEquals("/tmp", p.getOut());
-        assertEquals("capsula.yaml", p.getDescriptor());
+        assertEquals("/tmp", p.getOut().toString());
+        assertEquals("capsula.yaml", p.getDescriptor().toString());
     }
 }
