@@ -22,7 +22,6 @@ import java.util.Arrays;
 import java.util.List;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import org.kohsuke.args4j.Argument;
 import org.kohsuke.args4j.CmdLineException;
 import org.kohsuke.args4j.CmdLineParser;
 import org.kohsuke.args4j.Option;
@@ -109,7 +108,7 @@ final class Params {
     @Option(name = "-stop-after",
             usage = "Stop after the given processing stage.")
     private Stage stopAfter = Stage.ALL;
-    
+
     /**
      * Parse the command line options.
      *
