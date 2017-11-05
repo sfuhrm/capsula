@@ -1,8 +1,9 @@
 <#macro relation r>${r.pkg}<#if r.op?has_content>${r.op.operator}${r.version}</#if></#macro>
 <#macro relations name list><#if list?has_content>${name}=(<#list list as rel><@relation r=rel/><#sep> </#sep></#list>)
 </#if></#macro>
+# See https://wiki.archlinux.org/index.php/VCS_package_guidelines
 # Maintainer: ${capsula.maintainer.name} <${capsula.maintainer.email}>
-pkgname=${capsula.archlinux.packageName}
+pkgname=${capsula.archlinux.packageName}-git
 pkgver=${version.version}
 pkgrel=${version.releaseNumber}
 epoch=
@@ -25,18 +26,15 @@ validpgpkeys=()
 
 prepare() {
 	cd "$pkgname-$pkgver"
-	patch -p1 -i "$srcdir/$pkgname-$pkgver.patch"
 }
 
 build() {
 	cd "$pkgname-$pkgver"
-	./configure --prefix=/usr
-	make
+	mvn clean package
 }
 
 check() {
 	cd "$pkgname-$pkgver"
-	make -k check
 }
 
 package() {
