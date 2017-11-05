@@ -1,5 +1,7 @@
 package de.sfuhrm.capsula;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -9,7 +11,8 @@ import java.util.stream.Collectors;
 
 /** Locator for targets based on a file system path.
  * */
-public final class PathTargetLocator implements TargetLocator {
+@Slf4j
+final class PathTargetLocator implements TargetLocator {
 
     /** Path to targets that are available. */
     private final Path targets;
@@ -25,6 +28,10 @@ public final class PathTargetLocator implements TargetLocator {
     @Override
     public Path extractTargetToTmp(final Path tempParent,
                                    final String target) throws IOException {
+
+        log.debug("Extracting target {} to {}",
+                target, tempParent);
+
         Path source = targets.resolve(target);
         Path tempTarget = tempParent.resolve(target);
 
