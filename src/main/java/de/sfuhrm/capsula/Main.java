@@ -178,6 +178,20 @@ public final class Main {
         main.buildTargets(myBuildDir);
     }
 
+    /** Creates a target stream.
+     * @param build the build to create the stream for.
+     * @return a serial or parallel target stream.
+     * */
+    private Stream<String> getTargetStream(Capsula build) {
+        final Stream<String> targetStream;
+        if (params.isParallel()) {
+            targetStream = build.getTargets().parallelStream();
+        } else {
+            targetStream = build.getTargets().stream();
+        }
+        return targetStream;
+    }
+
     /** Build all targets.
      * @param myBuildDir the directory to use for
      *                  {@link Params#getBuildDirectory() building}, may be a
@@ -196,13 +210,7 @@ public final class Main {
             return;
         }
         Capsula build = buildOptional.get();
-        final Stream<String> targetStream;
-
-        if (params.isParallel()) {
-            targetStream = build.getTargets().parallelStream();
-        } else {
-            targetStream = build.getTargets().stream();
-        }
+        final Stream<String> targetStream = getTargetStream(build);
 
         targetStream
                 .filter(t -> params.getTargets() == null
