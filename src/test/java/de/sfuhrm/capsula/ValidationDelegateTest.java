@@ -36,11 +36,6 @@ public class ValidationDelegateTest {
     }
 
     @Test
-    public void testNewInstance() {
-        new ValidationDelegate();
-    }
-
-    @Test
     public void testValidateWithNoErrors() {
         ValidationDelegate delegate = new ValidationDelegate();
         Foo test = new Foo();
