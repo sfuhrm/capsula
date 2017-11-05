@@ -1,13 +1,8 @@
 package de.sfuhrm.capsula.targetbuilder;
 
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.StringReader;
 import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.*;
-import java.util.stream.Collectors;
 import static org.junit.Assert.*;
 
 import org.junit.Test;
