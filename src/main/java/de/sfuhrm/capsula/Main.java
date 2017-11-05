@@ -31,9 +31,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
 import javax.validation.ConstraintViolation;
-import javax.xml.bind.JAXBException;
 import lombok.extern.slf4j.Slf4j;
-import org.xml.sax.SAXException;
 
 /**
  * The main class that gets executed from command line.
@@ -41,11 +39,17 @@ import org.xml.sax.SAXException;
  * @author Stephan Fuhrmann
  */
 @Slf4j
-public class Main {
+public final class Main {
 
+    /** The parameters from the command line. */
     private final Params params;
+
+    /** Locator object for targets. */
     private final TargetLocator targetLocator;
 
+    /** Creates a new instance.
+     * @param myParams the parameters from the command line.
+     * */
     public Main(final Params myParams) {
         this.params = Objects.requireNonNull(myParams);
         this.targetLocator = new TargetLocator();
@@ -53,10 +57,13 @@ public class Main {
 
     /**
      * Reads the descriptor and fills auto-generated fields in it.
+     * @return the yet unvalidated build descriptor.
+     * @throws IOException if something goes wrong while reading.
      */
     private Capsula readDescriptor() throws IOException {
         ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
-        Capsula build = mapper.readValue(params.getDescriptor().toFile(), Capsula.class);
+        Capsula build = mapper.readValue(params.getDescriptor().toFile(),
+                Capsula.class);
         build.calculateReleaseNumbers();
         PropertyInheritance.inherit(build, build.getDebian());
         PropertyInheritance.inherit(build, build.getRedhat());
@@ -67,16 +74,24 @@ public class Main {
         });
         // if in debug mode, write the expanded capsula.yaml
         if (params.isDebug()) {
-            mapper.writeValue(params.getOut().resolve("capsula.yaml").toFile(), build);
+            mapper.writeValue(params.getOut().resolve("capsula.yaml").toFile(),
+                    build);
         }
         return build;
     }
 
+    /** Read and validate the build descriptor.
+     * @return the optional build descriptor or {@link Optional#empty()}
+     * if the program may not
+     * go on (validation error, descriptor validation option given).
+     * @throws IOException if something goes wrong while reading.
+     * */
     public Optional<Capsula> readAndValidateDescriptor() throws IOException {
         log.debug("Stage entered: {}", Stage.READ_DESCRIPTOR);
         final Capsula build = readDescriptor();
         ValidationDelegate validationDelegate = new ValidationDelegate();
-        Set<ConstraintViolation<Capsula>> constraintViolations = validationDelegate.validate(build);
+        Set<ConstraintViolation<Capsula>> constraintViolations =
+                validationDelegate.validate(build);
         if (!constraintViolations.isEmpty() || params.isValidate()) {
             if (constraintViolations.isEmpty()) {
                 System.err.println("YAML descriptor contains no errors.");
@@ -87,12 +102,24 @@ public class Main {
         return Optional.of(build);
     }
 
-    /** Build for one target. */
-    private void buildTarget(String target, Capsula build, Path myBuildDir) throws BuildException {
+    /** Build for one target.
+     * @param target the name of the target to build.
+     * @param build the build descriptor to use (from the YAML descriptor).
+     * @param myBuildDir the build directory to put the temporary build
+     *                   files in.
+     * @throws BuildException if something goes wrong while building.
+     * */
+    private void buildTarget(final String target, final Capsula build,
+                             final Path myBuildDir) throws BuildException {
         try {
             log.debug("Target {}", target);
-            final Path targetPath = targetLocator.extractTargetToTmp(myBuildDir, target);
-            TargetBuilder builder = new TargetBuilder(build, myBuildDir, target, targetPath, params.getStopAfter());
+
+            final Path targetPath = targetLocator.extractTargetToTmp(
+                    myBuildDir, target);
+
+            TargetBuilder builder = new TargetBuilder(build, myBuildDir,
+                    target, targetPath, params.getStopAfter());
+
             try {
                 builder.call();
                 if (params.getStopAfter().compareTo(Stage.COPY_RESULT) >= 0) {
@@ -100,57 +127,86 @@ public class Main {
                     builder.copyPackageFilesTo(params.getOut());
                     log.debug("Stage passed: {}", Stage.COPY_RESULT);
                 }
-            }
-            finally {
+            } finally {
                 if (params.isDebug()) {
-                    System.err.println("DEBUG: Target directory: " + builder.getTargetPath());
+                    System.err.println("DEBUG: Target directory: "
+                            + builder.getTargetPath());
                 }
             }
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             throw new BuildException("Problem in builder " + target, ex);
         }
     }
 
-    /** Delete temporary directory. */
-    private void cleanup(Path myBuildDir) {
-        if (!params.isDebug() && params.getStopAfter().compareTo(Stage.CLEANUP) >= 0) {
+    /** Delete temporary directory.
+     * @param myBuildDir the directory used for building that contains the
+     *                   temporary files. Will be recursively
+     *                   deleted.
+     * */
+    private void cleanup(final Path myBuildDir) {
+        if (!params.isDebug()
+                && params.getStopAfter().compareTo(Stage.CLEANUP) >= 0) {
             log.debug("Stage entered: {}", Stage.CLEANUP);
             FileUtils.deleteRecursive(myBuildDir);
             log.debug("Stage passed: {}", Stage.CLEANUP);
         }
     }
 
-    public static void main(final String[] args) throws IOException, JAXBException, SAXException {
+    /** The main method.
+     * @param args the command line parameters as a String array.
+     * @throws IOException if something goes wrong while reading the
+     * descriptor.
+     * */
+    public static void main(final String[] args) throws IOException {
         final Params params = Params.parse(args);
         if (params == null) {
             return;
         }
         final Main main = new Main(params);
 
-        Path myBuildDir = params.getBuildDirectory() != null ?
-                params.getBuildDirectory().toAbsolutePath() :
-                Files.createTempDirectory("capsula").toAbsolutePath();
+        Path myBuildDir;
+        if (params.getBuildDirectory() != null) {
+            myBuildDir = params.getBuildDirectory().toAbsolutePath();
+        } else {
+            myBuildDir = Files.createTempDirectory("capsula").toAbsolutePath();
+        }
         if (params.isListTargets()) {
             System.out.println(main.targetLocator.getTargets());
             return;
         }
         log.debug("Stop after: {}", params.getStopAfter());
-        main.buildTargets(params, myBuildDir);
+        main.buildTargets(myBuildDir);
     }
 
-    private void buildTargets(Params params, Path myBuildDir) throws IOException {
+    /** Build all targets.
+     * @param myBuildDir the directory to use for
+     *                  {@link Params#getBuildDirectory() building}, may be a
+     *                   temporary directory. This is the directory
+     *                   for all temporary files. The final production
+     *                   files will be written to the
+     *                   {@link Params#getOut()} directory.
+     * @throws IOException if something goes wrong while reading the
+     * descriptor.
+     * */
+    private void buildTargets(final Path myBuildDir) throws IOException {
         Optional<Capsula> buildOptional = readAndValidateDescriptor();
-        if (!buildOptional.isPresent() || params.getStopAfter().compareTo(Stage.READ_DESCRIPTOR) <= 0) {
+        if (!buildOptional.isPresent()
+                || params.getStopAfter().compareTo(Stage.READ_DESCRIPTOR)
+                <= 0) {
             return;
         }
         Capsula build = buildOptional.get();
-        final Stream<String> targetStream = params.isParallel() ?
-                build.getTargets().parallelStream() :
-                build.getTargets().stream();
+        final Stream<String> targetStream;
+
+        if (params.isParallel()) {
+            targetStream = build.getTargets().parallelStream();
+        } else {
+            targetStream = build.getTargets().stream();
+        }
 
         targetStream
-                .filter(t -> params.getTargets() == null || params.getTargets().contains(t))
+                .filter(t -> params.getTargets() == null
+                        || params.getTargets().contains(t))
                 .forEach(t -> buildTarget(t, build, myBuildDir)
                 );
 
