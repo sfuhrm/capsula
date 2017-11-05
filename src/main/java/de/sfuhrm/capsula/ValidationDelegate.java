@@ -37,6 +37,7 @@ public class ValidationDelegate {
      */
     private final Validator validator;
 
+    /** Creates a new instance. */
     public ValidationDelegate() {
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         validator = factory.getValidator();

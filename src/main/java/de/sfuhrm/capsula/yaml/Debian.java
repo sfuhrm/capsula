@@ -24,47 +24,76 @@ import lombok.Getter;
 /**
  * Specific descriptor for Debian distribution.
  *
- * @see https://www.debian.org/doc/manuals/maint-guide/dreq.de.html
+ * @see <a href="https://www.debian.org/doc/debian-policy/">
+ *     Debian Policy Manual</a>
  * @author Stephan Fuhrmann
  */
 public class Debian extends Distribution {
 
+    /** Priority of a package.
+     * @see <a href="https://www.debian.org/doc/debian-policy/">
+     *     Debian Policy Manual</a>
+     * */
     enum Priority {
+        /** This is the default priority for the majority of the archive. */
         optional,
+        /** Packages which are necessary for the proper functioning of
+         * the system. */
         required,
+        /** Important programs, including those which one would expect to
+         * find on any Unix-like system. */
         important,
+        /** These packages provide a reasonably small but
+         * not too limited character-mode system. */
         standard
     };
+
+    /** Debian-specific Priority of this package. */
     @Getter
     @NotNull
     private Priority priority = Priority.optional;
+
+    /** The Debian section this package belongs to. */
     @Getter
     @NotNull
     @NotBlank
     private String section;
 
+    /** The Debian specific architecture of this package. */
     enum Architecture {
+        /** Any matches all Debian machine architectures and
+         * is the most frequently used. */
         any,
-        all
+        /** Indicates an architecture-independent package. */
+        all,
+        /** Indicates a source package. */
+        source;
     };
+
+    /** The Debian specific architecture of this package. */
     @Getter
     @NotNull
     private Architecture architecture;
 
     /**
-     * @see https://www.debian.org/doc/manuals/developers-reference/ch05.en.html#distribution
+     * The name of the distribution this package release is for.
      */
     @Getter
     @NotNull
     private String distribution = "unstable";
 
+    /** The Debian specific urgency. */
     enum Urgency {
+        /** High urgency. */
         high,
+        /** Medium urgency. */
         medium,
+        /** Low urgency. */
         low;
     };
 
     /**
+     * The urgency of this release.
      * @see https://www.debian.org/doc/manuals/developers-reference/ch05.en.html
      */
     @Getter

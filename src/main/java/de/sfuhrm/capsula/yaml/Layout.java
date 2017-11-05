@@ -31,16 +31,25 @@ import lombok.Getter;
  */
 public class Layout {
 
+    /** The human readable name for this layout. */
     @NotNull
     @Getter
     @NotBlank
     private String name;
+
+    /** The commands for the {@link de.sfuhrm.capsula.Stage#PREPARE prepare}
+     * stage. */
     @Getter
     @Valid
     private List<Command> prepare;
+
+    /** The commands for the {@link de.sfuhrm.capsula.Stage#BUILD build}
+     * stage. */
     @Getter
     @Valid
     private List<Command> build;
+
+    /** The file names of the generated package files after the build. */
     @Getter
     private List<String> packages;
 }

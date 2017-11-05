@@ -94,29 +94,61 @@ public class Capsula {
     @Size(min = 1)
     private List<String> longDescription;
 
+    /** A well-known software license. */
     public enum License {
+        /** GNU General Public License 3.0. */
         GPL_30("GPL-3.0", "GPL-3", "https://www.gnu.org/licenses/gpl-3.0.txt"),
-        LGPL_30("LGPL-3.0", "LGPL-3", "https://www.gnu.org/licenses/lgpl-3.0.txt"),
+        /** GNU Lesser General Public License 3.0. */
+        LGPL_30("LGPL-3.0", "LGPL-3",
+                "https://www.gnu.org/licenses/lgpl-3.0.txt"),
+        /** GNU General Public License 2.0. */
         GPL_20("GPL-2.0", "GPL-2", "https://www.gnu.org/licenses/gpl-2.0.txt"),
-        LGPL_21("LGPL-2.1", "LGPL-2.1", "https://www.gnu.org/licenses/lgpl-2.1.txt"),
-        LGPL_20("LGPL-2.0", "LGPL-2", "https://www.gnu.org/licenses/lgpl-2.0.txt"),
-        APACHE_20("APACHE-2.0", "Apache-2.0", "http://www.apache.org/licenses/LICENSE-2.0.txt");
+        /** GNU Lesser General Public License 2.1. */
+        LGPL_21("LGPL-2.1", "LGPL-2.1",
+                "https://www.gnu.org/licenses/lgpl-2.1.txt"),
+        /** GNU Lesser General Public License 2.0. */
+        LGPL_20("LGPL-2.0", "LGPL-2",
+                "https://www.gnu.org/licenses/lgpl-2.0.txt"),
+        /** Apache License 2.0. */
+        APACHE_20("APACHE-2.0", "Apache-2.0",
+                "http://www.apache.org/licenses/LICENSE-2.0.txt");
+
+        /** The URL of the license legal text. */
         @Getter
         private final String licenseTextUrl;
+
+        /** The display name of the license. */
         @Getter
         private final String licenseName;
+
+        /** The name of the license on Debian systems. */
         private final String debianName;
 
-        private License(final String inName, final String inDebianName, final String inLicenseTextUrl) {
+        /** New instance.
+         * @param inName the display name of the license.
+         * @param inDebianName the debian name of the license.
+         * @param inLicenseTextUrl the URL where the license legal text
+         *                         is located.
+         * */
+        License(final String inName, final String inDebianName,
+                final String inLicenseTextUrl) {
             this.licenseName = Objects.requireNonNull(inName);
             this.debianName = Objects.requireNonNull(inDebianName);
             this.licenseTextUrl = Objects.requireNonNull(inLicenseTextUrl);
         }
 
+        /** Reads the legal license text from the license embedded URL.
+         * @return a list of lines of the license text.
+         * @throws IOException if retrieving the license text failed.
+         * */
         public List<String> getLicenseText() throws IOException {
-            try (InputStream inputStream = new java.net.URL(getLicenseTextUrl()).openStream();
-                    InputStreamReader inputStreamReader = new InputStreamReader(inputStream, Charset.forName("UTF-8"));
-                    BufferedReader bufferedReader = new BufferedReader(inputStreamReader)) {
+            try (InputStream inputStream = new java.net.URL(
+                    getLicenseTextUrl()).openStream();
+                 InputStreamReader inputStreamReader =
+                            new InputStreamReader(inputStream,
+                                    Charset.forName("UTF-8"));
+                 BufferedReader bufferedReader =
+                         new BufferedReader(inputStreamReader)) {
                 List<String> lines = new ArrayList<>();
                 String line;
                 while (null != (line = bufferedReader.readLine())) {
@@ -126,6 +158,10 @@ public class Capsula {
             }
         }
 
+        /** Gets the license file inclusive directory under Debian systems.
+         * TBD the path should be in the template, not here.
+         * @return the Debian specific path of the license file.
+         * */
         public String getDebianFile() {
             return "/usr/share/common-licenses/" + debianName;
         }
@@ -177,10 +213,11 @@ public class Capsula {
     /**
      * Calculates {@link Version#releaseNumber} fields.
      */
-    public void calculateReleaseNumbers() {
+    public final void calculateReleaseNumbers() {
         for (VersionWithChanges versionWithChanges : versions) {
             List<VersionWithChanges> sameVersion = versions.stream()
-                    .filter(v -> v.getVersion().equals(versionWithChanges.getVersion()))
+                    .filter(v -> v.getVersion()
+                            .equals(versionWithChanges.getVersion()))
                     .collect(Collectors.toList());
             int total = sameVersion.size();
             int indexInverse = sameVersion.indexOf(versionWithChanges);

@@ -17,10 +17,9 @@
  */
 package de.sfuhrm.capsula.yaml;
 
-import java.net.MalformedURLException;
 import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.validator.constraints.URL;
@@ -52,19 +51,23 @@ public class GitRepository {
      */
     @Getter
     @Setter
-    @Pattern(regexp = "[0-9a-f]{40,}")
+    @javax.validation.constraints.Pattern(regexp = "[0-9a-f]{40,}")
     private String commit;
 
     /**
      * Get the project directory name from the GIT URL.
+     * @return the project name extracted from the URL.
+     * @throws IllegalArgumentException if there was no project name
+     * identifyable.
      */
-    public String getGitProject() throws MalformedURLException {
-        java.util.regex.Pattern p = java.util.regex.Pattern.compile(".*/([^/]*)\\.git");
+    public final String getGitProject() {
+        Pattern p = Pattern.compile(".*/([^/]*)\\.git");
         Matcher m = p.matcher(getGitUrl());
         if (m.matches()) {
             return m.group(1);
         } else {
-            throw new IllegalArgumentException("Can not determine got project from url '" + getGitUrl() + "'");
+            throw new IllegalArgumentException("Can not determine got "
+                    + "project from url '" + getGitUrl() + "'");
         }
     }
 }

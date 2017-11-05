@@ -28,47 +28,91 @@ import org.kohsuke.args4j.CmdLineParser;
 import org.kohsuke.args4j.Option;
 
 /**
- * The command line parameters as a POJO. Must be created using {@link #parse(java.lang.String[])
- * }.
+ * The command line parameters as a POJO. Must be created using
+ * {@link #parse(java.lang.String[])}.
  *
  * @see #parse(java.lang.String[])
  * @author Stephan Fuhrmann
  */
 @Slf4j
-class Params {
+final class Params {
 
+    /** Whether just to show the command line help.  */
     @Getter
-    @Option(name = "-help", aliases = {"-h"}, usage = "Show this command line help.", help = true)
+    @Option(name = "-help", aliases = {"-h"},
+            usage = "Show this command line help.", help = true)
     private boolean help;
+
+    /** The YAML descriptor that describes how to build the package. */
     @Getter
-    @Option(name = "-descriptor", aliases = {"-f"}, usage = "YAML descriptor for the application packaging. Describes the package and how to install the components.", metaVar = "YAML", required = true)
+    @Option(name = "-descriptor", aliases = {"-f"},
+            usage = "YAML descriptor for the application packaging. "
+                    + "Describes the package and how to "
+                    + "install the components.",
+            metaVar = "YAML", required = true)
     private Path descriptor;
+
+    /** Whether to show more debugging information. */
     @Getter
-    @Option(name = "-debug", aliases = {"-d"}, usage = "Show more debugging output. Will keep temporary files instead of deleting them.")
+    @Option(name = "-debug", aliases = {"-d"},
+            usage = "Show more debugging output. Will keep temporary files "
+                    + "instead of deleting them.")
     private boolean debug;
+
+    /** Whether to stop after validating the
+     * {@link #descriptor descriptor} file. */
     @Getter
-    @Option(name = "-validate", aliases = {"-c"}, usage = "Validate YAML descriptor file and exit.")
+    @Option(name = "-validate", aliases = {"-c"},
+            usage = "Validate YAML descriptor file and exit.")
     private boolean validate;
+
+    /** Optional directory for temporary files needed in the build process. */
     @Getter
-    @Option(name = "-build-dir", aliases = {"-B"}, usage = "The optional build directory to write the temporary building files to. "
-            + "When this option is not given a directory in the temporary directory is created.")
+    @Option(name = "-build-dir", aliases = {"-B"},
+            usage = "The optional build directory to write the temporary "
+                    + "building files to. "
+                    + "When this option is not given a directory in the "
+                    + "temporary directory is created.")
     private Path buildDirectory;
+
+    /** Where to put the produced package files. */
     @Getter
-    @Option(name = "-out", required = true, aliases = {"-o"}, usage = "The output directory to write the generated packages to.")
+    @Option(name = "-out", required = true, aliases = {"-o"},
+            usage = "The output directory to write the generated packages to.")
     private Path out;
+
+    /** Restriction of the targets to build. */
     @Getter
-    @Option(name = "-targets", aliases = {"-t"}, usage = "Restrict the targets created to the given names.")
+    @Option(name = "-targets", aliases = {"-t"},
+            usage = "Restrict the targets created to the given names.")
     private List<String> targets;
+
+    /** Show all targets that are available and exit .*/
     @Getter
-    @Option(name = "-list-targets", aliases = {"-T"}, usage = "List the currently available targets and exit.", help = true)
+    @Option(name = "-list-targets", aliases = {"-T"},
+            usage = "List the currently available targets and exit.",
+            help = true)
     private boolean listTargets;
+
+    /** Whether to build the targets in parallel. */
     @Getter
-    @Option(name = "-parallel", aliases = {"-p"}, usage = "Execute the targets in parallel. This may need much memory. "
-            + "Please note that the console output will be almost useless with parallel execution.")
+    @Option(name = "-parallel", aliases = {"-p"},
+            usage = "Execute the targets in parallel. This may need much"
+                     + "memory. Please note that the console output will "
+                     + "be almost useless with parallel execution.")
     private boolean parallel;
+
+    /** Stop running after the given processing stage.
+     * @see Stage
+     * */
     @Getter
-    @Option(name = "-stop-after", usage = "Stop after the given proessing stage.")
+    @Option(name = "-stop-after",
+            usage = "Stop after the given processing stage.")
     private Stage stopAfter = Stage.ALL;
+
+    /** The list of arguments.
+     * TBD this is not needed
+     * */
     @Getter
     @Argument
     private List<String> arguments;
@@ -95,8 +139,7 @@ class Params {
                 return null;
             }
             return result;
-        }
-        catch (CmdLineException ex) {
+        } catch (CmdLineException ex) {
             log.warn("Error in parsing", ex);
             System.err.println(ex.getMessage());
             cmdLineParser.printUsage(System.err);
