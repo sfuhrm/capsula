@@ -20,7 +20,10 @@ package de.sfuhrm.capsula.targetbuilder;
 import de.sfuhrm.capsula.yaml.command.RunCommand;
 import java.io.IOException;
 import java.nio.charset.Charset;
-import java.util.*;
+import java.util.Objects;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.StringTokenizer;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.log4j.MDC;
@@ -43,9 +46,14 @@ class RunDelegate extends AbstractDelegate {
 
     /** Parses the given command and splits it up into parts
      * needed by {@link ProcessBuilder#ProcessBuilder(String...)}.
+     * @param command the command String which may contain quotes.
+     *                Example: {@code echo "hello world"}.
+     * @return the parsed command. The example will return the
+     * list {@code ["echo", "hello world"]}.
      * */
-    static List<String> parse(String command) {
-        StringTokenizer stringTokenizer = new StringTokenizer(command, " \"", true);
+    static List<String> parse(final String command) {
+        StringTokenizer stringTokenizer = new StringTokenizer(
+                command, " \"", true);
         List<String> result = new ArrayList<>();
 
         StringBuilder quoted = null;
