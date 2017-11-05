@@ -1,0 +1,28 @@
+---
+name: ArchLinux
+prepare:
+- copy:
+    from: Dockerfile
+    to: Dockerfile
+- template:
+    from: PKGBUILD.ftl
+    to: PKGBUILD
+build:
+# pull or build docker image
+<#if use_dockerhub>
+<#assign image = dockerhub_image>
+- run:
+    command: docker pull ${dockerhub_image}
+<#else>
+<#assign image = image_label>
+- run:
+    command: docker build . -t ${image}
+</#if>
+# build the package
+- run:
+    command: docker run -v${target}:/target -w/target ${image} bash -c "su capsula makepkg"
+# change the permissions to super open so I can delete the build directories later
+- run:
+    command: docker run -v${target}:/target -w/target ${image} chmod -R a+rwx .
+packages:
+- root/rpmbuild/RPMS/noarch/${capsula.redhat.packageName}-${version.version}-${version.releaseNumber}.noarch.rpm

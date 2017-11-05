@@ -177,16 +177,23 @@ public class Capsula {
      * Debian specific information.
      */
     @Getter
-    @NotNull
     @Valid
     private Debian debian;
+
     /**
      * Redhat specific information.
      */
     @Getter
-    @NotNull
     @Valid
     private Redhat redhat;
+
+    /**
+     * Archlinux specific information.
+     */
+    @Getter
+    @Valid
+    private Archlinux archlinux;
+
     /**
      * Which targets to create packages for.
      */

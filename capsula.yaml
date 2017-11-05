@@ -17,6 +17,7 @@ license: GPL_20 # license the project is in
 targets: # which platforms to build an archive for
 - centos_7
 - debian_stretch
+- archlinux
 git:
   gitUrl: https://github.com/sfuhrm/capsula.git
   branch: master
@@ -42,7 +43,13 @@ debian:
     op: ge
     version: 1.29
   - pkg: java8-runtime-headless
+archlinux:
 # Version history of the package. Used for Debian changelogs.
+  relations:
+  - pkg: docker
+  - pkg: git
+  - pkg: tar
+  - pkg: java-runtime
 versions:
 - version: 0.1.3
   release: 1
