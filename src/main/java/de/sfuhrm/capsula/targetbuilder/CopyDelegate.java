@@ -76,58 +76,13 @@ class CopyDelegate extends AbstractDelegate {
                         + toPath);
             }
             if (Files.isDirectory(fromPath) || Files.isRegularFile(fromPath)) {
-                copyRecursive(fromPath, toPath, command);
+                FileUtils.copyRecursive(fromPath, toPath, p -> FileUtils.applyPermissionSetWithBuildException(p, command));
             } else {
                 throw new BuildException("Unknown file type: " + fromPath);
             }
         } finally {
             MDC.remove("from");
             MDC.remove("to");
-        }
-    }
-
-    /** Makes the directories plus sub directories.
-     * @param p the path to generate.
-     * @param command the file attributes for the created directories.
-     * @throws IOException if there is a problem making the directory or
-     * applying the directory permissions.
-     * */
-    private void mkdirs(final Path p,
-                        final TargetCommand command) throws IOException {
-        log.debug("mkdirs {}", p);
-        Files.createDirectories(p);
-        applyTargetFileModifications(command);
-        // TODO this just changes the deepest path
-        // TODO there is a MkdirDelegate that does it better
-    }
-
-    /** Recursively copies files and directories.
-     * @param from the source to copy from.
-     * @param to the target path to copy to.
-     * @param command the file permissions of the target files and directories.
-     * */
-    private void copyRecursive(final Path from,
-                               final Path to, final TargetCommand command) {
-        try {
-            if (Files.isRegularFile(from)) {
-                if (Files.isDirectory(from.getParent())) {
-                    mkdirs(to.getParent(), command);
-                }
-                Files.copy(from, to);
-                FileUtils.applyTargetFileModifications(to, command);
-                return;
-            }
-            if (Files.isDirectory(from)) {
-                Path name = from.getFileName();
-                Path target = to.resolve(name);
-                mkdirs(target, command);
-                Files.list(from).forEach(p -> {
-                    copyRecursive(p, target.resolve(p.getFileName()), command);
-                });
-            }
-        } catch (IOException exception) {
-            throw new BuildException("Exception while copying from "
-                    + from + " to " + to, exception);
         }
     }
 }

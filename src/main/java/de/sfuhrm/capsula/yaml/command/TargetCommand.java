@@ -28,7 +28,7 @@ import lombok.Setter;
  *
  * @author Stephan Fuhrmann
  */
-public class TargetCommand {
+public class TargetCommand implements PermissionSet {
 
     /** The number of permission groups. This is user, group and world. */
     private static final int MODE_GROUPS = 3;
@@ -64,6 +64,7 @@ public class TargetCommand {
     /** Get the file mode in octal format.
      * @return a octal format String representing the {@link #mode}.
      * */
+    @Override
     public final String getOctal() {
         String myMode = getMode();
         int value = 0;

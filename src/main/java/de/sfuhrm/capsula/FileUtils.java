@@ -18,6 +18,7 @@
 package de.sfuhrm.capsula;
 
 import de.sfuhrm.capsula.targetbuilder.BuildException;
+import de.sfuhrm.capsula.yaml.command.PermissionSet;
 import de.sfuhrm.capsula.yaml.command.TargetCommand;
 import java.io.IOException;
 import java.nio.file.FileSystem;
@@ -31,6 +32,8 @@ import java.nio.file.attribute.PosixFilePermissions;
 import java.nio.file.attribute.UserPrincipal;
 import java.nio.file.attribute.UserPrincipalLookupService;
 import java.util.Set;
+import java.util.function.Consumer;
+
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -49,21 +52,67 @@ public final class FileUtils {
 
     /**
      * Does owner/group/permission changes for a target path.
+     * Throws a {@link BuildException} in case of a problem.
      *
      * @param toPath direct target path to modify.
-     * @param command the command to take the owner/group/permissions from.
+     * @param permissions the permissions to take the owner/group/permissions from.
+     */
+    public static void applyPermissionSetWithBuildException(final Path toPath,
+                                          final PermissionSet permissions) {
+        try {
+            applyPermissionSet(toPath, permissions);
+        } catch (IOException e) {
+            throw new BuildException(toPath.toString(), e);
+        }
+    }
+
+    /**
+     * Does owner/group/permission changes for a target path.
+     *
+     * @param toPath direct target path to modify.
+     * @param permissions the permissions to take the owner/group/permissions from.
      * @throws IOException when one of the operations didn't succeed.
      */
-    public static void applyTargetFileModifications(final Path toPath,
-            final TargetCommand command) throws IOException {
-        if (command.getOwner() != null) {
-            changeOwner(toPath, command.getOwner());
+    public static void applyPermissionSet(final Path toPath,
+                                          final PermissionSet permissions)
+            throws IOException {
+        if (permissions.getOwner() != null) {
+            changeOwner(toPath, permissions.getOwner());
         }
-        if (command.getGroup() != null) {
-            changeGroup(toPath, command.getGroup());
+        if (permissions.getGroup() != null) {
+            changeGroup(toPath, permissions.getGroup());
         }
-        if (command.getMode() != null) {
-            changeMode(toPath, command.getMode());
+        if (permissions.getMode() != null) {
+            changeMode(toPath, permissions.getMode());
+        }
+    }
+
+    /** Recursively copies files and directories.
+     * @param from the source to copy from.
+     * @param to the target path to copy to.
+     * @param newPathConsumer receives every newly created file or directory.
+     * */
+    public static void copyRecursive(final Path from,
+                               final Path to, final Consumer<Path> newPathConsumer) {
+        try {
+            if (Files.isRegularFile(from)) {
+                if (Files.isDirectory(from.getParent())) {
+                    FileUtils.mkdirs(to.getParent(), newPathConsumer);
+                }
+                Files.copy(from, to);
+                return;
+            }
+            if (Files.isDirectory(from)) {
+                Path name = from.getFileName();
+                Path target = to.resolve(name);
+                FileUtils.mkdirs(target, newPathConsumer);
+                Files.list(from).forEach(p -> {
+                    copyRecursive(p, target.resolve(p.getFileName()), newPathConsumer);
+                });
+            }
+        } catch (IOException exception) {
+            throw new BuildException("Exception while copying from "
+                    + from + " to " + to, exception);
         }
     }
 
@@ -71,13 +120,30 @@ public final class FileUtils {
      * Creates directories.
      *
      * @param p the directory path to create.
+     * @param newDirectoryConsumer a consumer for newly created directories. Gets each directory that is new.
      * @throws IOException if an error occurs.
      * @see Files#createDirectories(java.nio.file.Path,
      * java.nio.file.attribute.FileAttribute...)
      */
-    public static void mkdirs(final Path p) throws IOException {
+    public static void mkdirs(final Path p, Consumer<Path> newDirectoryConsumer) throws IOException {
         log.debug("mkdirs {}", p);
-        Files.createDirectories(p);
+
+        Path absolute = p.toAbsolutePath();
+        int existsIndex = -1;
+        Path current = absolute;
+        for (int i=0; i < absolute.getNameCount(); i++) {
+            if (Files.isDirectory(current) && existsIndex == -1) {
+                existsIndex = i;
+            }
+            current = current.getParent();
+        }
+        Files.createDirectories(absolute);
+
+        current = absolute;
+        for (int i=0; i < existsIndex; i++) {
+            newDirectoryConsumer.accept(current);
+            current = current.getParent();
+        }
     }
 
     /**
