@@ -95,7 +95,7 @@ class TemplateDelegate extends AbstractDelegate {
                 temp.process(getTargetBuilder().getEnvironment(), out);
             }
             if (targetCommand.isPresent()) {
-                FileUtils.applyTargetFileModifications(toPath,
+                FileUtils.applyPermissionSet(toPath,
                         targetCommand.get());
             }
         } catch (TemplateException ex) {

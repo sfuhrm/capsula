@@ -57,6 +57,6 @@ class AbstractDelegate {
     protected void applyTargetFileModifications(
             final TargetCommand command) throws IOException {
         Path toPath = targetBuilder.getTargetPath().resolve(command.getTo());
-        FileUtils.applyTargetFileModifications(toPath, command);
+        FileUtils.applyPermissionSet(toPath, command);
     }
 }

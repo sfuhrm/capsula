@@ -24,7 +24,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Objects;
 
-import de.sfuhrm.capsula.yaml.command.TargetCommand;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.log4j.MDC;
 
@@ -61,37 +60,13 @@ class MkdirDelegate extends AbstractDelegate {
                 throw new BuildException("Target is not within "
                         + "target directory: " + toPath);
             }
-            mkdirs(toPath, getTargetBuilder().getTargetPath(), command);
+            FileUtils.mkdirs(toPath,
+                    dir -> FileUtils.applyPermissionSetWithBuildException(
+                            dir, command));
         } catch (IOException ex) {
             throw new BuildException("Problem in mkdir", ex);
         } finally {
             MDC.remove("to");
-        }
-    }
-
-    /** Makes the directories and assigns the correct file permissions.
-     * @param p the directory to create.
-     * @param targetPath parent directory of {@code p}.
-     * @param command the container of the file permissions to set.
-     * @throws IOException if there is a problem making the directory or
-     * applying the file permissions.
-     * */
-    private void mkdirs(final Path p, final Path targetPath,
-                        final TargetCommand command) throws IOException {
-        log.debug("mkdirs {}", p);
-        Files.createDirectories(p);
-        Path sub = p;
-        for (int i = 0; i <= p.getNameCount(); i++) {
-            log.debug("i={}, count={}", i, p.getNameCount());
-            log.debug("sub={}, target={}, startsWith={}",
-                    sub, targetPath, sub.startsWith(targetPath));
-            if ((!sub.equals(targetPath)) && sub.startsWith(targetPath)) {
-                FileUtils.applyTargetFileModifications(sub, command);
-            } else {
-                log.debug("equals={}, startsWith={}",
-                        sub.equals(targetPath), sub.startsWith(targetPath));
-            }
-            sub = sub.getParent();
         }
     }
 }
