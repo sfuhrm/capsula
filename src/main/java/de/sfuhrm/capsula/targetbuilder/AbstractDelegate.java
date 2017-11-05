@@ -35,19 +35,27 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 class AbstractDelegate {
 
+    /** The target builder that this is a delegate of. */
     @Getter(AccessLevel.PROTECTED)
     private final TargetBuilder targetBuilder;
 
-    public AbstractDelegate(TargetBuilder targetBuilder) {
-        this.targetBuilder = Objects.requireNonNull(targetBuilder);
+    /** Create a new delegate.
+     * @param builder the target build that this is a delegate of.
+     *                      Is used within the delegates to access the
+     *                      target builder properties.
+     * */
+    AbstractDelegate(final TargetBuilder builder) {
+        this.targetBuilder = Objects.requireNonNull(builder);
     }
 
     /**
      * Does owner/group/permission changes for a target path.
      *
      * @param command abstract target path description in the target command.
+     * @throws IOException when there is a problem applying the attributes.
      */
-    protected void applyTargetFileModifications(TargetCommand command) throws IOException {
+    protected void applyTargetFileModifications(
+            final TargetCommand command) throws IOException {
         Path toPath = targetBuilder.getTargetPath().resolve(command.getTo());
         FileUtils.applyTargetFileModifications(toPath, command);
     }

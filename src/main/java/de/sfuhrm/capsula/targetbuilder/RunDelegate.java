@@ -33,11 +33,20 @@ import org.apache.log4j.MDC;
 @Slf4j
 class RunDelegate extends AbstractDelegate {
 
-    public RunDelegate(TargetBuilder targetBuilder) throws IOException {
+    /**
+     * Creates a new instance.
+     * @param targetBuilder the target builder this class is a delegate for.
+     */
+    RunDelegate(final TargetBuilder targetBuilder) {
         super(targetBuilder);
     }
 
-    public void run(RunCommand command) throws IOException {
+    /**
+     * Runs a command redirecting the output to the logging facility.
+     * @param command the command object containing the command to run.
+     * @throws IOException if an I/O problem occurs running the command.
+     */
+    public void run(final RunCommand command) throws IOException {
         try {
             Objects.requireNonNull(command.getCommand(), "command is null");
             String[] cmdArray = command.getCommand().split(" ");
@@ -54,12 +63,12 @@ class RunDelegate extends AbstractDelegate {
 
             InputStreamConsumer stdin = new InputStreamConsumer(
                     process.getInputStream(),
-                    line -> {log.info(line);},
+                    line -> { log.info(line); },
                     Charset.forName("UTF-8"));
 
             InputStreamConsumer stderr = new InputStreamConsumer(
                     process.getErrorStream(),
-                    line -> {log.warn(line);},
+                    line -> { log.warn(line); },
                     Charset.forName("UTF-8"));
 
             Thread stdinThread = new Thread(stdin,
@@ -75,15 +84,13 @@ class RunDelegate extends AbstractDelegate {
             int exitValue = process.exitValue();
             log.debug("Exit value for cmd {} is {}", cmdString, exitValue);
             if (exitValue != 0) {
-                throw new BuildException("Command '" +
-                        command.getCommand() +
-                        "' returned exit value " + exitValue);
+                throw new BuildException("Command '"
+                        + command.getCommand()
+                        + "' returned exit value " + exitValue);
             }
-        }
-        catch (InterruptedException ex) {
+        } catch (InterruptedException ex) {
             throw new BuildException(command.getCommand(), ex);
-        }
-        finally {
+        } finally {
             MDC.remove("cmd");
         }
     }

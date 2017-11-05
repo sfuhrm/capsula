@@ -23,6 +23,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Objects;
+
+import de.sfuhrm.capsula.yaml.command.TargetCommand;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.log4j.MDC;
 
@@ -34,31 +36,44 @@ import org.apache.log4j.MDC;
 @Slf4j
 class CopyDelegate extends AbstractDelegate {
 
-    public CopyDelegate(TargetBuilder targetBuilder) {
+    /**
+     * Creates a new instance.
+     * @param targetBuilder the target builder this class is a delegate for.
+     */
+    CopyDelegate(final TargetBuilder targetBuilder) {
         super(targetBuilder);
     }
 
-    public void copy(CopyCommand command) {
+    /** Executes the given command.
+     * @param command the command object to execute the action for.
+     * */
+    void copy(final CopyCommand command) {
         MDC.put("from", command.getFrom());
         MDC.put("to", command.getTo());
         try {
             Objects.requireNonNull(command.getFrom(), "from is null");
             Objects.requireNonNull(command.getTo(), "to is null");
-            Path fromPath = getTargetBuilder().getLayoutDirectory().resolve(command.getFrom());
-            Path toPath = getTargetBuilder().getTargetPath().resolve(command.getTo());
+            Path fromPath = getTargetBuilder().getLayoutDirectory().resolve(
+                    command.getFrom());
+            Path toPath = getTargetBuilder().getTargetPath()
+                    .resolve(command.getTo());
             log.info("Copying {} to {}", command.getFrom(), command.getTo());
             log.debug("Copying path {} to {}", fromPath, toPath);
             if (!Files.exists(fromPath)) {
                 throw new BuildException("Source does not exist: " + fromPath);
             }
             if (!fromPath.startsWith(getTargetBuilder().getLayoutDirectory())) {
-                throw new BuildException("Source is not within layout directory: " + fromPath);
+                throw new BuildException("Source is not "
+                        + "within layout directory: "
+                        + fromPath);
             }
             if (Files.exists(toPath)) {
                 throw new BuildException("Target does exist: " + toPath);
             }
             if (!toPath.startsWith(getTargetBuilder().getTargetPath())) {
-                throw new BuildException("Target is not within target directory: " + toPath);
+                throw new BuildException("Target is not "
+                        + "within target directory: "
+                        + toPath);
             }
             if (Files.isDirectory(fromPath) || Files.isRegularFile(fromPath)) {
                 copyRecursive(fromPath, toPath, command);
@@ -71,13 +86,28 @@ class CopyDelegate extends AbstractDelegate {
         }
     }
 
-    private void mkdirs(Path p, CopyCommand command) throws IOException {
+    /** Makes the directories plus sub directories.
+     * @param p the path to generate.
+     * @param command the file attributes for the created directories.
+     * @throws IOException if there is a problem making the directory or
+     * applying the directory permissions.
+     * */
+    private void mkdirs(final Path p,
+                        final TargetCommand command) throws IOException {
         log.debug("mkdirs {}", p);
         Files.createDirectories(p);
-        applyTargetFileModifications(command); // TODO this just changes the deepest path
+        applyTargetFileModifications(command);
+        // TODO this just changes the deepest path
+        // TODO there is a MkdirDelegate that does it better
     }
 
-    private void copyRecursive(Path from, Path to, CopyCommand command) {
+    /** Recursively copies files and directories.
+     * @param from the source to copy from.
+     * @param to the target path to copy to.
+     * @param command the file permissions of the target files and directories.
+     * */
+    private void copyRecursive(final Path from,
+                               final Path to, final TargetCommand command) {
         try {
             if (Files.isRegularFile(from)) {
                 if (Files.isDirectory(from.getParent())) {
@@ -95,9 +125,9 @@ class CopyDelegate extends AbstractDelegate {
                     copyRecursive(p, target.resolve(p.getFileName()), command);
                 });
             }
-        }
-        catch (IOException exception) {
-            throw new BuildException("Exception while copying from " + from + " to " + to, exception);
+        } catch (IOException exception) {
+            throw new BuildException("Exception while copying from "
+                    + from + " to " + to, exception);
         }
     }
 }

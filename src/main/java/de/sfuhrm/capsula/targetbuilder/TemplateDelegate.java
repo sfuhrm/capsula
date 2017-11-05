@@ -42,22 +42,45 @@ import org.apache.log4j.MDC;
 @Slf4j
 class TemplateDelegate extends AbstractDelegate {
 
+    /** The freemarker configuration to use. */
     private final Configuration cfg;
 
-    public TemplateDelegate(TargetBuilder targetBuilder) throws IOException {
+    /** The charset the files are in. */
+    private Charset charset;
+
+    /** Creates a new instance.
+     * @param targetBuilder the target builder this is a delegate for.
+     * @throws IOException if something goes wrong creating a config
+     * for the template engine.
+     * */
+    TemplateDelegate(final TargetBuilder targetBuilder) throws IOException {
         super(targetBuilder);
+        this.charset = Charset.forName("UTF-8");
         cfg = new Configuration(Configuration.VERSION_2_3_23);
         cfg.setDirectoryForTemplateLoading(targetBuilder
                 .getLayoutDirectory()
                 .toAbsolutePath()
                 .toFile());
-        cfg.setDefaultEncoding("UTF-8");
-        cfg.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
+        cfg.setDefaultEncoding(charset.name());
+        cfg.setTemplateExceptionHandler(
+                TemplateExceptionHandler.RETHROW_HANDLER);
         cfg.setLogTemplateExceptions(false);
         cfg.setLocale(Locale.US);
     }
 
-    public void template(String from, String to, Optional<TargetCommand> cmd) throws IOException {
+    /** Expands a template.
+     * @param from the name of the template which is relative to
+     *             the {@link TargetBuilder#getLayoutDirectory()
+     *             layout directory}.
+     * @param to the path to write the expanded template to, relative to
+     *           the {@link TargetBuilder#getTargetPath() target path}.
+     * @param targetCommand optional target command that carries the file
+     *                      attributes of the instantiated template file.
+     * @throws IOException if something goes wrong in template generation.
+     * */
+    public void template(final String from, final String to,
+                         final Optional<TargetCommand> targetCommand)
+            throws IOException {
         MDC.put("from", from);
         MDC.put("to", to);
         Objects.requireNonNull(from, "from is null");
@@ -68,18 +91,17 @@ class TemplateDelegate extends AbstractDelegate {
             if (!Files.exists(toPath.getParent())) {
                 Files.createDirectories(toPath.getParent());
             }
-            try (Writer out = Files.newBufferedWriter(toPath, Charset.forName("UTF-8"))) {
+            try (Writer out = Files.newBufferedWriter(toPath, charset)) {
                 temp.process(getTargetBuilder().getEnvironment(), out);
             }
-            if (cmd.isPresent()) {
-                FileUtils.applyTargetFileModifications(toPath, cmd.get());
+            if (targetCommand.isPresent()) {
+                FileUtils.applyTargetFileModifications(toPath,
+                        targetCommand.get());
             }
-        }
-        catch (TemplateException ex) {
+        } catch (TemplateException ex) {
             log.error("Template exception", ex);
             throw new BuildException("Template problem for " + from, ex);
-        }
-        finally {
+        } finally {
             MDC.remove("from");
             MDC.remove("to");
         }

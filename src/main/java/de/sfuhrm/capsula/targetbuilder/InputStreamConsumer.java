@@ -42,10 +42,20 @@ class InputStreamConsumer implements Runnable {
     /** Where to put the input streams lines to. */
     private final Consumer<String> consumer;
 
-    public InputStreamConsumer(InputStream in, Consumer<String> log, Charset charset) {
-        this.in = Objects.requireNonNull(in);
-        this.consumer = Objects.requireNonNull(log);
-        this.charset = Objects.requireNonNull(charset);
+    /**
+     * Creates a new instance.
+     * @param myInputStream the input stream to read. Must be in the
+     *                      charset specified in {@code myCharset}.
+     * @param myConsumer the consumer to put each line read from the
+     *                   input stream to.
+     * @param myCharset the charset the input stream is encoded in.
+     */
+    InputStreamConsumer(final InputStream myInputStream,
+                        final Consumer<String> myConsumer,
+                        final Charset myCharset) {
+        this.in = Objects.requireNonNull(myInputStream);
+        this.consumer = Objects.requireNonNull(myConsumer);
+        this.charset = Objects.requireNonNull(myCharset);
     }
 
     @Override

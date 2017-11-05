@@ -53,7 +53,8 @@ final class TargetLocator {
      * {@link TargetLocator#TARGETS} hierarchy.
      * @throws IOException if an IO problem occurs.
      */
-    private static synchronized Set<ClassPath.ResourceInfo> getClassPathResources() throws IOException {
+    private static synchronized
+    Set<ClassPath.ResourceInfo> getClassPathResources() throws IOException {
         if (resourceInfos == null) {
             ClassPath classPath = ClassPath.from(Main.class.getClassLoader());
             resourceInfos = classPath.getResources()
@@ -74,7 +75,8 @@ final class TargetLocator {
      * extracted to.
      * @throws IOException if an IO problem occurs.
      */
-    public Path extractTargetToTmp(final Path tempParent, final String target) throws IOException {
+    public Path extractTargetToTmp(final Path tempParent,
+                                   final String target) throws IOException {
         Path targetPath = Files.createDirectory(
                 tempParent.resolve(target + "-layout")).toAbsolutePath();
         log.debug("Target {} will be extracted to {}", target, targetPath);

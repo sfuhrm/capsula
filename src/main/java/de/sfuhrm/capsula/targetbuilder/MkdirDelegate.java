@@ -23,6 +23,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Objects;
+
+import de.sfuhrm.capsula.yaml.command.TargetCommand;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.log4j.MDC;
 
@@ -34,43 +36,60 @@ import org.apache.log4j.MDC;
 @Slf4j
 class MkdirDelegate extends AbstractDelegate {
 
-    public MkdirDelegate(TargetBuilder targetBuilder) {
+    /**
+     * Creates a new instance.
+     * @param targetBuilder the target builder this class is a delegate for.
+     */
+    MkdirDelegate(final TargetBuilder targetBuilder) {
         super(targetBuilder);
     }
 
-    public void mkdir(MkdirCommand command) {
+    /** Makes the directories.
+     * @param command the make directory command to execute.
+     * */
+    public void mkdir(final MkdirCommand command) {
         try {
             MDC.put("to", command.getTo());
             Objects.requireNonNull(command.getTo(), "to is null");
-            Path toPath = getTargetBuilder().getTargetPath().resolve(command.getTo());
+            Path toPath = getTargetBuilder().getTargetPath().resolve(
+                    command.getTo());
             log.debug("Mkdir path {}", toPath);
             if (Files.exists(toPath)) {
                 throw new BuildException("Target does exist: " + toPath);
             }
             if (!toPath.startsWith(getTargetBuilder().getTargetPath())) {
-                throw new BuildException("Target is not within target directory: " + toPath);
+                throw new BuildException("Target is not within "
+                        + "target directory: " + toPath);
             }
             mkdirs(toPath, getTargetBuilder().getTargetPath(), command);
-        }
-        catch (IOException ex) {
+        } catch (IOException ex) {
             throw new BuildException("Problem in mkdir", ex);
-        }
-        finally {
+        } finally {
             MDC.remove("to");
         }
     }
 
-    private void mkdirs(Path p, Path targetPath, MkdirCommand command) throws IOException {
+    /** Makes the directories and assigns the correct file permissions.
+     * @param p the directory to create.
+     * @param targetPath parent directory of {@code p}.
+     * @param command the container of the file permissions to set.
+     * @throws IOException if there is a problem making the directory or
+     * applying the file permissions.
+     * */
+    private void mkdirs(final Path p, final Path targetPath,
+                        final TargetCommand command) throws IOException {
         log.debug("mkdirs {}", p);
         Files.createDirectories(p);
         Path sub = p;
         for (int i = 0; i <= p.getNameCount(); i++) {
             log.debug("i={}, count={}", i, p.getNameCount());
-            log.debug("sub={}, target={}, startsWith={}", sub, targetPath, sub.startsWith(targetPath));
+            log.debug("sub={}, target={}, startsWith={}",
+                    sub, targetPath, sub.startsWith(targetPath));
             if ((!sub.equals(targetPath)) && sub.startsWith(targetPath)) {
                 FileUtils.applyTargetFileModifications(sub, command);
             } else {
-                log.debug("equals={}, startsWith={}", sub.equals(targetPath), sub.startsWith(targetPath));
+                log.debug("equals={}, startsWith={}",
+                        sub.equals(targetPath), sub.startsWith(targetPath));
             }
             sub = sub.getParent();
         }
