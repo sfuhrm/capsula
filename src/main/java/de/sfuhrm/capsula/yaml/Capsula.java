@@ -177,14 +177,12 @@ public class Capsula {
      * Debian specific information.
      */
     @Getter
-    @NotNull
     @Valid
     private Debian debian;
     /**
      * Redhat specific information.
      */
     @Getter
-    @NotNull
     @Valid
     private Redhat redhat;
     /**
