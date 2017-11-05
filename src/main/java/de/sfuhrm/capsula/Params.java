@@ -109,14 +109,7 @@ final class Params {
     @Option(name = "-stop-after",
             usage = "Stop after the given processing stage.")
     private Stage stopAfter = Stage.ALL;
-
-    /** The list of arguments.
-     * TBD this is not needed
-     * */
-    @Getter
-    @Argument
-    private List<String> arguments;
-
+    
     /**
      * Parse the command line options.
      *
