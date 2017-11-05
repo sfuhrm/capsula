@@ -20,7 +20,7 @@ build:
 </#if>
 # build the package
 - run:
-    command: docker run -v${target}:/target -w/target ${image} bash -c "su capsula makepkg"
+    command: docker run -v${target}:/target -w/target ${image} bash -c "pacman -S --noconfirm  <#list capsula.archlinux.relationsFor("depends") as rel>${rel.pkg}<#sep> </#sep></#list>; su capsula makepkg"
 # change the permissions to super open so I can delete the build directories later
 - run:
     command: docker run -v${target}:/target -w/target ${image} chmod -R a+rwx .
