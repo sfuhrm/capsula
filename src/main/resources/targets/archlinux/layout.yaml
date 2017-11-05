@@ -19,6 +19,7 @@ build:
     command: docker build . -t ${image}
 </#if>
 # build the package
+# NOTE: makepkg needs RUNTIME dependencies to be installed at BUILD TIME.
 - run:
     command: docker run -v${target}:/target -w/target ${image} bash -c "pacman -S --noconfirm  <#list capsula.archlinux.relationsFor("depends") as rel>${rel.pkg}<#sep> </#sep></#list>; su capsula makepkg"
 # change the permissions to super open so I can delete the build directories later
