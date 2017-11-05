@@ -29,17 +29,17 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 /**
- * Tests the {@link TargetLocator}.
+ * Tests the {@link ClassPathTargetLocator}.
  *
  * @author Stephan Fuhrmann
  */
-public class TargetLocatorIntegration {
+public class ClassPathTargetLocatorIntegration {
 
     public String CENTOS_7 = "centos_7";
 
     @Test
     public void testGetTargets() throws IOException {
-        TargetLocator locator = new TargetLocator();
+        ClassPathTargetLocator locator = new ClassPathTargetLocator();
         Set<String> targets = locator.getTargets();
         // this needs to be adjusted when adding more targets
         assertEquals(new HashSet<>(Arrays.asList(CENTOS_7, "debian_stretch")), targets);
@@ -50,7 +50,7 @@ public class TargetLocatorIntegration {
         Path tmp = null;
         try {
             tmp = Files.createTempDirectory("targetlocatortest");
-            TargetLocator locator = new TargetLocator();
+            ClassPathTargetLocator locator = new ClassPathTargetLocator();
             locator.extractTargetToTmp(tmp, CENTOS_7);
 
             List<Path> paths = Files.walk(tmp)
