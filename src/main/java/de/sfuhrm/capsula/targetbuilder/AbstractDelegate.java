@@ -33,7 +33,7 @@ import lombok.extern.slf4j.Slf4j;
  * @author Stephan Fuhrmann
  */
 @Slf4j
-public class AbstractDelegate {
+class AbstractDelegate {
 
     @Getter(AccessLevel.PROTECTED)
     private final TargetBuilder targetBuilder;
