@@ -1,3 +1,4 @@
+#! /bin/bash
 NEWVERSION=$1
 
 if [ "x$NEWVERSION" = "x" ]; then
