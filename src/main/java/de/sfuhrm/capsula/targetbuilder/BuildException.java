@@ -24,11 +24,18 @@ package de.sfuhrm.capsula.targetbuilder;
  */
 public class BuildException extends RuntimeException {
 
-    public BuildException(String message) {
+    /** Creates a new build exception.
+     * @param message text describing the cause of the problem.
+     * */
+    public BuildException(final String message) {
         super(message);
     }
 
-    public BuildException(String message, Throwable cause) {
+    /** Creates a new build exception.
+     * @param message text describing the cause of the problem.
+     * @param cause another throwable that is the cause of this exception.
+     * */
+    public BuildException(final String message, final Throwable cause) {
         super(message, cause);
     }
 }

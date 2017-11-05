@@ -50,7 +50,7 @@ import org.apache.log4j.MDC;
  * @author Stephan Fuhrmann
  */
 @Slf4j
-public class TargetBuilder implements Callable<TargetBuilder.Result> {
+public final class TargetBuilder implements Callable<TargetBuilder.Result> {
 
     /**
      * Where to create temp directories.
@@ -101,13 +101,13 @@ public class TargetBuilder implements Callable<TargetBuilder.Result> {
      *
      * @see #readLayout()
      */
-    private final static String LAYOUT_YAML = "layout.yaml";
+    private static final String LAYOUT_YAML = "layout.yaml";
     /**
      * Name of the environment config file in the directory.
      *
      * @see #readEnvironment()
      */
-    private final static String ENVIRONMENT_YAML = "environment.yaml";
+    private static final String ENVIRONMENT_YAML = "environment.yaml";
     /**
      * Delegate for template generation. Is used for all templating tasks, also
      * when reading the layout/environment files.
@@ -125,33 +125,40 @@ public class TargetBuilder implements Callable<TargetBuilder.Result> {
     /**
      * Creates an instance.
      *
-     * @param build the build descriptor for all builds.
-     * @param tempRoot the root directory where to create temp directories.
-     * @param targetName the name of this target.
-     * @param layoutDirectory the directory the layout and templates are located.
+     * @param myBuild the build descriptor for all builds.
+     * @param myTempRoot the root directory where to create temp directories.
+     * @param myTargetName the name of this target.
+     * @param myLayoutDirectory the directory the layout and
+     *                          templates are located.
      * in.
-     * @param stopAfter the stage after which to stop.
+     * @param myStopAfter the stage after which to stop.
      * @throws IOException if something goes wrong while initialization.
      */
-    public TargetBuilder(Capsula build, Path tempRoot, String targetName, Path layoutDirectory, Stage stopAfter) throws IOException {
-        this.build = Objects.requireNonNull(build);
-        this.tempRoot = Objects.requireNonNull(tempRoot);
-        this.targetName = Objects.requireNonNull(targetName);
-        log.debug("Layout directory is {}", layoutDirectory);
-        this.layoutDirectory = Objects.requireNonNull(layoutDirectory, "directory is null");
-        if (!Files.isDirectory(layoutDirectory)) {
-            throw new IllegalStateException(layoutDirectory + " is not a directory");
+    public TargetBuilder(final Capsula myBuild, final Path myTempRoot,
+                         final String myTargetName,
+                         final Path myLayoutDirectory,
+                         final Stage myStopAfter) throws IOException {
+        this.build = Objects.requireNonNull(myBuild);
+        this.tempRoot = Objects.requireNonNull(myTempRoot);
+        this.targetName = Objects.requireNonNull(myTargetName);
+        log.debug("Layout directory is {}", myLayoutDirectory);
+        this.layoutDirectory = Objects.requireNonNull(myLayoutDirectory,
+                "directory is null");
+        if (!Files.isDirectory(myLayoutDirectory)) {
+            throw new IllegalStateException(myLayoutDirectory
+                    + " is not a directory");
         }
-        layoutFilePath = layoutDirectory.resolve(LAYOUT_YAML);
+        layoutFilePath = myLayoutDirectory.resolve(LAYOUT_YAML);
         log.debug("Layout file is {}", layoutFilePath);
         if (!Files.isRegularFile(layoutFilePath)) {
             throw new IllegalStateException(layoutFilePath + " is not a file");
         }
         targetPath = Files.createDirectory(
-                tempRoot.resolve(this.targetName + "-build")).toAbsolutePath();
+                myTempRoot.resolve(this.targetName
+                        + "-build")).toAbsolutePath();
         log.debug("Target path is {}", targetPath);
         templateDelegate = new TemplateDelegate(this);
-        this.stopAfter = Objects.requireNonNull(stopAfter, "stopAfter");
+        this.stopAfter = Objects.requireNonNull(myStopAfter, "stopAfter");
     }
 
     /**
@@ -162,11 +169,14 @@ public class TargetBuilder implements Callable<TargetBuilder.Result> {
      */
     private Layout readLayout() throws IOException {
         ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
-        Path layoutTmp = Files.createTempFile(tempRoot, "layout", ".yaml").toAbsolutePath();
-        templateDelegate.template(LAYOUT_YAML, layoutTmp.toString(), Optional.empty());
+        Path layoutTmp = Files.createTempFile(tempRoot,
+                "layout", ".yaml").toAbsolutePath();
+        templateDelegate.template(LAYOUT_YAML, layoutTmp.toString(),
+                Optional.empty());
         Layout myLayout = mapper.readValue(layoutTmp.toFile(), Layout.class);
         ValidationDelegate validationDelegate = new ValidationDelegate();
-        Set<ConstraintViolation<Layout>> constraintViolations = validationDelegate.validate(myLayout);
+        Set<ConstraintViolation<Layout>> constraintViolations
+                = validationDelegate.validate(myLayout);
         if (!constraintViolations.isEmpty()) {
             throw new BuildException(LAYOUT_YAML + " contains errors.");
         }
@@ -175,18 +185,22 @@ public class TargetBuilder implements Callable<TargetBuilder.Result> {
 
     /**
      * Reads the environment from the file.
-     * @return the environment read from the {@link #ENVIRONMENT_YAML environment.yaml}
+     * @return the environment read from the
+     * {@link #ENVIRONMENT_YAML environment.yaml}
      * file.
      * @throws IOException in case of an I/O problem.
      */
     private Map<String, Object> readEnvironment() throws IOException {
         ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
-        TypeReference<HashMap<String,Object>> typeRef
-            = new TypeReference<HashMap<String,Object>>() {};
+        TypeReference<HashMap<String, Object>> typeRef
+            = new TypeReference<HashMap<String, Object>>() { };
 
-        Path environmentTmp = Files.createTempFile(tempRoot, "environment", ".yaml").toAbsolutePath();
-        templateDelegate.template(ENVIRONMENT_YAML, environmentTmp.toString(), Optional.empty());
-        Map<String, Object> env = mapper.readValue(environmentTmp.toFile(), typeRef);
+        Path environmentTmp = Files.createTempFile(tempRoot,
+                "environment", ".yaml").toAbsolutePath();
+        templateDelegate.template(ENVIRONMENT_YAML, environmentTmp.toString(),
+                Optional.empty());
+        Map<String, Object> env = mapper.readValue(environmentTmp.toFile(),
+                typeRef);
         return env;
     }
 
@@ -202,12 +216,12 @@ public class TargetBuilder implements Callable<TargetBuilder.Result> {
         try {
             Map<String, Object> fileEnv = readEnvironment();
             environment.putAll(fileEnv);
-        }
-        catch (FileNotFoundException ex) {
-            log.info("Environment file {} not found, going on without", ENVIRONMENT_YAML);
-        }
-        catch (IOException ex) {
-            throw new BuildException("Error while loading " + ENVIRONMENT_YAML, ex);
+        } catch (FileNotFoundException ex) {
+            log.info("Environment file {} not found, going on without",
+                    ENVIRONMENT_YAML);
+        } catch (IOException ex) {
+            throw new BuildException("Error while loading "
+                    + ENVIRONMENT_YAML, ex);
         }
     }
 
@@ -216,7 +230,7 @@ public class TargetBuilder implements Callable<TargetBuilder.Result> {
      * @see Layout#packages
      * @throws IOException in case of an I/O problem.
      */
-    public void copyPackageFilesTo(Path out) throws IOException {
+    public void copyPackageFilesTo(final Path out) throws IOException {
         Objects.requireNonNull(layout, "layout needs to be non-null");
         for (String file : layout.getPackages()) {
             Path fromPath = getTargetPath().resolve(file);
@@ -258,8 +272,13 @@ public class TargetBuilder implements Callable<TargetBuilder.Result> {
     }
 
     /** Executes the given command.
+     * @param cmd the command to execute.
+     * @param commandId a command id that is used as a
+     *                  command reference in logging.
+     * @throws IOException if there was an I/O problem in command execution.
      */
-    private void execute(final Command cmd, final String commandId) throws IOException {
+    private void execute(final Command cmd,
+                         final String commandId) throws IOException {
         MDC.put("cmdId", commandId);
         try {
             if (cmd.getCopy() != null) {
@@ -268,7 +287,9 @@ public class TargetBuilder implements Callable<TargetBuilder.Result> {
             }
             if (cmd.getTemplate() != null) {
                 TemplateDelegate delegate = templateDelegate;
-                delegate.template(cmd.getTemplate().getFrom(), cmd.getTemplate().getTo(), Optional.of(cmd.getTemplate()));
+                delegate.template(cmd.getTemplate().getFrom(),
+                        cmd.getTemplate().getTo(),
+                        Optional.of(cmd.getTemplate()));
             }
             if (cmd.getRun() != null) {
                 RunDelegate delegate = new RunDelegate(this);
@@ -283,8 +304,10 @@ public class TargetBuilder implements Callable<TargetBuilder.Result> {
         }
     }
 
+    /** The result of one target building run. */
     public static class Result {
 
+        /** Whether the target building was successful. */
         @Getter
         @Setter(AccessLevel.PRIVATE)
         private boolean success;
