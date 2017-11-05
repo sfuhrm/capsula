@@ -28,6 +28,7 @@ import lombok.Getter;
  */
 public class RunCommand {
 
+    /** The command String to execute. */
     @Getter
     @NotNull
     @NotBlank

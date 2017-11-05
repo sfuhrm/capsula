@@ -35,27 +35,45 @@ import lombok.extern.slf4j.Slf4j;
  * @author Stephan Fuhrmann
  */
 @Slf4j
-public class PropertyInheritance {
+public final class PropertyInheritance {
 
+    /** No instance allowed. */
     private PropertyInheritance() {
     }
 
+    /** Exception while trying to read properties or write
+     * properties from/to objects.
+     * */
     public static class InheritanceException extends RuntimeException {
 
-        public InheritanceException(Throwable inner) {
+        /** Creates a new instance.
+         * @param inner the cause of the problem.
+         * */
+        public InheritanceException(final Throwable inner) {
             super(inner);
         }
 
-        public InheritanceException(String inner) {
-            super(inner);
+        /** Creates a new instance.
+         * @param message the description of the problem.
+         * */
+        public InheritanceException(final String message) {
+            super(message);
         }
     }
 
-    private static Object readProperty(Method readMethod, Object o) {
+    /** Reads a property mapping catched exceptions to
+     * {@link InheritanceException}.
+     * @param readMethod the method for reading the property.
+     * @param o the object to read the property from.
+     * @return the value of the property from the object.
+     * */
+    private static Object readProperty(final Method readMethod,
+                                       final Object o) {
         try {
             return readMethod.invoke(o);
-        }
-        catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
+        } catch (IllegalAccessException
+                | IllegalArgumentException
+                | InvocationTargetException ex) {
             log.error("Can not read with method {}", readMethod.getName());
             throw new InheritanceException(ex);
         }
@@ -73,36 +91,44 @@ public class PropertyInheritance {
         Objects.requireNonNull(parent, "parent is null");
         Objects.requireNonNull(child, "child is null");
         try {
-            final BeanInfo parentDescriptor = Introspector.getBeanInfo(parent.getClass());
-            final BeanInfo childDescriptor = Introspector.getBeanInfo(child.getClass());
+            final BeanInfo parentDescriptor =
+                    Introspector.getBeanInfo(parent.getClass());
+            final BeanInfo childDescriptor =
+                    Introspector.getBeanInfo(child.getClass());
             // map of parent properties
             Map<String, PropertyDescriptor> parentProperties
                     = Arrays.asList(parentDescriptor.getPropertyDescriptors())
                             .stream()
-                            .collect(Collectors.toMap(p -> p.getName(), p -> p));
+                            .collect(Collectors.toMap(p -> p.getName(),
+                                    p -> p));
             // try to fill all null child properties with the parent
             Arrays.asList(childDescriptor.getPropertyDescriptors())
                     .stream()
-                    .filter(p -> parentProperties.containsKey(p.getName())) // parent has property
-                    .filter(p -> readProperty(p.getReadMethod(), child) == null) // child has property null value
+                    // parent has property
+                    .filter(p -> parentProperties.containsKey(p.getName()))
+                    // child has property null value
+                    .filter(p -> readProperty(p.getReadMethod(), child) == null)
                     .forEach(p -> {
                         try {
-                            Method parentRead = parentProperties.get(p.getName()).getReadMethod();
+                            Method parentRead = parentProperties.get(
+                                    p.getName()).getReadMethod();
                             Method childWrite = p.getWriteMethod();
                             if (childWrite == null) {
                                 throw new InheritanceException("Child class "
-                                        + child.getClass().getName() + " write method for " + p.getName() + " missing");
+                                        + child.getClass().getName()
+                                        + " write method for "
+                                        + p.getName() + " missing");
                             }
                             Object value = parentRead.invoke(parent);
                             childWrite.invoke(child, value);
-                        }
-                        catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
+                        } catch (IllegalAccessException
+                                | IllegalArgumentException
+                                | InvocationTargetException ex) {
                             log.error("Can not read property {}", p.getName());
                             throw new InheritanceException(ex);
                         }
                     });
-        }
-        catch (IntrospectionException ex) {
+        } catch (IntrospectionException ex) {
             throw new InheritanceException(ex);
         }
     }

@@ -27,15 +27,22 @@ import lombok.Getter;
  */
 public class Command {
 
+    /** Copy a file. */
     @Getter
     @Valid
     private CopyCommand copy;
+
+    /** Instantiate a template. */
     @Getter
     @Valid
     private TemplateCommand template;
+
+    /** Run a command. */
     @Getter
     @Valid
     private RunCommand run;
+
+    /** Make a directory. */
     @Getter
     @Valid
     private MkdirCommand mkdir;

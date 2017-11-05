@@ -32,14 +32,19 @@ import lombok.Setter;
  */
 public class VersionWithChanges extends Version {
 
+    /** The maintainer of this version. */
     @Getter
     @Setter
     @NotNull
     @Valid
     private NameEmail maintainer;
+
+    /** The list of changes of this version. */
     @Getter
     @NotNull
     private List<String> changes;
+
+    /** The date of this versions release. */
     @Getter
     @NotNull
     @PastOrPresent

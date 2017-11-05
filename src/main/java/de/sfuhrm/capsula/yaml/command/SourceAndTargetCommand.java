@@ -27,6 +27,7 @@ import lombok.Getter;
  */
 public class SourceAndTargetCommand extends TargetCommand {
 
+    /** The source to read stuff from. */
     @Getter
     @NotNull
     private String from;

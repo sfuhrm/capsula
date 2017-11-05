@@ -29,10 +29,14 @@ import lombok.Getter;
  */
 public class NameEmail {
 
+    /** The name of a human being, for example {@code "Peter Smith"}. */
     @Getter
     @NotNull
     @Pattern(regexp = ".* .*")
     private String name;
+
+    /** The E-Mail address of a human being, for
+     * example {@code "peter.smith@gmail.com"}. */
     @Getter
     @NotNull
     @Email

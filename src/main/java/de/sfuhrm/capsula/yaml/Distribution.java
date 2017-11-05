@@ -32,11 +32,17 @@ import lombok.Setter;
  */
 public class Distribution {
 
+    /** The name of the package for this distribution.
+     * The name can be change for each distribution.
+     * */
     @Getter
     @Setter
     @NotNull
     @NotBlank
     private String packageName; // inherited
+
+    /** The dependencies and other relations for distribution provided
+     * packages. */
     @Getter
     @Setter
     @NotNull
@@ -49,7 +55,7 @@ public class Distribution {
      * @param type the type as can be found in {@link Relation.RelationType}.
      * @return the sublist of relations of the given type.
      */
-    public List<Relation> relationsFor(String type) {
+    public final List<Relation> relationsFor(final String type) {
         return relations
                 .stream()
                 .filter(r -> r.getType().toString().equalsIgnoreCase(type))

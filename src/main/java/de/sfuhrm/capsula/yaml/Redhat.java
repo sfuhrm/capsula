@@ -24,11 +24,14 @@ import lombok.Setter;
 
 /**
  * Specific descriptor for Redhat distribution.
- *
+ * TBD this isn't Redhat anymore
  * @author Stephan Fuhrmann
  */
 public class Redhat extends Distribution {
 
+    /** The package group of the Fedora package.
+     * TBD AFAIK this is deprecated in Fedora, check
+     * */
     @Getter
     @Setter
     @NotNull

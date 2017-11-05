@@ -30,35 +30,51 @@ import lombok.Setter;
  */
 public class TargetCommand {
 
-    private final int MODE_GROUPS = 3;
-    private final int GROUP_BITS = 3;
+    /** The number of permission groups. This is user, group and world. */
+    private static final int MODE_GROUPS = 3;
+    /** The bits in a group. This is read, write, and execute. */
+    private static final int GROUP_BITS = 3;
 
+    /** The target to copy to. */
     @Getter
     @Setter
     @NotNull
     private String to;
+
+    /** The name of the owner to assign the created file / directory to. */
     @Getter
     @Setter
     @Size(min = 1)
     private String owner;
+
+    /** The name of the group to assign the created file / directory to. */
     @Getter
     @Setter
     @Size(min = 1)
     private String group;
+
+    /** The UNIX permissions to assign the file / directory.
+     * Has the format {@code rwxrwx---}.
+     * */
     @Getter
     @Setter
     @Pattern(regexp = "([r-][w-][x-]){" + MODE_GROUPS + "}")
     private String mode;
 
-    public String getOctal() {
+    /** Get the file mode in octal format.
+     * @return a octal format String representing the {@link #mode}.
+     * */
+    public final String getOctal() {
         String myMode = getMode();
         int value = 0;
-        for (int group = 0; group < MODE_GROUPS; group++) {
-            int offset = GROUP_BITS * group;
+        for (int groupIndex = 0; groupIndex < MODE_GROUPS; groupIndex++) {
+            int offset = GROUP_BITS * groupIndex;
             for (int bit = 0; bit < GROUP_BITS; bit++) {
                 char c = myMode.charAt(offset + bit);
                 int bitValue = 2 - bit;
-                value |= c != '-' ? (1 << bitValue) << (GROUP_BITS * (2 - group)) : 0;
+                if (c != '-') {
+                    value |= (1 << bitValue) << (GROUP_BITS * (2 - groupIndex));
+                }
             }
         }
         return String.format("%04o", value);
