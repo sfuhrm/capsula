@@ -10,7 +10,6 @@ import java.util.*;
 import java.util.stream.Collectors;
 import static org.junit.Assert.*;
 
-import de.sfuhrm.capsula.TargetLocator;
 import org.junit.Test;
 
 /**

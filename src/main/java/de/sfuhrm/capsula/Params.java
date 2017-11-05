@@ -35,7 +35,7 @@ import org.kohsuke.args4j.Option;
  * @author Stephan Fuhrmann
  */
 @Slf4j
-public class Params {
+class Params {
 
     @Getter
     @Option(name = "-help", aliases = {"-h"}, usage = "Show this command line help.", help = true)

@@ -35,7 +35,7 @@ import lombok.extern.slf4j.Slf4j;
  * @author Stephan Fuhrmann
  */
 @Slf4j
-public final class TargetLocator {
+final class TargetLocator {
 
     /**
      * The prefix of targets in the classpath.
