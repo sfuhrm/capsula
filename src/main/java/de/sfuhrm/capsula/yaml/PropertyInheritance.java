@@ -88,8 +88,14 @@ public final class PropertyInheritance {
      * @param child the object to write property values to.
      */
     public static void inherit(final Object parent, final Object child) {
-        Objects.requireNonNull(parent, "parent is null");
-        Objects.requireNonNull(child, "child is null");
+        if (parent == null) {
+            log.debug("parent is null, ignoring");
+            return;
+        }
+        if (child == null) {
+            log.debug("child is null, ignoring");
+            return;
+        }
         try {
             final BeanInfo parentDescriptor =
                     Introspector.getBeanInfo(parent.getClass());
