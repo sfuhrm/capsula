@@ -52,7 +52,7 @@ public final class Main {
      * */
     public Main(final Params myParams) {
         this.params = Objects.requireNonNull(myParams);
-        this.targetLocator = new TargetLocator();
+        this.targetLocator = new ClassPathTargetLocator();
     }
 
     /**
