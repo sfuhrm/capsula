@@ -29,17 +29,7 @@ jobs:
       - java -jar target/capsula-$VERSION-jar-with-dependencies.jar -f capsula.yaml -o out -parallel -stop-after PREPARE
       # build templates, google-java-format, this time parallel
       - java -jar target/capsula-$VERSION-jar-with-dependencies.jar -f examples/google-java-format.yaml -o out -parallel -stop-after PREPARE
-    # Release on GitHub, see https://docs.travis-ci.com/user/build-stages/deploy-github-releases/
-    - stage: GitHub Release
-      script: echo "Deploying to GitHub releases ..."
-      deploy:
-        provider: releases
-        api_key: $GITHUB_OAUTH_TOKEN
-        skip_cleanup: true
-        on:
-          tags: true
 stages:
   - compile
   - test
   - smoketest
-  - GitHub Release
