@@ -50,6 +50,7 @@ class RunDelegate extends AbstractDelegate {
      *                Example: {@code echo "hello world"}.
      * @return the parsed command. The example will return the
      * list {@code ["echo", "hello world"]}.
+     * @throws IllegalArgumentException if the quoting is not valid.
      * */
     static List<String> parse(final String command) {
         StringTokenizer stringTokenizer = new StringTokenizer(
@@ -82,6 +83,12 @@ class RunDelegate extends AbstractDelegate {
                     break;
             }
         }
+
+        if (quoted != null) {
+            throw new IllegalArgumentException("Command '"
+                    + command + "' has illegal quoting");
+        }
+
         return result;
     }
 

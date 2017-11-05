@@ -32,4 +32,9 @@ public class RunDelegateTest {
         List<String> actual = RunDelegate.parse("echo \"hello world\"");
         assertEquals(Arrays.asList("echo", "hello world"), actual);
     }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testParseWithIllegalQuotes() {
+        List<String> actual = RunDelegate.parse("echo \"hello world");
+    }
 }
