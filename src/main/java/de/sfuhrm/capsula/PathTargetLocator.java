@@ -21,7 +21,7 @@ final class PathTargetLocator implements TargetLocator {
      * the given path.
      * @param myTargets path to extract the targets from.
      * */
-    public PathTargetLocator(final Path myTargets) {
+    PathTargetLocator(final Path myTargets) {
         this.targets = Objects.requireNonNull(myTargets);
     }
 
