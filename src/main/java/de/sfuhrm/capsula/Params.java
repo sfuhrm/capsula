@@ -74,6 +74,15 @@ final class Params {
                     + "temporary directory is created.")
     private Path buildDirectory;
 
+    /** Optional directory for target layouts in the file system. */
+    @Getter
+    @Option(name = "-targets-dir", aliases = {"-D"},
+            usage = "The optional targets directory to read"
+                    + " templates from. Templates are usually "
+                    + "read from the JAR file. Only useful for "
+                    + "template designers.")
+    private Path targetLayouts;
+
     /** Where to put the produced package files. */
     @Getter
     @Option(name = "-out", required = true, aliases = {"-o"},

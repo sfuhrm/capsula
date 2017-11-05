@@ -52,7 +52,16 @@ public final class Main {
      * */
     public Main(final Params myParams) {
         this.params = Objects.requireNonNull(myParams);
-        this.targetLocator = new ClassPathTargetLocator();
+
+        if (myParams.getTargetLayouts() != null) {
+            log.debug("Using path target locator in {}",
+                    myParams.getTargetLayouts());
+            this.targetLocator = new PathTargetLocator(
+                    myParams.getTargetLayouts());
+        } else {
+            log.debug("Using class path target locator");
+            this.targetLocator = new ClassPathTargetLocator();
+        }
     }
 
     /**
@@ -182,7 +191,7 @@ public final class Main {
      * @param build the build to create the stream for.
      * @return a serial or parallel target stream.
      * */
-    private Stream<String> getTargetStream(Capsula build) {
+    private Stream<String> getTargetStream(final Capsula build) {
         final Stream<String> targetStream;
         if (params.isParallel()) {
             targetStream = build.getTargets().parallelStream();
