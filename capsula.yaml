@@ -46,9 +46,16 @@ debian:
 versions:
 - version: 0.1.3
   release: 1
-  date: 2017-11-01T14:55:00+01:00
+  date: 2017-11-05T15:50:00+01:00
   changes:
   - One root temporary directory
+  - Much more unit tests
+  - More Travis CI testing inclusive smoke tests
+  - Debian distribution and urgency configurable
+  - Much cleanup
+  - Breaking yaml change. gitUrl is now inside a git object.
+  - Using less temporary directories for more usability.
+  - Javadoc enhanvements.
 - version: 0.1.2
   release: 1
   date: 2017-11-01T11:42:00+01:00
