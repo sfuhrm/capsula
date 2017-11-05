@@ -77,8 +77,12 @@ final class TargetLocator {
      */
     public Path extractTargetToTmp(final Path tempParent,
                                    final String target) throws IOException {
-        Path targetPath = Files.createDirectory(
-                tempParent.resolve(target + "-layout")).toAbsolutePath();
+        Path targetPath = tempParent.resolve(target
+                + "-layout").toAbsolutePath();
+        if (Files.exists(targetPath)) {
+            FileUtils.deleteRecursive(targetPath);
+        }
+        targetPath = Files.createDirectory(targetPath);
         log.debug("Target {} will be extracted to {}", target, targetPath);
         Set<String> targets = getTargets();
         log.debug("Targets in classpath: {}", targets);

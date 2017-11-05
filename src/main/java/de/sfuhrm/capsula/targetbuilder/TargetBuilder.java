@@ -20,6 +20,7 @@ package de.sfuhrm.capsula.targetbuilder;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+import de.sfuhrm.capsula.FileUtils;
 import de.sfuhrm.capsula.Stage;
 import de.sfuhrm.capsula.ValidationDelegate;
 import de.sfuhrm.capsula.yaml.Capsula;
@@ -153,9 +154,14 @@ public final class TargetBuilder implements Callable<TargetBuilder.Result> {
         if (!Files.isRegularFile(layoutFilePath)) {
             throw new IllegalStateException(layoutFilePath + " is not a file");
         }
+
+        targetPath = myTempRoot.resolve(this.targetName
+                + "-build").toAbsolutePath();
+        if (Files.exists(targetPath)) {
+            FileUtils.deleteRecursive(targetPath);
+        }
         targetPath = Files.createDirectory(
-                myTempRoot.resolve(this.targetName
-                        + "-build")).toAbsolutePath();
+                targetPath);
         log.debug("Target path is {}", targetPath);
         templateDelegate = new TemplateDelegate(this);
         this.stopAfter = Objects.requireNonNull(myStopAfter, "stopAfter");
