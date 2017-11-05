@@ -28,7 +28,7 @@ public final class PathTargetLocator implements TargetLocator {
         Path source = targets.resolve(target);
         Path tempTarget = tempParent.resolve(target);
 
-        FileUtils.copyRecursive(source, tempTarget, p -> { });
+        FileUtils.copyRecursive(source, tempParent, p -> { });
 
         return tempTarget;
     }
