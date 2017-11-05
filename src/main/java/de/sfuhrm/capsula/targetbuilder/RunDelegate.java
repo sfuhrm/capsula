@@ -20,8 +20,8 @@ package de.sfuhrm.capsula.targetbuilder;
 import de.sfuhrm.capsula.yaml.command.RunCommand;
 import java.io.IOException;
 import java.nio.charset.Charset;
-import java.util.Arrays;
-import java.util.Objects;
+import java.util.*;
+
 import lombok.extern.slf4j.Slf4j;
 import org.apache.log4j.MDC;
 
@@ -41,6 +41,42 @@ class RunDelegate extends AbstractDelegate {
         super(targetBuilder);
     }
 
+    /** Parses the given command and splits it up into parts
+     * needed by {@link ProcessBuilder#ProcessBuilder(String...)}.
+     * */
+    static List<String> parse(String command) {
+        StringTokenizer stringTokenizer = new StringTokenizer(command, " \"", true);
+        List<String> result = new ArrayList<>();
+
+        StringBuilder quoted = null;
+        while (stringTokenizer.hasMoreElements()) {
+            String token = stringTokenizer.nextToken();
+            switch (token) {
+                case " ":
+                    if (quoted != null) {
+                        quoted.append(token);
+                    }
+                    break;
+                case "\"":
+                    if (quoted != null) {
+                        result.add(quoted.toString());
+                        quoted = null;
+                    } else {
+                        quoted = new StringBuilder();
+                    }
+                    break;
+                default:
+                    if (quoted != null) {
+                        quoted.append(token);
+                    } else {
+                        result.add(token);
+                    }
+                    break;
+            }
+        }
+        return result;
+    }
+
     /**
      * Runs a command redirecting the output to the logging facility.
      * @param command the command object containing the command to run.
@@ -49,9 +85,9 @@ class RunDelegate extends AbstractDelegate {
     public void run(final RunCommand command) throws IOException {
         try {
             Objects.requireNonNull(command.getCommand(), "command is null");
-            String[] cmdArray = command.getCommand().split(" ");
-            MDC.put("cmd", cmdArray[0]);
-            String cmdString = Arrays.toString(cmdArray);
+            List<String> cmdArray = parse(command.getCommand());
+            MDC.put("cmd", cmdArray.get(0));
+            String cmdString = cmdArray.toString();
             ProcessBuilder builder = new ProcessBuilder(cmdArray);
             log.info("Starting command {}", command.getCommand());
 
