@@ -19,7 +19,6 @@ package de.sfuhrm.capsula;
 
 import de.sfuhrm.capsula.targetbuilder.BuildException;
 import de.sfuhrm.capsula.yaml.command.PermissionSet;
-import de.sfuhrm.capsula.yaml.command.TargetCommand;
 import java.io.IOException;
 import java.nio.file.FileSystem;
 import java.nio.file.Files;
@@ -55,7 +54,8 @@ public final class FileUtils {
      * Throws a {@link BuildException} in case of a problem.
      *
      * @param toPath direct target path to modify.
-     * @param permissions the permissions to take the owner/group/permissions from.
+     * @param permissions the permissions to take the
+     *                    owner/group/permissions from.
      */
     public static void applyPermissionSetWithBuildException(final Path toPath,
                                           final PermissionSet permissions) {
@@ -70,7 +70,8 @@ public final class FileUtils {
      * Does owner/group/permission changes for a target path.
      *
      * @param toPath direct target path to modify.
-     * @param permissions the permissions to take the owner/group/permissions from.
+     * @param permissions the permissions to take the
+     *                    owner/group/permissions from.
      * @throws IOException when one of the operations didn't succeed.
      */
     public static void applyPermissionSet(final Path toPath,
@@ -90,10 +91,12 @@ public final class FileUtils {
     /** Recursively copies files and directories.
      * @param from the source to copy from.
      * @param to the target path to copy to.
-     * @param newPathConsumer receives every newly created file or directory.
+     * @param newPathConsumer receives every newly
+     *                        created file or directory.
      * */
     public static void copyRecursive(final Path from,
-                               final Path to, final Consumer<Path> newPathConsumer) {
+                           final Path to,
+                           final Consumer<Path> newPathConsumer) {
         try {
             if (Files.isRegularFile(from)) {
                 if (Files.isDirectory(from.getParent())) {
@@ -107,7 +110,9 @@ public final class FileUtils {
                 Path target = to.resolve(name);
                 FileUtils.mkdirs(target, newPathConsumer);
                 Files.list(from).forEach(p -> {
-                    copyRecursive(p, target.resolve(p.getFileName()), newPathConsumer);
+                    copyRecursive(p,
+                            target.resolve(p.getFileName()),
+                            newPathConsumer);
                 });
             }
         } catch (IOException exception) {
@@ -120,18 +125,20 @@ public final class FileUtils {
      * Creates directories.
      *
      * @param p the directory path to create.
-     * @param newDirectoryConsumer a consumer for newly created directories. Gets each directory that is new.
+     * @param newDirectoryConsumer a consumer for newly created
+     *                             directories. Gets each directory that is new.
      * @throws IOException if an error occurs.
      * @see Files#createDirectories(java.nio.file.Path,
      * java.nio.file.attribute.FileAttribute...)
      */
-    public static void mkdirs(final Path p, Consumer<Path> newDirectoryConsumer) throws IOException {
+    public static void mkdirs(final Path p,
+              final Consumer<Path> newDirectoryConsumer) throws IOException {
         log.debug("mkdirs {}", p);
 
         Path absolute = p.toAbsolutePath();
         int existsIndex = -1;
         Path current = absolute;
-        for (int i=0; i < absolute.getNameCount(); i++) {
+        for (int i = 0; i < absolute.getNameCount(); i++) {
             if (Files.isDirectory(current) && existsIndex == -1) {
                 existsIndex = i;
             }
@@ -140,7 +147,7 @@ public final class FileUtils {
         Files.createDirectories(absolute);
 
         current = absolute;
-        for (int i=0; i < existsIndex; i++) {
+        for (int i = 0; i < existsIndex; i++) {
             newDirectoryConsumer.accept(current);
             current = current.getParent();
         }

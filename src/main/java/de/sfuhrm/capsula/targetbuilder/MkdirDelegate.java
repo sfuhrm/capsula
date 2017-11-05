@@ -24,7 +24,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Objects;
 
-import de.sfuhrm.capsula.yaml.command.TargetCommand;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.log4j.MDC;
 
@@ -61,7 +60,9 @@ class MkdirDelegate extends AbstractDelegate {
                 throw new BuildException("Target is not within "
                         + "target directory: " + toPath);
             }
-            FileUtils.mkdirs(toPath, dir -> FileUtils.applyPermissionSetWithBuildException(dir, command));
+            FileUtils.mkdirs(toPath,
+                    dir -> FileUtils.applyPermissionSetWithBuildException(
+                            dir, command));
         } catch (IOException ex) {
             throw new BuildException("Problem in mkdir", ex);
         } finally {

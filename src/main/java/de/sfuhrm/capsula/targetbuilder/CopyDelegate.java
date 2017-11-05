@@ -19,12 +19,10 @@ package de.sfuhrm.capsula.targetbuilder;
 
 import de.sfuhrm.capsula.FileUtils;
 import de.sfuhrm.capsula.yaml.command.CopyCommand;
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Objects;
 
-import de.sfuhrm.capsula.yaml.command.TargetCommand;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.log4j.MDC;
 
@@ -76,7 +74,10 @@ class CopyDelegate extends AbstractDelegate {
                         + toPath);
             }
             if (Files.isDirectory(fromPath) || Files.isRegularFile(fromPath)) {
-                FileUtils.copyRecursive(fromPath, toPath, p -> FileUtils.applyPermissionSetWithBuildException(p, command));
+                FileUtils.copyRecursive(fromPath,
+                        toPath,
+                        p -> FileUtils.applyPermissionSetWithBuildException(
+                                p, command));
             } else {
                 throw new BuildException("Unknown file type: " + fromPath);
             }
