@@ -16,20 +16,15 @@ if [ "x${VERSION}" = "x" ]; then
 fi
 
 ROOT=${PWD}
-TMP=/tmp/${PROJECT}-${VERSION}
+TAR=/tmp/${PROJECT}-${VERSION}.tar
+TARGZ=${TAR}.gz
+SIGN=${TARGZ}.asc
 
-mkdir -p ${TMP}
-cp -ar * ${TMP}
-rm -fr ${TMP}/.git*
-rm -fr ${TMP}/target
-rm -fr ${TMP}/build
-rm -fr ${TMP}/out
-rm -f ${TMP}/*.iml
-rm -f ${TMP}/nb*.xml
-rm -f ${TMP}/pom.xml.versionsBackup
+rm -f ${TAR} ${TARGZ} ${SIGN}
 
-cd /tmp; tar -czvf /tmp/${PROJECT}-${VERSION}.tar.gz ${PROJECT}-${VERSION}
-gpg --sign --detach-sign --armor --local-user ${KEYID} /tmp/${PROJECT}-${VERSION}.tar.gz
+git archive --format=tar --prefix=${PROJECT}-${VERSION}/ -o ${TAR} HEAD || exit
+gzip -9 ${TAR} || exit
 
-rm -f ${TMP}
+gpg --sign --detach-sign --armor --local-user ${KEYID} ${TARGZ} || exit
 
+ls -al ${TARGZ} ${SIGN}
