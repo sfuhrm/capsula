@@ -8,6 +8,7 @@
 
 VERSION=$1
 PROJECT=capsula
+KEYID=0AC5A45E91FA93DA25380017B0D87B063EAD41F1
 
 if [ "x${VERSION}" = "x" ]; then
 	echo "Please give a version as a parameter, for example 0.1.4-SNAPSHOT"
@@ -28,7 +29,7 @@ rm -f ${TMP}/nb*.xml
 rm -f ${TMP}/pom.xml.versionsBackup
 
 cd /tmp; tar -czvf /tmp/${PROJECT}-${VERSION}.tar.gz ${PROJECT}-${VERSION}
-gpg --sign --detach-sign --armor --local-user 0AC5A45E91FA93DA25380017B0D87B063EAD41F1 /tmp/${PROJECT}-${VERSION}.tar.gz
+gpg --sign --detach-sign --armor --local-user ${KEYID} /tmp/${PROJECT}-${VERSION}.tar.gz
 
-#rm -f ${TMP}
+rm -f ${TMP}
 
