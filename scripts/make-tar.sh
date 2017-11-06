@@ -2,7 +2,7 @@
 #
 # Make tar archive of a certain version.
 # Call it like this:
-# set-version.sh 1.0.0-SNAPSHOT
+# make-tar.sh 1.0.0-SNAPSHOT
 #
 # (c) 2017 Stephan Fuhrmann
 
