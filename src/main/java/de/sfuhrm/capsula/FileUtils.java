@@ -103,6 +103,7 @@ public final class FileUtils {
                     FileUtils.mkdirs(to.getParent(), newPathConsumer);
                 }
                 Files.copy(from, to);
+                newPathConsumer.accept(to);
                 return;
             }
             if (Files.isDirectory(from)) {
