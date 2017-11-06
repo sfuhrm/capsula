@@ -176,6 +176,7 @@ public final class Main {
         Path myBuildDir;
         if (params.getBuildDirectory() != null) {
             myBuildDir = params.getBuildDirectory().toAbsolutePath();
+            Files.list(myBuildDir).forEach(p -> FileUtils.deleteRecursive(p));
         } else {
             myBuildDir = Files.createTempDirectory("capsula").toAbsolutePath();
         }
