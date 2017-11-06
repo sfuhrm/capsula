@@ -136,8 +136,9 @@ The following TODOs are open programming tasks as known for today:
 The following Docker Hub images are used by this project and built from
 the [Github source tree](https://github.com/sfuhrm/capsula):
 
-* [sfuhrm/capsula-debian-stretch](https://hub.docker.com/r/sfuhrm/capsula-debian-stretch/)
-* [sfuhrm/capsula-centos-7](https://hub.docker.com/r/sfuhrm/capsula-centos-7/)
+* [sfuhrm/capsula](https://hub.docker.com/r/sfuhrm/capsula/) contains
+multiple images. Each Linux distribution is stored in a
+[tag](https://hub.docker.com/r/sfuhrm/capsula/tags/).
 
 ## Links
 
