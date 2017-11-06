@@ -17,14 +17,12 @@
  */
 package de.sfuhrm.capsula;
 
-import com.google.common.io.ByteSource;
 import com.google.common.reflect.ClassPath;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.NoSuchElementException;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
@@ -38,10 +36,6 @@ import lombok.extern.slf4j.Slf4j;
 final class ClassPathTargetLocator implements TargetLocator {
 
     /**
-     * The prefix of targets in the classpath.
-     */
-    private static final String TARGETS = "targets";
-    /**
      * All class path resources.
      */
     private static Set<ClassPath.ResourceInfo> resourceInfos;
@@ -50,7 +44,7 @@ final class ClassPathTargetLocator implements TargetLocator {
      * Get the class path resources containing targets.
      *
      * @return a set of resource infos for resources inside the
-     * {@link ClassPathTargetLocator#TARGETS} hierarchy.
+     * {@link TargetLocator#TARGETS_DIRECTORY} hierarchy.
      * @throws IOException if an IO problem occurs.
      */
     private static synchronized
@@ -59,7 +53,10 @@ final class ClassPathTargetLocator implements TargetLocator {
             ClassPath classPath = ClassPath.from(Main.class.getClassLoader());
             resourceInfos = classPath.getResources()
                     .stream()
-                    .filter(ri -> ri.getResourceName().startsWith(TARGETS))
+                    .filter(ri -> ri.getResourceName()
+                            .startsWith(TARGETS_DIRECTORY)
+                            || ri.getResourceName()
+                            .startsWith(INCLUDE_DIRECTORY))
                     .collect(Collectors.toSet());
         }
         return resourceInfos;
@@ -93,57 +90,27 @@ final class ClassPathTargetLocator implements TargetLocator {
         if (!targets.contains(target)) {
             throw new NoSuchElementException("Target not found: " + target);
         }
-        Set<String> files = getTargetResources(target);
-        log.debug("Target {} files: {}", target, files);
-        if (files.isEmpty()) {
-            throw new IllegalStateException(
-                    "Target " + target + " contains no files");
-        }
-        for (String file : files) {
-            try (InputStream is = getResourceAsStream(target, file)) {
-                Path toPath = targetPath.resolve(file);
-                Files.copy(is, toPath);
-            }
-        }
+
+        Path finalTargetPath = targetPath;
+        getClassPathResources().stream().filter(cp ->
+                cp.getResourceName().startsWith(
+                        TARGETS_DIRECTORY + "/" + target)
+        || cp.getResourceName().startsWith(INCLUDE_DIRECTORY))
+                .forEach(cp -> {
+                    InputStream is = null;
+                    Path toPath = null;
+                    try {
+                        is = cp.asByteSource().openStream();
+                        String[] parts = cp.getResourceName().split("/");
+                        toPath = finalTargetPath.resolve(
+                                parts[parts.length - 1]);
+                        Files.copy(is, toPath);
+                    } catch (IOException e) {
+                        throw new RuntimeException("Problem copying resource "
+                                + cp.getResourceName() + " to " + toPath, e);
+                    }
+                });
         return targetPath;
-    }
-
-    /**
-     * Opens a stream for the given resource.
-     *
-     * @param target the target name to get the resource for.
-     * @param resource the resource name inside the target hierarchy to get.
-     * @return a stream for reading the resource.
-     * @throws IOException if an IO problem occurs.
-     */
-    private InputStream getResourceAsStream(final String target,
-            final String resource) throws IOException {
-        Optional<ByteSource> byteSource = getClassPathResources()
-                .stream()
-                .filter(ri -> ri.getResourceName()
-                .equals(TARGETS + "/" + target + "/" + resource))
-                .map(ri -> ri.asByteSource())
-                .findFirst();
-        return byteSource.orElseThrow(()
-                -> new IOException("Can't find " + target + "/" + resource))
-                .openStream();
-    }
-
-    /**
-     * Get the list of possible target resources from the classpath.
-     *
-     * @param target the target to get the resources for.
-     * @return the set of resource names / file names for this target.
-     * @throws IOException if an IO problem occurs.
-     */
-    private Set<String> getTargetResources(final String target) throws
-            IOException {
-        return getClassPathResources()
-                .stream()
-                .filter(ri -> ri.getResourceName()
-                .startsWith(TARGETS + "/" + target))
-                .map(ri -> ri.getResourceName().split("/")[2])
-                .collect(Collectors.toSet());
     }
 
     /**
@@ -156,7 +123,9 @@ final class ClassPathTargetLocator implements TargetLocator {
     public Set<String> getTargets() throws IOException {
         return getClassPathResources()
                 .stream()
-                .filter(ri -> ri.getResourceName().startsWith(TARGETS + "/"))
+                .filter(ri ->
+                        ri.getResourceName()
+                                .startsWith(TARGETS_DIRECTORY + "/"))
                 .map(ri -> ri.getResourceName().split("/")[1])
                 .collect(Collectors.toSet());
     }

@@ -32,10 +32,18 @@ final class PathTargetLocator implements TargetLocator {
         log.debug("Extracting target {} to {}",
                 target, tempParent);
 
-        Path source = targets.resolve(target);
+        Path includeSource = targets.resolve(INCLUDE_DIRECTORY);
         Path tempTarget = tempParent.resolve(target);
 
-        FileUtils.copyRecursive(source, tempParent, p -> { });
+        Files.list(includeSource).forEach(p ->
+                FileUtils.copyRecursive(
+                        p, tempTarget.resolve(p.getFileName()), q -> { }));
+
+        Path targetSource = targets.resolve(TARGETS_DIRECTORY).resolve(target);
+
+        Files.list(targetSource).forEach(p ->
+                FileUtils.copyRecursive(
+                        p, tempTarget.resolve(p.getFileName()), q -> { }));
 
         return tempTarget;
     }

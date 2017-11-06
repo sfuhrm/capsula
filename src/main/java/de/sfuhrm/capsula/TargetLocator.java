@@ -12,6 +12,16 @@ import java.util.Set;
 public interface TargetLocator {
 
     /**
+     * The directory of targets in the classpath.
+     */
+    String TARGETS_DIRECTORY = "targets";
+
+    /**
+     * The directory of includes in the classpath.
+     */
+    String INCLUDE_DIRECTORY = "include";
+
+    /**
      * Extracts the target folder from the JAR archive to a temporary file on
      * disk.
      *
