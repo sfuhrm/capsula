@@ -6,7 +6,7 @@ FROM base/archlinux
 LABEL maintainer="s@sfuhrm.de"
 
 RUN pacman -Sy
-RUN pacman -S --noconfirm binutils jdk8-openjdk maven apache-ant gradle
+RUN pacman -S --noconfirm binutils fakeroot jdk8-openjdk maven apache-ant gradle
 RUN useradd -m capsula
 
 WORKDIR /

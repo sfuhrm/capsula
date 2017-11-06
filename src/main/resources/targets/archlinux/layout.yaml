@@ -7,6 +7,15 @@ prepare:
 - template:
     from: PKGBUILD.ftl
     to: PKGBUILD
+- template:
+    from: build.sh.ftl
+    to: build.sh
+    mode: rwxrwxrwx
+<#include "include-git-clone.txt">
+- run:
+    command: mv ${capsula.git.gitProject} ${capsula.archlinux.packageName}-${version.version}
+- run:
+    command: tar -czvf ${capsula.archlinux.packageName}-${version.version}.tar.gz ${capsula.archlinux.packageName}-${version.version}/
 build:
 # pull or build docker image
 <#if use_dockerhub>
@@ -21,7 +30,7 @@ build:
 # build the package
 # NOTE: makepkg needs RUNTIME dependencies to be installed at BUILD TIME.
 - run:
-    command: docker run -v${target}:/target -w/target ${image} bash -c "pacman -S --noconfirm  <#list capsula.archlinux.relationsFor("depends") as rel>${rel.pkg}<#sep> </#sep></#list>; su capsula makepkg"
+    command: docker run -v${target}:/target -w/target ${image} bash build.sh
 # change the permissions to super open so I can delete the build directories later
 - run:
     command: docker run -v${target}:/target -w/target ${image} chmod -R a+rwx .

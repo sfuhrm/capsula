@@ -3,7 +3,7 @@
 </#if></#macro>
 # See https://wiki.archlinux.org/index.php/VCS_package_guidelines
 # Maintainer: ${capsula.maintainer.name} <${capsula.maintainer.email}>
-pkgname=${capsula.archlinux.packageName}-git
+pkgname=${capsula.archlinux.packageName}
 pkgver=${version.version}
 pkgrel=${version.releaseNumber}
 epoch=
@@ -19,9 +19,8 @@ groups=()
 <@relations name="replaces" list=capsula.archlinux.relationsFor("replaces")/>
 install=
 changelog=
-source=('${capsula.archlinux.packageName}::git+${capsula.git.gitUrl}')
+source=('${capsula.archlinux.packageName}-${version.version}.tar.gz')
 noextract=()
-md5sums=()
 validpgpkeys=()
 
 prepare() {

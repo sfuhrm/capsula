@@ -1,4 +1,4 @@
-dockerhub_image: sfuhrm/capsula-archlinux
+dockerhub_image: sfuhrm/capsula:archlinux
 dockerhub_url: https://hub.docker.com/r/sfuhrm/capsula-archlinux/
 image_label: capsula-archlinux
-use_dockerhub: false
+use_dockerhub: true
