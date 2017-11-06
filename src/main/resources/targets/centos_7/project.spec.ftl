@@ -1,6 +1,7 @@
 <#macro relation r>${r.pkg}<#if r.op?has_content> ${r.op.operator} ${r.version}</#if></#macro>
 <#macro relations name list><#if list?has_content>${name}: <#list list as rel><@relation r=rel/><#sep>, </#sep></#list>
 </#if></#macro>
+<#include "include-install.txt">
 Summary: ${capsula.shortSummary}
 Name: ${capsula.redhat.packageName}
 Version: ${version.version}
@@ -31,35 +32,11 @@ mvn clean package
 <#list capsula.install as entry>
 <#-- install.mkdir -->
 <#if entry.mkdir?has_content>
-<#assign modeStatement = "">
-<#if entry.mkdir.mode?has_content>
-<#assign modeStatement = "--mode="+entry.mkdir.octal+" ">
-</#if>
-<#assign ownerStatement = "">
-<#if entry.mkdir.owner?has_content>
-<#assign ownerStatement = "--owner="+entry.mkdir.owner+" ">
-</#if>
-<#assign groupStatement = "">
-<#if entry.mkdir.group?has_content>
-<#assign groupStatement = "--group="+entry.mkdir.group+" ">
-</#if>
-install -d ${modeStatement} ${ownerStatement} ${groupStatement} %{buildroot}/${entry.mkdir.to}
+<@install cmd=entry.mkdir arguments="-d %{buildroot}/${entry.mkdir.to}"/>
 </#if>
 <#-- install.copy -->
 <#if entry.copy?has_content>
-<#assign modeStatement = "">
-<#if entry.copy.mode?has_content>
-<#assign modeStatement = "--mode="+entry.copy.octal+" ">
-</#if>
-<#assign ownerStatement = "">
-<#if entry.copy.owner?has_content>
-<#assign ownerStatement = "--owner="+entry.copy.owner+" ">
-</#if>
-<#assign groupStatement = "">
-<#if entry.copy.group?has_content>
-<#assign groupStatement = "--group="+entry.copy.group+" ">
-</#if>
-install ${modeStatement} ${ownerStatement} ${groupStatement} -D ${entry.copy.from} %{buildroot}/${entry.copy.to}
+<@install cmd=entry.copy arguments="-D ${entry.copy.from} %{buildroot}/${entry.copy.to}"/>
 </#if>
 <#-- install.run -->
 <#if entry.run?has_content>

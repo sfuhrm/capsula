@@ -4,16 +4,11 @@ prepare:
 - copy:
     from: Dockerfile
     to: Dockerfile
-# clone project
-- run:
-    command: git clone ${capsula.git.gitUrl} --branch ${capsula.git.branch}
-# remove .git files
-- run:
-    command: rm -fr ${capsula.git.gitProject}/.git ${capsula.git.gitProject}/.gitignore
+<#include "include-git-clone.txt">
 - run:
     command: mv ${capsula.git.gitProject} ${capsula.debian.packageName}_${version.version}
 - run:
-    command: tar -czvf ${target}/${capsula.debian.packageName}_${version.version}.orig.tar.gz ${capsula.debian.packageName}_${version.version}   
+    command: tar -czvf ${target}/${capsula.debian.packageName}_${version.version}.orig.tar.gz ${capsula.debian.packageName}_${version.version}
 - mkdir:
     to: ${capsula.debian.packageName}_${version.version}/debian/${capsula.debian.packageName}/DEBIAN
     mode: rwxrwxrwx
@@ -41,16 +36,7 @@ prepare:
     from: compat.ftl
     to: ${pkgdir}/debian/compat
 build:
-# pull or build docker image
-<#if use_dockerhub>
-<#assign image = dockerhub_image>
-- run:
-    command: docker pull ${dockerhub_image}
-<#else>
-<#assign image = image_label>
-- run:
-    command: docker build . -t ${image}
-</#if>
+<#include "include-build-docker.txt">
 # build the package
 - run:
     command: docker run -v${target}:/target -w/target/${pkgdir} ${image} debuild -us -uc

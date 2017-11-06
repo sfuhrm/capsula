@@ -1,0 +1,10 @@
+# pull or build docker image
+<#if use_dockerhub>
+<#assign image = dockerhub_image>
+- run:
+    command: docker pull ${dockerhub_image}
+<#else>
+<#assign image = image_label>
+- run:
+    command: docker build . -t ${image}
+</#if>

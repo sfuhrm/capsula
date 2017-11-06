@@ -1,0 +1,6 @@
+# clone project
+- run:
+    command: git clone ${capsula.git.gitUrl} --branch ${capsula.git.branch}
+# remove .git files
+- run:
+    command: rm -fr ${capsula.git.gitProject}/.git ${capsula.git.gitProject}/.gitignore

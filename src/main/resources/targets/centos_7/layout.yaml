@@ -7,36 +7,22 @@ prepare:
 - template:
     from: project.spec.ftl
     to: ${capsula.redhat.packageName}-${version.version}.spec
-# clone project
-- run:
-    command: git clone ${capsula.git.gitUrl} --branch ${capsula.git.branch}
-# remove .git files
-- run:
-    command: rm -fr ${capsula.git.gitProject}/.git ${capsula.git.gitProject}/.gitignore
+<#include "include-git-clone.txt">
 - run:
     command: mv ${capsula.git.gitProject} ${capsula.redhat.packageName}-${version.version}
   # make rpm builder directorys (see https://wiki.centos.org/HowTos/SetupRpmBuildEnvironment)
 - run:
-    command: mkdir -p root/rpmbuild/BUILD root/rpmbuild/RPMS root/rpmbuild/SOURCES root/rpmbuild/SRPMS   
+    command: mkdir -p root/rpmbuild/BUILD root/rpmbuild/RPMS root/rpmbuild/SOURCES root/rpmbuild/SRPMS
 - run:
-    command: tar -czvf root/rpmbuild/SOURCES/${capsula.redhat.packageName}-${version.version}.tar.gz ${capsula.redhat.packageName}-${version.version}/    
+    command: tar -czvf root/rpmbuild/SOURCES/${capsula.redhat.packageName}-${version.version}.tar.gz ${capsula.redhat.packageName}-${version.version}/
 - run:
-    command: chmod a+rw root/rpmbuild/SOURCES/${capsula.redhat.packageName}-${version.version}.tar.gz 
+    command: chmod a+rw root/rpmbuild/SOURCES/${capsula.redhat.packageName}-${version.version}.tar.gz
 build:
-# pull or build docker image
-<#if use_dockerhub>
-<#assign image = dockerhub_image>
-- run:
-    command: docker pull ${dockerhub_image}
-<#else>
-<#assign image = image_label>
-- run:
-    command: docker build . -t ${image}
-</#if>
+<#include "include-build-docker.txt">
 # rpmbuild will complain if the archive has a unmappable UID. It was created
 # on the host, not the container.
 - run:
-    command: docker run -v${target}:/target -v${target}/root/rpmbuild:/root/rpmbuild -w/target ${image} chown root:root /target/${capsula.redhat.packageName}-${version.version}.spec /target/root/rpmbuild/SOURCES/${capsula.redhat.packageName}-${version.version}.tar.gz 
+    command: docker run -v${target}:/target -v${target}/root/rpmbuild:/root/rpmbuild -w/target ${image} chown root:root /target/${capsula.redhat.packageName}-${version.version}.spec /target/root/rpmbuild/SOURCES/${capsula.redhat.packageName}-${version.version}.tar.gz
 # build the package
 - run:
     command: docker run -v${target}:/target -v${target}/root/rpmbuild:/root/rpmbuild -w/target ${image} rpmbuild -ba ${capsula.redhat.packageName}-${version.version}.spec
