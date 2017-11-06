@@ -15,7 +15,6 @@ if [ "x${VERSION}" = "x" ]; then
 	exit 10
 fi
 
-ROOT=${PWD}
 TAR=/tmp/${PROJECT}-${VERSION}.tar
 TARGZ=${TAR}.gz
 SIGN=${TARGZ}.asc
