@@ -1,0 +1,25 @@
+<#--
+
+Defines a UN*X style install macro that has the following parameters:
+
+* cmd: the command object, must have attributes octal, owner and group
+* arguments: the additional arguments to append after the mode/owner/group paremeters
+
+-->
+<#macro install cmd arguments>
+<#if cmd?has_content>
+<#assign modeStatement = "">
+<#if cmd.mode?has_content>
+<#assign modeStatement = "--mode="+cmd.octal+" ">
+</#if>
+<#assign ownerStatement = "">
+<#if cmd.owner?has_content>
+<#assign ownerStatement = "--owner="+cmd.owner+" ">
+</#if>
+<#assign groupStatement = "">
+<#if cmd.group?has_content>
+<#assign groupStatement = "--group="+cmd.group+" ">
+</#if>
+install ${modeStatement} ${ownerStatement} ${groupStatement} ${arguments}
+</#if>
+</#macro>
