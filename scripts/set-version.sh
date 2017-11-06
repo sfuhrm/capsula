@@ -1,4 +1,11 @@
 #! /bin/bash
+#
+# Sets the version of the current software at multiple places.
+# Call it like this:
+# set-version.sh 1.0.0-SNAPSHOT
+#
+# (c) 2017 Stephan Fuhrmann
+
 NEWVERSION=$1
 
 if [ "x$NEWVERSION" = "x" ]; then
