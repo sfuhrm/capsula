@@ -1,5 +1,5 @@
 pkgdir: ${capsula.debian.packageName}_${version.version}
-dockerhub_image: sfuhrm/capsula-debian-stretch
+dockerhub_image: sfuhrm/capsula:debian_stretch
 dockerhub_url: https://hub.docker.com/r/sfuhrm/capsula-debian-stretch/
 image_label: capsula-debian-stretch
 use_dockerhub: true
