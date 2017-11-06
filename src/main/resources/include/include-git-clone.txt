@@ -1,3 +1,8 @@
+<#--
+
+Clones the Git repository and removes the .git files.
+
+-->
 # clone project
 - run:
     command: git clone ${capsula.git.gitUrl} --branch ${capsula.git.branch}

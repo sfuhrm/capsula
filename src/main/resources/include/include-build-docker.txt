@@ -1,3 +1,16 @@
+<#--
+
+Builds the docker container or pulls it from docker hub.
+
+Input variables:
+* use_dockerhub: if true, uses docker hub image. If false, builds the image.
+* dockerhub_image: the name of the docker hub image.
+* image_label: the local label of the built image
+
+Output variables:
+* image: the name of the image built / pulled.
+
+-->
 # pull or build docker image
 <#if use_dockerhub>
 <#assign image = dockerhub_image>
