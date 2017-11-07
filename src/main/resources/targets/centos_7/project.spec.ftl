@@ -26,7 +26,7 @@ ${line}
 %setup
 
 %build
-mvn clean package
+mvn --batch-mode clean package
 
 %install
 <#list capsula.install as entry>
