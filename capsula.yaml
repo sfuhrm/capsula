@@ -64,7 +64,9 @@ archlinux:
     - pkg: docker
     - pkg: git
     - pkg: tar
-    - pkg: java-runtime
+    - pkg: java-runtime-headless
+      op: eq
+      version: 8
     build_depends:
     - pkg: jdk8-openjdk
     - pkg: maven
