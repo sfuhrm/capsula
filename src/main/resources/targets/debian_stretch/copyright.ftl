@@ -9,7 +9,7 @@ License: ${capsula.license.licenseName}
 License: ${capsula.license.licenseName}
 <#if capsula.license.debianFile?has_content>
  On Debian systems, the full text of the ${capsula.license.licenseName}
- can be found in the file `${capsula.license.debianFile}'.
+ can be found in the file `/usr/share/common-licenses/${capsula.license.debianName}'.
 <#else>
 <#list capsula.license.licenseText as line>
 <#if line?has_content>

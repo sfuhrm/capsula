@@ -68,15 +68,21 @@ public enum License {
     private final String licenseName;
 
     /** The name of the license on Debian systems.
+     * Get the list with
+     * {@code docker  run -i debian ls /usr/share/common-licenses/}.
      * @see <a href="https://www.debian.org/doc/
      * packaging-manuals/copyright-format/1.0/#license-field">6.7. License</a>
      * */
+    @Getter
     private final String debianName;
 
     /** The name of the license on Archlinux systems.
+     * Get the list with
+     * {@code docker  run -i base/archlinux ls /usr/share/licenses/common}.
      * @see <a href="https://wiki.archlinux.org/
      * index.php/PKGBUILD#license">license</a>
      * */
+    @Getter
     private final String archlinuxName;
 
     /** New instance.
@@ -116,13 +122,5 @@ public enum License {
             }
             return lines;
         }
-    }
-
-    /** Gets the license file inclusive directory under Debian systems.
-     * TBD the path should be in the template, not here.
-     * @return the Debian specific path of the license file.
-     * */
-    public String getDebianFile() {
-        return "/usr/share/common-licenses/" + debianName;
     }
 }
