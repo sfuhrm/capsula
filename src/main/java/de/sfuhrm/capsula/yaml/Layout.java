@@ -33,7 +33,10 @@ import lombok.Getter;
  */
 public class Layout {
 
-    /** The machine version for this layout. */
+    /** The machine version for this layout.
+     * This matches usually the name of the directory the
+     * layout is in.
+     * */
     @NotNull
     @Getter
     @NotBlank
