@@ -240,7 +240,11 @@ public final class TargetBuilder implements Callable<TargetBuilder.Result> {
         Objects.requireNonNull(layout, "layout needs to be non-null");
         for (String file : layout.getPackages()) {
             Path fromPath = getTargetPath().resolve(file);
-            Path toPath = out.resolve(fromPath.getFileName());
+
+            Path toDirectory = out.resolve(layout.getId());
+            Path toPath = toDirectory.resolve(fromPath.getFileName());
+            Files.createDirectories(toDirectory);
+
             log.info("Copying file {} to {}", fromPath, toPath);
             Files.copy(fromPath, toPath, StandardCopyOption.REPLACE_EXISTING);
         }
