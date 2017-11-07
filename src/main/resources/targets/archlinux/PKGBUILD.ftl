@@ -32,7 +32,7 @@ prepare() {
 
 build() {
 	cd "$pkgname-$pkgver"
-	mvn --batch-mode clean package
+	${capsula.archlinux.buildCommand}
 }
 
 check() {

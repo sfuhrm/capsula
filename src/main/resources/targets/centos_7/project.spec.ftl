@@ -27,7 +27,7 @@ ${line}
 %setup
 
 %build
-mvn --batch-mode clean package
+${capsula.redhat.buildCommand}
 
 %install
 <#list capsula.install as entry>

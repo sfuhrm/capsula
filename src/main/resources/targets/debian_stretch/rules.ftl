@@ -4,8 +4,7 @@
 	dh $@
 
 override_dh_auto_clean:
-	mvn --batch-mode clean
 
 override_dh_auto_build:
-	mvn --batch-mode clean package
+    ${capsula.debian.buildCommand}
 

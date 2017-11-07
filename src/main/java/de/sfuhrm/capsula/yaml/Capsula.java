@@ -27,6 +27,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.validator.constraints.URL;
 
 /**
@@ -43,6 +44,15 @@ public class Capsula {
     @NotNull
     @NotBlank
     private String packageName;
+
+    /** The command to use for building the package.
+     * */
+    @Getter
+    @Setter
+    @NotNull
+    @NotBlank
+    private String buildCommand;
+
     /**
      * The author of the software in the package.
      */
