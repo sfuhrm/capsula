@@ -9,6 +9,7 @@ Linux platforms supported:
 
 * [Debian](https://www.debian.org/)-derived systems: Debian, Ubuntu, Mint.
 * [Fedora](https://www.centos.org/)-derived systems: Fedora, CentOS.
+* [Archlinux](https://www.archlinux.org/) systems.
 * and many more to come.
 
 ### Downloading & installation
@@ -129,7 +130,7 @@ The following TODOs are open programming tasks as known for today:
 * [Finished] Milestone 2: Make Capsula package itself for CentOS 7.
 * [Finished] Milestone 3: Package dependencies.
 * [Finished] Milestone 4: Move template directories.
-* Milestone 5: TBD.
+* Milestone 5: Archlinux support.
 
 ## Related Docker Hub images
 
