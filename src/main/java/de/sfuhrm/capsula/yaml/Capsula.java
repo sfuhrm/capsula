@@ -88,7 +88,6 @@ public class Capsula {
     @Size(min = 1)
     private List<String> longDescription;
 
-    ;
     /**
      * The license for the project.
      */
