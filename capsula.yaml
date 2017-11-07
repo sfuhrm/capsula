@@ -44,7 +44,7 @@ debian:
     version: 1.29
   - pkg: java8-runtime-headless
 archlinux:
-# Version history of the package. Used for Debian changelogs.
+  architecture: any
   relations:
   - pkg: docker
   - pkg: git

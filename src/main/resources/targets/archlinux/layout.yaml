@@ -35,4 +35,4 @@ build:
 - run:
     command: docker run -v${target}:/target -w/target ${image} chmod -R a+rwx .
 packages:
-- root/rpmbuild/RPMS/noarch/${capsula.redhat.packageName}-${version.version}-${version.releaseNumber}.noarch.rpm
+- ${capsula.archlinux.packageName}-${version.version}-${version.release}-${capsula.archlinux.architecture}.pkg.tar.xz

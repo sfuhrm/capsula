@@ -17,10 +17,20 @@
  */
 package de.sfuhrm.capsula.yaml;
 
+import lombok.Getter;
+
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
 /**
  * Specific descriptor for Archlinux distribution.
  * @author Stephan Fuhrmann
  */
 public class Archlinux extends Distribution {
+    /** The ArchLinux specific architecture of this package. */
+    @Getter
+    @NotNull
+    @NotBlank
+    private String architecture;
 
 }

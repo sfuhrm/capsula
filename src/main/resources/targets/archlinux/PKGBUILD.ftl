@@ -1,3 +1,4 @@
+<#include "include-install.txt">
 <#macro relation r>${r.pkg}<#if r.op?has_content>${r.op.operator}${r.version}</#if></#macro>
 <#macro relations name list><#if list?has_content>${name}=(<#list list as rel><@relation r=rel/><#sep> </#sep></#list>)
 </#if></#macro>
@@ -5,10 +6,10 @@
 # Maintainer: ${capsula.maintainer.name} <${capsula.maintainer.email}>
 pkgname=${capsula.archlinux.packageName}
 pkgver=${version.version}
-pkgrel=${version.releaseNumber}
+pkgrel=${version.release}
 epoch=
 pkgdesc="${capsula.shortSummary}"
-arch=('any')
+arch=('${capsula.archlinux.architecture}')
 url="${capsula.homepage}"
 license=('GPL')
 groups=()
@@ -38,5 +39,19 @@ check() {
 
 package() {
 	cd "$pkgname-$pkgver"
-	make DESTDIR="$pkgdir/" install
+<#list capsula.install as entry>
+<#-- install.mkdir -->
+<#if entry.mkdir?has_content>
+${"\t"}<@install cmd=entry.mkdir arguments="-d $pkgdir/${entry.mkdir.to}"/>
+</#if>
+<#-- install.copy -->
+<#if entry.copy?has_content>
+${"\t"}<@install cmd=entry.copy arguments="-D ${entry.copy.from} $pkgdir/${entry.copy.to}"/>
+</#if>
+<#-- install.run -->
+<#if entry.run?has_content>
+${"\t"}${entry.run.command}
+</#if>
+</#list>
+
 }
