@@ -6,5 +6,5 @@
 override_dh_auto_clean:
 
 override_dh_auto_build:
-    ${capsula.debian.buildCommand}
+${"\t"}${capsula.debian.buildCommand}
 
