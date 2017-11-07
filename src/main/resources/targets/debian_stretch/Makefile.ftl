@@ -14,6 +14,6 @@ ${"\t"}<@install cmd=entry.copy arguments="-D ${entry.copy.from} $(DESTDIR)/${en
 </#if>
 <#-- install.run -->
 <#if entry.run?has_content>
-	${entry.run.command}
+${"\t"}${entry.run.command}
 </#if>
 </#list>
