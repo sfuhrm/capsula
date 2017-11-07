@@ -116,7 +116,7 @@ versions:
 # Where to install what on the target system?
 install:
 - copy:
-    from: target/capsula-0.1.4-jar-with-dependencies.jar
+    from: target/capsula-0.2.0-SNAPSHOT-jar-with-dependencies.jar
     to: /usr/share/capsula/capsula-jar-with-dependencies.jar
     owner: root
     group: root
