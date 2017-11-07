@@ -11,6 +11,7 @@ Group: ${capsula.redhat.group}
 Source: ${capsula.redhat.packageName}-${version.version}.tar.gz
 Packager: ${capsula.maintainer.name} <${capsula.maintainer.email}>
 URL: ${capsula.homepage}
+<@relations name="BuildRequires" list=capsula.redhat.relationsFor("build_depends")/>
 <@relations name="Requires" list=capsula.redhat.relationsFor("depends")/>
 <@relations name="Recommends" list=capsula.redhat.relationsFor("recommends")/>
 <@relations name="Suggests" list=capsula.redhat.relationsFor("suggests")/>

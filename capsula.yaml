@@ -24,50 +24,49 @@ git:
 redhat:
   group: Utilities/System
   relations:
-  - pkg: docker
-  - pkg: git
-  - pkg: tar
-    op: ge
-    version: 1.26
-  - pkg: jre
-    op: ge
-    version: 1.8.0
-  - pkg: jdk
-    op: ge
-    version: 1.8.0
-    type: build_depends
-  - pkg: maven
-    type: build_depends
+    depends:
+    - pkg: docker
+    - pkg: git
+    - pkg: tar
+      op: ge
+      version: 1.26
+    - pkg: jre
+      op: ge
+      version: 1.8.0
+    build_depends:
+    - pkg: jdk
+      op: ge
+      version: 1.8.0
+    - pkg: maven
 debian:
   priority: optional
   section: devel
   architecture: all
   relations:
-  - pkg: docker-ce
-  - pkg: git
-  - pkg: tar
-    op: ge
-    version: 1.29
-  - pkg: java8-runtime-headless
-  - pkg: debhelper
-    op: ge
-    version: 10
-    type: build_depends
-  - pkg: openjdk-8-jdk-headless
-    type: build_depends
-  - pkg: maven
-    type: build_depends
+    depends:
+    - pkg: docker-ce
+    - pkg: git
+    - pkg: tar
+      op: ge
+      version: 1.29
+    - pkg: java8-runtime-headless
+    build_depends:
+    - pkg: debhelper
+      op: ge
+      version: 10
+    - pkg: openjdk-8-jdk-headless
+    - pkg: maven
 archlinux:
   architecture: any
   relations:
-  - pkg: docker
-  - pkg: git
-  - pkg: tar
-  - pkg: java-runtime
-  - pkg: openjdk-8-jdk-headless
-    type: build_depends
-  - pkg: maven
-    type: build_depends
+    depends:
+    - pkg: docker
+    - pkg: git
+    - pkg: tar
+    - pkg: java-runtime
+    build_depends:
+    - pkg: openjdk-8-jdk-headless
+    - pkg: maven
 versions:
 - version: 0.1.3
   release: 1

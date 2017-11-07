@@ -7,7 +7,7 @@ maintainer: # who's the package maintainer of the program
   email: s@sfuhrm.de
 shortSummary: Reformats Java source code to comply with Google Java Style.
 longDescription: # long description of package content
-- The formatter can act on whole files, on limited lines (--lines), on specific offsets (--offset), 
+- The formatter can act on whole files, on limited lines (--lines), on specific offsets (--offset),
 - passing through to standard-out (default) or altered in-place (--replace).
 - ""
 - "The Google Java Style is described here: https://google.github.io/styleguide/javaguide.html"
@@ -27,17 +27,43 @@ git:
 redhat:
   group: Development Tools
   relations:
-  - pkg: jre-headless
-    op: ge
-    version: 1.8.0
+    depends:
+    - pkg: jre-headless
+      op: ge
+      version: 1.8.0
+    build_depends:
+    - pkg: jdk
+      op: ge
+      version: 1.8.0
+    - pkg: maven
 debian:
   priority: optional
   section: devel
   architecture: all
   relations:
-  - pkg: java8-runtime-headless
+    depends:
+    - pkg: java8-runtime-headless
+    build_depends:
+    - pkg: debhelper
+      op: ge
+      version: 10
+    - pkg: openjdk-8-jdk-headless
+    - pkg: maven
+archlinux:
+  architecture: any
+  relations:
+    depends:
+    - pkg: java-runtime
+    build_depends:
+    - pkg: openjdk-8-jdk-headless
+    - pkg: maven
 # Version history of the package. Used for Debian changelogs.
 versions:
+- version: 1.6 # TBD this needs to match the debian version as a string
+  release: stfu-1
+  date: 2017-11-07T21:10:00+01:00
+  changes:
+  - New packaging with build dependencies
 - version: 1.6 # TBD this needs to match the debian version as a string
   release: stfu
   date: 2017-10-30T15:10:00+02:00

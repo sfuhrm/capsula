@@ -17,8 +17,9 @@
  */
 package de.sfuhrm.capsula.yaml;
 
+import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Map;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -47,18 +48,17 @@ public class Distribution {
     @Setter
     @NotNull
     @Valid
-    private List<Relation> relations;
+    private Map<Relation.RelationType, List<Relation>> relations;
 
     /**
      * Get relations of a certain type.
      *
      * @param type the type as can be found in {@link Relation.RelationType}.
-     * @return the sublist of relations of the given type.
+     * @return the sublist of relations of the given type. Can be
+     * an empty list, but never {@code null}.
      */
     public final List<Relation> relationsFor(final String type) {
-        return relations
-                .stream()
-                .filter(r -> r.getType().toString().equalsIgnoreCase(type))
-                .collect(Collectors.toList());
+        Relation.RelationType enumType = Relation.RelationType.valueOf(type);
+        return relations.getOrDefault(enumType, Collections.emptyList());
     }
 }
