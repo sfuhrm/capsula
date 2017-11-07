@@ -29,7 +29,7 @@ prepare() {
 
 build() {
 	cd "$pkgname-$pkgver"
-	mvn clean package
+	mvn --batch-mode clean package
 }
 
 check() {
