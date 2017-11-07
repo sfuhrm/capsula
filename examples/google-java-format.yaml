@@ -33,7 +33,7 @@ redhat:
       op: ge
       version: 1.8.0
     build_depends:
-    - pkg: jdk
+    - pkg: java-1.8.0-openjdk-headless
       op: ge
       version: 1.8.0
     - pkg: maven
@@ -56,7 +56,7 @@ archlinux:
     depends:
     - pkg: java-runtime
     build_depends:
-    - pkg: openjdk-8-jdk-headless
+    - pkg: jdk8-openjdk
     - pkg: maven
 # Version history of the package. Used for Debian changelogs.
 versions:
