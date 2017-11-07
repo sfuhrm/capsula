@@ -13,9 +13,10 @@ arch=('${capsula.archlinux.architecture}')
 url="${capsula.homepage}"
 license=('${capsula.license.archlinuxName}')
 groups=()
-<#-- TBD: check relations -->
+<#-- Not used archlinux relations: optdepends, checkdepends -->
+<#-- Not possible debian relations: recommends, suggests, breaks -->
 <@relations name="depends" list=capsula.archlinux.relationsFor("depends")/>
-<@relations name="makedepends" list=capsula.archlinux.relationsFor("makedepends")/>
+<@relations name="makedepends" list=capsula.archlinux.relationsFor("build_depends")/>
 <@relations name="provides" list=capsula.archlinux.relationsFor("provides")/>
 <@relations name="conflicts" list=capsula.archlinux.relationsFor("conflicts")/>
 <@relations name="replaces" list=capsula.archlinux.relationsFor("replaces")/>

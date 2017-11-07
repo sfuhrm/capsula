@@ -32,6 +32,12 @@ redhat:
   - pkg: jre
     op: ge
     version: 1.8.0
+  - pkg: jdk
+    op: ge
+    version: 1.8.0
+    type: build_depends
+  - pkg: maven
+    type: build_depends
 debian:
   priority: optional
   section: devel
@@ -43,6 +49,14 @@ debian:
     op: ge
     version: 1.29
   - pkg: java8-runtime-headless
+  - pkg: debhelper
+    op: ge
+    version: 10
+    type: build_depends
+  - pkg: openjdk-8-jdk-headless
+    type: build_depends
+  - pkg: maven
+    type: build_depends
 archlinux:
   architecture: any
   relations:
@@ -50,6 +64,10 @@ archlinux:
   - pkg: git
   - pkg: tar
   - pkg: java-runtime
+  - pkg: openjdk-8-jdk-headless
+    type: build_depends
+  - pkg: maven
+    type: build_depends
 versions:
 - version: 0.1.3
   release: 1

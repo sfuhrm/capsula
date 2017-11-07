@@ -5,7 +5,7 @@ Source: ${capsula.debian.packageName}
 Section: ${capsula.debian.section}
 Priority: ${capsula.debian.priority}
 Maintainer: ${capsula.maintainer.name} <${capsula.maintainer.email}>
-Build-Depends: debhelper (>=10), openjdk-8-jdk-headless, maven
+<@relations name="Build-Depends" list=capsula.debian.relationsFor("build_depends")/>
 Standards-Version: 3.9.8
 Homepage: ${capsula.homepage}
 

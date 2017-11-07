@@ -68,6 +68,8 @@ public class Relation {
      *     RPM guide about dependencies</a>
      */
     public enum RelationType {
+        /**  List of packages required to build your package. */
+        build_depends,
         /** The package will not be installed unless the packages it depends
          * on are installed. */
         depends,
