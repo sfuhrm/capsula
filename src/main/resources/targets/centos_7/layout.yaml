@@ -1,4 +1,5 @@
 ---
+id: centos_7
 name: CentOS 7
 prepare:
 - copy:

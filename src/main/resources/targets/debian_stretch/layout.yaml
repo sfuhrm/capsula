@@ -1,4 +1,5 @@
 ---
+id: debian_stretch
 name: Debian Stretch
 prepare:
 - copy:

@@ -22,6 +22,8 @@ import java.util.List;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+
 import lombok.Getter;
 
 /**
@@ -30,6 +32,13 @@ import lombok.Getter;
  * @author Stephan Fuhrmann
  */
 public class Layout {
+
+    /** The machine version for this layout. */
+    @NotNull
+    @Getter
+    @NotBlank
+    @Pattern(regexp = "\\p{javaLowerCase}{2,}}")
+    private String id;
 
     /** The human readable name for this layout. */
     @NotNull
