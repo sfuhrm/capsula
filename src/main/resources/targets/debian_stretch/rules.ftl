@@ -4,8 +4,8 @@
 	dh $@
 
 override_dh_auto_clean:
-	mvn clean
+	mvn --batch-mode clean
 
 override_dh_auto_build:
-	mvn clean package
+	mvn --batch-mode clean package
 
