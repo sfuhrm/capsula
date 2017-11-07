@@ -76,6 +76,7 @@ public final class Main {
         build.calculateReleaseNumbers();
         PropertyInheritance.inherit(build, build.getDebian());
         PropertyInheritance.inherit(build, build.getRedhat());
+        PropertyInheritance.inherit(build, build.getArchlinux());
         build.getVersions().stream().forEach(v -> {
             if (v.getMaintainer() == null) {
                 v.setMaintainer(build.getMaintainer());

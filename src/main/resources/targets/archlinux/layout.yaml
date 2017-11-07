@@ -1,0 +1,38 @@
+---
+name: ArchLinux
+prepare:
+- copy:
+    from: Dockerfile
+    to: Dockerfile
+- template:
+    from: PKGBUILD.ftl
+    to: PKGBUILD
+- template:
+    from: build.sh.ftl
+    to: build.sh
+    mode: rwxrwxrwx
+<#include "include-git-clone.txt">
+- run:
+    command: mv ${capsula.git.gitProject} ${capsula.archlinux.packageName}-${version.version}
+- run:
+    command: tar -czvf ${capsula.archlinux.packageName}-${version.version}.tar.gz ${capsula.archlinux.packageName}-${version.version}/
+build:
+# pull or build docker image
+<#if use_dockerhub>
+<#assign image = dockerhub_image>
+- run:
+    command: docker pull ${dockerhub_image}
+<#else>
+<#assign image = image_label>
+- run:
+    command: docker build . -t ${image}
+</#if>
+# build the package
+# NOTE: makepkg needs RUNTIME dependencies to be installed at BUILD TIME.
+- run:
+    command: docker run -v${target}:/target -w/target ${image} bash build.sh
+# change the permissions to super open so I can delete the build directories later
+- run:
+    command: docker run -v${target}:/target -w/target ${image} chmod -R a+rwx .
+packages:
+- ${capsula.archlinux.packageName}-${version.version}-${version.release}-${capsula.archlinux.architecture}.pkg.tar.xz
