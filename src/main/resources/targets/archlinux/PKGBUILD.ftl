@@ -11,7 +11,7 @@ epoch=
 pkgdesc="${capsula.shortSummary}"
 arch=('${capsula.archlinux.architecture}')
 url="${capsula.homepage}"
-license=('GPL')<#-- TBD: map the license -->
+license=('${capsula.license.archlinuxName}')
 groups=()
 <#-- TBD: check relations -->
 <@relations name="depends" list=capsula.archlinux.relationsFor("depends")/>

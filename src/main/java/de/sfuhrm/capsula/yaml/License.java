@@ -30,22 +30,28 @@ import java.util.Objects;
 
 /** A well-known software license. */
 public enum License {
+
+    /*
+     On ArchLinux:
+    * Directory name in /usr/share/licenses/common
+    */
+
     /** GNU General Public License 3.0. */
-    GPL_30("GPL-3.0", "GPL-3", "https://www.gnu.org/licenses/gpl-3.0.txt"),
+    GPL_30("GPL-3.0", "https://www.gnu.org/licenses/gpl-3.0.txt", "GPL-3", "GPL3"),
     /** GNU Lesser General Public License 3.0. */
-    LGPL_30("LGPL-3.0", "LGPL-3",
-            "https://www.gnu.org/licenses/lgpl-3.0.txt"),
+    LGPL_30("LGPL-3.0", "https://www.gnu.org/licenses/lgpl-3.0.txt", "LGPL-3", "LGPL3"
+            ),
     /** GNU General Public License 2.0. */
-    GPL_20("GPL-2.0", "GPL-2", "https://www.gnu.org/licenses/gpl-2.0.txt"),
+    GPL_20("GPL-2.0", "https://www.gnu.org/licenses/gpl-2.0.txt", "GPL-2", "GPL2" ),
     /** GNU Lesser General Public License 2.1. */
-    LGPL_21("LGPL-2.1", "LGPL-2.1",
-            "https://www.gnu.org/licenses/lgpl-2.1.txt"),
+    LGPL_21("LGPL-2.1", "https://www.gnu.org/licenses/lgpl-2.1.txt", "LGPL-2.1", "LGPL2.1"
+            ),
     /** GNU Lesser General Public License 2.0. */
-    LGPL_20("LGPL-2.0", "LGPL-2",
-            "https://www.gnu.org/licenses/lgpl-2.0.txt"),
+    LGPL_20("LGPL-2.0", "https://www.gnu.org/licenses/lgpl-2.0.txt", "LGPL-2", "LGPL2"
+            ),
     /** Apache License 2.0. */
-    APACHE_20("APACHE-2.0", "Apache-2.0",
-            "http://www.apache.org/licenses/LICENSE-2.0.txt");
+    APACHE_20("APACHE-2.0", "http://www.apache.org/licenses/LICENSE-2.0.txt", "Apache-2.0", "APACHE"
+            );
 
     /** The URL of the license legal text. */
     @Getter
@@ -55,20 +61,32 @@ public enum License {
     @Getter
     private final String licenseName;
 
-    /** The name of the license on Debian systems. */
+    /** The name of the license on Debian systems.
+     * @see <a href="https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/#license-field">6.7. License</a>
+     * */
     private final String debianName;
+
+    /** The name of the license on Archlinux systems.
+     * @see <a href="https://wiki.archlinux.org/index.php/PKGBUILD#license">license</a>
+     * */
+    private final String archlinuxName;
 
     /** New instance.
      * @param inName the display name of the license.
-     * @param inDebianName the debian name of the license.
      * @param inLicenseTextUrl the URL where the license legal text
      *                         is located.
+     * @param inDebianName the Debian name of the license.
+     * @param inArchlinuxName the Archlinux name of the license.
      * */
-    License(final String inName, final String inDebianName,
-            final String inLicenseTextUrl) {
+    License(final String inName,
+            final String inLicenseTextUrl,
+            final String inDebianName,
+            final String inArchlinuxName
+    ) {
         this.licenseName = Objects.requireNonNull(inName);
-        this.debianName = Objects.requireNonNull(inDebianName);
         this.licenseTextUrl = Objects.requireNonNull(inLicenseTextUrl);
+        this.debianName = Objects.requireNonNull(inDebianName);
+        this.archlinuxName = Objects.requireNonNull(inArchlinuxName);
     }
 
     /** Reads the legal license text from the license embedded URL.
