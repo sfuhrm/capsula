@@ -84,4 +84,11 @@ install:
     owner: root
     group: root
     mode: rwxr-xr-x
-
+- run:
+    command: gzip README.md
+- copy:
+    from: README.md.gz
+    to: /usr/share/doc/capsula/README.md.gz
+    owner: root
+    group: root
+    mode: rw-r--r--
