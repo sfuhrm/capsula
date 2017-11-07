@@ -37,20 +37,26 @@ public enum License {
     */
 
     /** GNU General Public License 3.0. */
-    GPL_30("GPL-3.0", "https://www.gnu.org/licenses/gpl-3.0.txt", "GPL-3", "GPL3"),
+    GPL_30("GPL-3.0", "https://www.gnu.org/licenses/gpl-3.0.txt",
+            "GPL-3", "GPL3"),
     /** GNU Lesser General Public License 3.0. */
-    LGPL_30("LGPL-3.0", "https://www.gnu.org/licenses/lgpl-3.0.txt", "LGPL-3", "LGPL3"
+    LGPL_30("LGPL-3.0", "https://www.gnu.org/licenses/lgpl-3.0.txt",
+            "LGPL-3", "LGPL3"
             ),
     /** GNU General Public License 2.0. */
-    GPL_20("GPL-2.0", "https://www.gnu.org/licenses/gpl-2.0.txt", "GPL-2", "GPL2" ),
+    GPL_20("GPL-2.0", "https://www.gnu.org/licenses/gpl-2.0.txt",
+            "GPL-2", "GPL2"),
     /** GNU Lesser General Public License 2.1. */
-    LGPL_21("LGPL-2.1", "https://www.gnu.org/licenses/lgpl-2.1.txt", "LGPL-2.1", "LGPL2.1"
+    LGPL_21("LGPL-2.1", "https://www.gnu.org/licenses/lgpl-2.1.txt",
+            "LGPL-2.1", "LGPL2.1"
             ),
     /** GNU Lesser General Public License 2.0. */
-    LGPL_20("LGPL-2.0", "https://www.gnu.org/licenses/lgpl-2.0.txt", "LGPL-2", "LGPL2"
+    LGPL_20("LGPL-2.0", "https://www.gnu.org/licenses/lgpl-2.0.txt",
+            "LGPL-2", "LGPL2"
             ),
     /** Apache License 2.0. */
-    APACHE_20("APACHE-2.0", "http://www.apache.org/licenses/LICENSE-2.0.txt", "Apache-2.0", "APACHE"
+    APACHE_20("APACHE-2.0", "http://www.apache.org/licenses/LICENSE-2.0.txt",
+            "Apache-2.0", "APACHE"
             );
 
     /** The URL of the license legal text. */
@@ -62,12 +68,14 @@ public enum License {
     private final String licenseName;
 
     /** The name of the license on Debian systems.
-     * @see <a href="https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/#license-field">6.7. License</a>
+     * @see <a href="https://www.debian.org/doc/
+     * packaging-manuals/copyright-format/1.0/#license-field">6.7. License</a>
      * */
     private final String debianName;
 
     /** The name of the license on Archlinux systems.
-     * @see <a href="https://wiki.archlinux.org/index.php/PKGBUILD#license">license</a>
+     * @see <a href="https://wiki.archlinux.org/
+     * index.php/PKGBUILD#license">license</a>
      * */
     private final String archlinuxName;
 
