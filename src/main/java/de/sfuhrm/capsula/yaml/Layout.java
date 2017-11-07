@@ -37,7 +37,7 @@ public class Layout {
     @NotNull
     @Getter
     @NotBlank
-    @Pattern(regexp = "\\p{javaLowerCase}{2,}}")
+    @Pattern(regexp = "[a-zA-Z0-9_]{2,}")
     private String id;
 
     /** The human readable name for this layout. */
