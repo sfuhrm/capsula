@@ -69,6 +69,16 @@ archlinux:
     - pkg: jdk8-openjdk
     - pkg: maven
 versions:
+- version: 0.1.4
+  release: 1
+  date: 2017-11-07T23:10:00+01:00
+  changes:
+  - Breaking change, different relation layout in YAML config
+  - Archlinux Support
+  - Verbose output per option
+  - Build dependency introduction
+  - Using new dockerhub naming schema
+  - Include files
 - version: 0.1.3
   release: 1
   date: 2017-11-05T15:50:00+01:00
@@ -106,7 +116,7 @@ versions:
 # Where to install what on the target system?
 install:
 - copy:
-    from: target/capsula-0.1.4-SNAPSHOT-jar-with-dependencies.jar
+    from: target/capsula-0.1.4-jar-with-dependencies.jar
     to: /usr/share/capsula/capsula-jar-with-dependencies.jar
     owner: root
     group: root

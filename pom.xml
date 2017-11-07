@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>de.sfuhrm</groupId>
     <artifactId>capsula</artifactId>
-    <version>0.1.4-SNAPSHOT</version>
+    <version>0.1.4</version>
     <name>Capsula</name>
     <packaging>jar</packaging>
     <licenses>
