@@ -220,6 +220,10 @@ public final class FileUtils {
                 log.debug("Deleting file {}", p);
                 Files.delete(p);
             }
+            if (Files.isSymbolicLink(p)) {
+                log.debug("Deleting symbolic link {}", p);
+                Files.delete(p);
+            }
             if (Files.isDirectory(p)) {
                 log.debug("Deleting directory contents {}", p);
                 Files.list(p).forEach(t -> deleteRecursive(t));
