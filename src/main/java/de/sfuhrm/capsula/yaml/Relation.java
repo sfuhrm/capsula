@@ -37,14 +37,6 @@ public class Relation {
     @Setter
     @NotEmpty
     private String pkg;
-    /**
-     * This is the the release number for this version. The first release gets
-     * number 1.
-     */
-    @Getter
-    @Setter
-    @NotNull
-    private RelationType type = RelationType.depends;
 
     /** The operator for the version declaration. */
     @Getter
