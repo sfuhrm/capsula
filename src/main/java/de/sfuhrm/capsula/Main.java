@@ -128,7 +128,8 @@ public final class Main {
                     myBuildDir, target);
 
             TargetBuilder builder = new TargetBuilder(build, myBuildDir,
-                    target, targetPath, params.getStopAfter());
+                    target, targetPath,
+                    params.getStopAfter(), params.isVerbose());
 
             try {
                 builder.call();

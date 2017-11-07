@@ -42,6 +42,12 @@ final class Params {
             usage = "Show this command line help.", help = true)
     private boolean help;
 
+    /** Whether to do verbose progress output.  */
+    @Getter
+    @Option(name = "-verbose", aliases = {"-v"},
+            usage = "Verbose output.")
+    private boolean verbose;
+
     /** The YAML descriptor that describes how to build the package. */
     @Getter
     @Option(name = "-descriptor", aliases = {"-f"},

@@ -114,12 +114,22 @@ class RunDelegate extends AbstractDelegate {
 
             InputStreamConsumer stdin = new InputStreamConsumer(
                     process.getInputStream(),
-                    line -> { log.info(line); },
+                    line -> {
+                        log.info(line);
+                        if (getTargetBuilder().isVerbose()) {
+                            System.out.println(line);
+                        }
+                    },
                     Charset.forName("UTF-8"));
 
             InputStreamConsumer stderr = new InputStreamConsumer(
                     process.getErrorStream(),
-                    line -> { log.warn(line); },
+                    line -> {
+                        log.warn(line);
+                        if (getTargetBuilder().isVerbose()) {
+                            System.err.println(line);
+                        }
+                    },
                     Charset.forName("UTF-8"));
 
             Thread stdinThread = new Thread(stdin,

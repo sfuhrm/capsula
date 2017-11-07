@@ -123,6 +123,10 @@ public final class TargetBuilder implements Callable<TargetBuilder.Result> {
     /** Stop processing after this stage. */
     private Stage stopAfter;
 
+    /** Verbose output. */
+    @Getter
+    private boolean verbose;
+
     /**
      * Creates an instance.
      *
@@ -133,12 +137,15 @@ public final class TargetBuilder implements Callable<TargetBuilder.Result> {
      *                          templates are located.
      * in.
      * @param myStopAfter the stage after which to stop.
+     * @param myVerbose verbose output.
      * @throws IOException if something goes wrong while initialization.
      */
-    public TargetBuilder(final Capsula myBuild, final Path myTempRoot,
+    public TargetBuilder(final Capsula myBuild,
+                         final Path myTempRoot,
                          final String myTargetName,
                          final Path myLayoutDirectory,
-                         final Stage myStopAfter) throws IOException {
+                         final Stage myStopAfter,
+                         final boolean myVerbose) throws IOException {
         this.build = Objects.requireNonNull(myBuild);
         this.tempRoot = Objects.requireNonNull(myTempRoot);
         this.targetName = Objects.requireNonNull(myTargetName);
@@ -165,6 +172,7 @@ public final class TargetBuilder implements Callable<TargetBuilder.Result> {
         log.debug("Target path is {}", targetPath);
         templateDelegate = new TemplateDelegate(this);
         this.stopAfter = Objects.requireNonNull(myStopAfter, "stopAfter");
+        this.verbose = myVerbose;
     }
 
     /**
