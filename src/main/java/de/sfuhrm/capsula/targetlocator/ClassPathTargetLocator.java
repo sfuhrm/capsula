@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
-package de.sfuhrm.capsula;
+package de.sfuhrm.capsula.targetlocator;
 
 import com.google.common.reflect.ClassPath;
 import java.io.IOException;
@@ -25,6 +25,10 @@ import java.nio.file.Path;
 import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import de.sfuhrm.capsula.BuildException;
+import de.sfuhrm.capsula.FileUtils;
+import de.sfuhrm.capsula.Main;
 import lombok.extern.slf4j.Slf4j;
 
 /**

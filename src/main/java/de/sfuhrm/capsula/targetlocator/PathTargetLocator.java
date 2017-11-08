@@ -1,5 +1,6 @@
-package de.sfuhrm.capsula;
+package de.sfuhrm.capsula.targetlocator;
 
+import de.sfuhrm.capsula.FileUtils;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;

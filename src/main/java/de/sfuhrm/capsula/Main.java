@@ -20,6 +20,8 @@ package de.sfuhrm.capsula;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import de.sfuhrm.capsula.targetbuilder.TargetBuilder;
+import de.sfuhrm.capsula.targetlocator.TargetLocator;
+import de.sfuhrm.capsula.targetlocator.TargetLocatorFactory;
 import de.sfuhrm.capsula.yaml.Capsula;
 import de.sfuhrm.capsula.yaml.PropertyInheritance;
 import java.io.IOException;
@@ -52,15 +54,11 @@ public final class Main {
     public Main(final Params myParams) {
         this.params = Objects.requireNonNull(myParams);
 
+        TargetLocatorFactory targetLocatorFactory = new TargetLocatorFactory();
         if (myParams.getTargetLayouts() != null) {
-            log.debug("Using path target locator in {}",
-                    myParams.getTargetLayouts());
-            this.targetLocator = new PathTargetLocator(
-                    myParams.getTargetLayouts());
-        } else {
-            log.debug("Using class path target locator");
-            this.targetLocator = new ClassPathTargetLocator();
+            targetLocatorFactory.setTargetLayouts(myParams.getTargetLayouts());
         }
+        this.targetLocator = targetLocatorFactory.newInstance();
     }
 
     /**

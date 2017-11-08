@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
-package de.sfuhrm.capsula;
+package de.sfuhrm.capsula.targetlocator;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -26,6 +26,9 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import static org.junit.Assert.*;
+
+import de.sfuhrm.capsula.FileUtils;
+import de.sfuhrm.capsula.targetlocator.ClassPathTargetLocator;
 import org.junit.Test;
 
 /**

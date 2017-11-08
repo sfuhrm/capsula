@@ -1,4 +1,4 @@
-package de.sfuhrm.capsula;
+package de.sfuhrm.capsula.targetlocator;
 
 import java.io.IOException;
 import java.nio.file.Path;
