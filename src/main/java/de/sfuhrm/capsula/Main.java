@@ -19,7 +19,6 @@ package de.sfuhrm.capsula;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
-import de.sfuhrm.capsula.targetbuilder.BuildException;
 import de.sfuhrm.capsula.targetbuilder.TargetBuilder;
 import de.sfuhrm.capsula.yaml.Capsula;
 import de.sfuhrm.capsula.yaml.PropertyInheritance;

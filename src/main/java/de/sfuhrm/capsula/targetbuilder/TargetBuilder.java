@@ -20,6 +20,7 @@ package de.sfuhrm.capsula.targetbuilder;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+import de.sfuhrm.capsula.BuildException;
 import de.sfuhrm.capsula.FileUtils;
 import de.sfuhrm.capsula.Stage;
 import de.sfuhrm.capsula.ValidationDelegate;

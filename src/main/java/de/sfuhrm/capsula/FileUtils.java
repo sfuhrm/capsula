@@ -17,7 +17,6 @@
  */
 package de.sfuhrm.capsula;
 
-import de.sfuhrm.capsula.targetbuilder.BuildException;
 import de.sfuhrm.capsula.yaml.command.PermissionSet;
 import java.io.IOException;
 import java.nio.file.FileSystem;

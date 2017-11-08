@@ -17,6 +17,7 @@
  */
 package de.sfuhrm.capsula.targetbuilder;
 
+import de.sfuhrm.capsula.BuildException;
 import de.sfuhrm.capsula.yaml.command.RunCommand;
 import java.io.IOException;
 import java.nio.charset.Charset;

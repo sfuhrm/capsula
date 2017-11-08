@@ -106,7 +106,7 @@ final class ClassPathTargetLocator implements TargetLocator {
                                 parts[parts.length - 1]);
                         Files.copy(is, toPath);
                     } catch (IOException e) {
-                        throw new RuntimeException("Problem copying resource "
+                        throw new BuildException("Problem copying resource "
                                 + cp.getResourceName() + " to " + toPath, e);
                     }
                 });

@@ -17,6 +17,7 @@
  */
 package de.sfuhrm.capsula.targetbuilder;
 
+import de.sfuhrm.capsula.BuildException;
 import de.sfuhrm.capsula.FileUtils;
 import de.sfuhrm.capsula.yaml.command.MkdirCommand;
 import java.io.IOException;
