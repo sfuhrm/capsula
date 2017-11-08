@@ -1,6 +1,6 @@
 #! /bin/bash
 
-yum install --assumeyes  <#list capsula.redhat.relationsFor("depends") as rel>${rel.pkg}<#sep> </#sep></#list> || exit 1
+yum install --assumeyes  <#list capsula.redhat.relationsFor("build_depends") as rel>${rel.pkg}<#sep> </#sep></#list> || exit 1
 
 # rpmbuild will complain if the archive has a unmappable UID. It was created
 # on the host, not the container.
