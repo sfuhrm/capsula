@@ -7,7 +7,7 @@ Copyright: 2017 ${capsula.author.name} <${capsula.author.email}>
 License: ${capsula.license.licenseName}
 
 License: ${capsula.license.licenseName}
-<#if capsula.license.debianFile?has_content>
+<#if capsula.license.debianName?has_content>
  On Debian systems, the full text of the ${capsula.license.licenseName}
  can be found in the file `/usr/share/common-licenses/${capsula.license.debianName}'.
 <#else>
