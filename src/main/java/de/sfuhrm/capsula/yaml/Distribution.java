@@ -43,12 +43,22 @@ public class Distribution {
     private String packageName; // inherited
 
     /** The command to use for building the package.
+     * @see #cleanCommand
      * */
     @Getter
     @Setter
     @NotNull
     @NotBlank
     private String buildCommand;  // inherited
+
+    /** The command to use for cleaning the package.
+     * @see #buildCommand
+     * */
+    @Getter
+    @Setter
+    @NotNull
+    @NotBlank
+    private String cleanCommand;  // inherited
 
     /** The dependencies and other relations for distribution provided
      * packages. */

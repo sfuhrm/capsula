@@ -1,5 +1,6 @@
 packageName: capsula # name of the project package
 buildCommand: mvn --batch-mode clean package
+cleanCommand: mvn --batch-mode clean
 author: # who's the main author of the program TBD: author/maintainer/etc
   name: Stephan Fuhrmann
   email: s@sfuhrm.de

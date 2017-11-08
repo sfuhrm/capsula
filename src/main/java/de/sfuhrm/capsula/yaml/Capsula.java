@@ -46,12 +46,22 @@ public class Capsula {
     private String packageName;
 
     /** The command to use for building the package.
+     * @see #cleanCommand
      * */
     @Getter
     @Setter
     @NotNull
     @NotBlank
     private String buildCommand;
+
+    /** The command to use for cleaning the package.
+     * @see #buildCommand
+     * */
+    @Getter
+    @Setter
+    @NotNull
+    @NotBlank
+    private String cleanCommand;
 
     /**
      * The author of the software in the package.
