@@ -26,7 +26,7 @@ build:
 <#include "include-build-docker.txt">
 # build the package
 - run:
-    command: docker run -v${target}:/target -w/target ${image} bash build.sh
+    command: docker run -v${target}:/target -v${target}/root/rpmbuild:/root/rpmbuild -w/target ${image} bash build.sh
 packages:
 - root/rpmbuild/RPMS/noarch/${capsula.redhat.packageName}-${version.version}-${version.releaseNumber}.noarch.rpm
 # the source package makes no sense (?!)
