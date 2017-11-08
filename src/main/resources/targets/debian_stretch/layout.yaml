@@ -26,6 +26,10 @@ prepare:
     from: rules.ftl
     to: ${pkgdir}/debian/rules
     mode: rwxr-xr-x
+- template:
+    from: build.sh.ftl
+    to: build.sh
+    mode: rwxrwxrwx
 #- template:
 #    from: install.ftl
 #    to: ${pkgdir}/debian/install
@@ -40,9 +44,6 @@ build:
 <#include "include-build-docker.txt">
 # build the package
 - run:
-    command: docker run -v${target}:/target -w/target/${pkgdir} ${image} debuild -us -uc
-# change the permissions to super open so I can delete the build directories later
-- run:
-    command: docker run -v${target}:/target -w/target/${pkgdir} ${image} chmod -R a+rwx .
+    command: docker run -v${target}:/target -w/target ${image} bash build.sh
 packages:
 - ${capsula.debian.packageName}_${version.version}-${version.release}_all.deb
