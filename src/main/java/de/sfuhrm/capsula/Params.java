@@ -68,7 +68,8 @@ final class Params {
      * {@link #descriptor descriptor} file. */
     @Getter
     @Option(name = "-validate", aliases = {"-c"},
-            usage = "Validate YAML descriptor file and exit.")
+            usage = "Validate YAML descriptor file and exit.",
+            help = true)
     private boolean validate;
 
     /** Optional directory for temporary files needed in the build process. */

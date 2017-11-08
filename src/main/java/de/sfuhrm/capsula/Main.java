@@ -71,6 +71,10 @@ public final class Main {
      */
     private Capsula readDescriptor() throws IOException {
         ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
+        if (params.getDescriptor() == null) {
+            throw new IllegalArgumentException("Need a descriptor"
+                    + " set in the command line options.");
+        }
         Capsula build = mapper.readValue(params.getDescriptor().toFile(),
                 Capsula.class);
         build.calculateReleaseNumbers();
