@@ -83,6 +83,25 @@ if not, you have to build Capsula and run it like this
 
 ## How to edit a configuration
 
+Best choice is at the moment starting with one of the examples
+and modifying it to your needs.
+
+The package descriptor editing can be separated in these
+phases:
+
+1. Create initial descriptor, for example from an example:
+  [1](https://github.com/sfuhrm/capsula/tree/master/examples),
+  [2](https://github.com/sfuhrm/capsula/blob/master/capsula.yaml),
+  [3](https://github.com/sfuhrm/radiorecorder/blob/master/radiorecorder.yaml),
+  [4](https://github.com/sfuhrm/schrumpf/blob/master/schrumpf.yaml).
+2. Edit the generic fields.
+3. Chose which distributions you want to support.
+4. Edit the distribution specific fields. The most difficult part
+   is usually the relations/depends to the distribution.
+5. Build your packages.
+6. Fix build problems.
+7. Test packages and go back to 4.
+
 Find out which group your package belongs in Fedora world:
 
     docker run fedora yum grouplist
