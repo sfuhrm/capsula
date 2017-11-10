@@ -10,7 +10,7 @@ Standards-Version: 3.9.8
 Homepage: ${capsula.homepage}
 
 Package: ${capsula.debian.packageName}
-Architecture: all
+Architecture: ${capsula.debian.architecture}
 <@relations name="Depends" list=capsula.debian.relationsFor("depends")/>
 <@relations name="Recommends" list=capsula.debian.relationsFor("recommends")/>
 <@relations name="Suggests" list=capsula.debian.relationsFor("suggests")/>
