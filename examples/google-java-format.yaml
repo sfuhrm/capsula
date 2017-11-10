@@ -1,5 +1,6 @@
 packageName: google-java-format # name of the project package
 buildCommand: mvn --batch-mode clean package
+cleanCommand: mvn --batch-mode clean
 author: # who's the main author of the program TBD: author/maintainer/etc
   name: John DeTreville
   email: jdd@google.com
