@@ -39,4 +39,4 @@ build:
 - run:
     command: docker run -v${target}:/target -w/target ${image} bash build.sh
 packages:
-- ${capsula.debian.packageName}_${version.version}-${version.release}_all.deb
+- ${capsula.debian.packageName}_${version.version}-${version.release}_${debian_arch}.deb
