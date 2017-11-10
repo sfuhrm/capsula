@@ -159,7 +159,17 @@ public final class Main {
         if (!params.isDebug()
                 && params.getStopAfter().compareTo(Stage.CLEANUP) >= 0) {
             log.debug("Stage entered: {}", Stage.CLEANUP);
-            FileUtils.deleteRecursive(myBuildDir);
+            if (params.getBuildDirectory() != null) {
+                try {
+                    Files.list(params.getBuildDirectory())
+                            .forEach(p -> FileUtils.deleteRecursive(p));
+                } catch (IOException e) {
+                    throw new BuildException("Error while cleaning up "
+                            + params.getBuildDirectory(), e);
+                }
+            } else {
+                FileUtils.deleteRecursive(myBuildDir);
+            }
             log.debug("Stage passed: {}", Stage.CLEANUP);
         }
     }
