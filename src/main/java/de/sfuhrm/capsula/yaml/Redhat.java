@@ -37,4 +37,29 @@ public class Redhat extends Distribution {
     @NotNull
     @NotBlank
     private String group;
+
+    /** The RPM build architecture.
+     * If the package is not architecture dependent, for example
+     * written entirely in an interpreted programming language,
+     * this should be {@code BuildArch: noarch} otherwise it
+     * will automatically inherit the Architecture of the
+     * machine it’s being built on.
+     * */
+    enum BuildArch {
+        /** Interpreted programming language. */
+        noarch,
+        /** x86 64 bit architecture. */
+        x86_64
+    }
+
+    /** The build architecture to set.
+     * If the package is not architecture dependent, for example
+     * written entirely in an interpreted programming language,
+     * this should be {@code BuildArch: noarch} otherwise it
+     * will automatically inherit the Architecture of the
+     * machine it’s being built on.
+     * */
+    @Getter
+    @Setter
+    private BuildArch buildArch = BuildArch.noarch;
 }

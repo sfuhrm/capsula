@@ -17,7 +17,9 @@ URL: ${capsula.homepage}
 <@relations name="Suggests" list=capsula.redhat.relationsFor("suggests")/>
 <@relations name="Conflicts" list=capsula.redhat.relationsFor("conflicts")/>
 <@relations name="Provides" list=capsula.redhat.relationsFor("provides")/>
-BuildArch: noarch
+<#if capsula.redhat.buildArch?has_content>
+BuildArch: ${capsula.redhat.buildArch}
+</#if>
 %description
 <#list capsula.longDescription as line>
 ${line}

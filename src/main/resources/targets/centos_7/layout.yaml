@@ -28,7 +28,7 @@ build:
 - run:
     command: docker run -v${target}:/target -v${target}/root/rpmbuild:/root/rpmbuild -w/target ${image} bash build.sh
 packages:
-- root/rpmbuild/RPMS/noarch/${capsula.redhat.packageName}-${version.version}-${version.releaseNumber}.noarch.rpm
+- root/rpmbuild/RPMS/${capsula.redhat.buildArch}/${capsula.redhat.packageName}-${version.version}-${version.releaseNumber}.${capsula.redhat.buildArch}.rpm
 # the source package makes no sense (?!)
 - root/rpmbuild/SRPMS/${capsula.redhat.packageName}-${version.version}-${version.releaseNumber}.src.rpm
 
