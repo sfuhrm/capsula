@@ -3,3 +3,4 @@ dockerhub_image: sfuhrm/capsula:debian_stretch
 dockerhub_url: https://hub.docker.com/r/sfuhrm/capsula-debian-stretch/
 image_label: capsula-debian-stretch
 use_dockerhub: true
+debian_destdir: debian/${capsula.debian.packageName}/

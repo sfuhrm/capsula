@@ -30,13 +30,6 @@ prepare:
     from: build.sh.ftl
     to: build.sh
     mode: rwxrwxrwx
-#- template:
-#    from: install.ftl
-#    to: ${pkgdir}/debian/install
-#    mode: rwxr-xr-x
-- template:
-    from: Makefile.ftl
-    to: ${pkgdir}/Makefile
 - template:
     from: compat.ftl
     to: ${pkgdir}/debian/compat
