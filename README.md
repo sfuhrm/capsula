@@ -18,6 +18,7 @@ Linux platforms supported:
 Capsula has the following features:
 
 * Only one YAML configuration file necessary for all supported platforms.
+* Has a simple inheritance mechanism for the YAML file so you don't need to start copy & paste.
 * Can build packages for multiple target platforms.
 * Dependencies can be configured for every distribution.
 * Can make Java, C and other projects.
