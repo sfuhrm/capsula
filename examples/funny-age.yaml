@@ -1,0 +1,68 @@
+packageName: funny-age # name of the project package
+buildCommand: make
+cleanCommand: make clean
+author: # who's the main author of the program TBD: author/maintainer/etc
+  name: Stephan Fuhrmann
+  email: s@sfuhrm.de
+maintainer: # who's the package maintainer of the program
+  name: Stephan Fuhrmann
+  email: s@sfuhrm.de
+shortSummary: Calculates your age in days.
+longDescription: # long description of package content
+- Based on your birth date, calculates the week day
+- of your birth and out of that your age in days.
+homepage: https://github.com/sfuhrm/funny-age # homepage of the project
+license: APACHE_20 # license the project is in
+targets: # which platforms to build an archive for
+- centos_7
+- debian_stretch
+git:
+  gitUrl: https://github.com/sfuhrm/funny-age.git
+#can't use this until we have a pull request for core/src/main/scripts/google-java-format
+#gitUrl: https://github.com/google/google-java-format.git
+redhat:
+  group: Development Tools
+  buildArch: x86_64
+  relations:
+    build_depends:
+    - pkg: gcc
+    - pkg: make
+debian:
+  priority: optional
+  section: devel
+  architecture: any
+  relations:
+    build_depends:
+    - pkg: debhelper
+      op: ge
+      version: 10
+    - pkg: gcc
+      op: ge
+      version: 4
+    - pkg: make
+      op: ge
+      version: 4
+# Version history of the package. Used for Debian changelogs.
+versions:
+- version: 1.0.0 # TBD this needs to match the debian version as a string
+  release: 1
+  date: 2017-11-10T12:40:00+01:00
+  changes:
+  - New packaging with build dependencies
+# Where to install what on the target system?
+install:
+- copy:
+    from: age
+    to: /usr/bin/funny-age
+    owner: root
+    group: root
+    mode: rwxr-xr-x
+- run:
+    command: gzip README.md
+- copy:
+    from: README.md.gz
+    to: /usr/share/doc/funny-age/README.md.gz
+    owner: root
+    group: root
+    mode: rw-r--r--
+
