@@ -1,5 +1,6 @@
 # Capsula ![Travis CI Status](https://travis-ci.org/sfuhrm/capsula.svg?branch=master) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/ed538897b79543f1a4f933b2347fd7e5)](https://www.codacy.com/app/sfuhrm/capsula?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=sfuhrm/capsula&amp;utm_campaign=Badge_Grade) [![License: GPL v2](https://img.shields.io/badge/License-GPL%20v2-blue.svg)](https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html)
-## Java Linux package making tool 
+
+## Capsula - Linux package making tool 
 
 Capsula is a program for creating packages for multiple
 Linux platforms from one universal descriptor file. 
@@ -11,6 +12,15 @@ Linux platforms supported:
 * [Fedora](https://www.centos.org/)-derived systems: Fedora, CentOS.
 * [Archlinux](https://www.archlinux.org/) systems.
 * and many more to come.
+
+### Features
+
+Capsula has the following features:
+
+* Only one YAML configuration file necessary for all supported platforms.
+* Can build packages for multiple target platforms.
+* Dependencies can be configured for every distribution.
+* Can make Java, C and other projects.
 
 ### Downloading & installation
 
@@ -60,14 +70,6 @@ The format of the descriptor file **will** change until version v1.0.0.
 
 Releasing the project at this stage is to enable other people
 to participate.
-
-## Features
-
-Capsula has the following features:
-
-* Only one YAML configuration file necessary.
-* Can build packages for multiple target platforms.
-* Dependencies can be configured for every distribution.
 
 ## Starting Capsula
 
