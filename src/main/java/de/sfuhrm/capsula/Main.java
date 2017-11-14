@@ -226,6 +226,10 @@ public final class Main {
      * descriptor.
      * */
     private void buildTargets(final Path myBuildDir) throws IOException {
+        Runnable shutdownRunnable = () -> cleanup(myBuildDir);
+        Thread shutdownThread = new Thread(shutdownRunnable);
+        Runtime.getRuntime().addShutdownHook(shutdownThread);
+
         Optional<Capsula> buildOptional = readAndValidateDescriptor();
         if (!buildOptional.isPresent()
                 || params.getStopAfter().compareTo(Stage.READ_DESCRIPTOR)
@@ -242,6 +246,7 @@ public final class Main {
                 );
 
         log.debug("Cleaning up");
+        Runtime.getRuntime().removeShutdownHook(shutdownThread);
         cleanup(myBuildDir);
     }
 }
