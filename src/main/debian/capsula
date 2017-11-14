@@ -1,9 +1,46 @@
 #! /bin/bash
 
+# Copyright (C) 2017 Stephan Fuhrmann
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License along
+# with this program; if not, write to the Free Software Foundation, Inc.,
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+
+PRG=$0
+BASE=$(basename ${PRG})
+JARBASE=/usr/share/${BASE}
+JAR=${JARBASE}/${BASE}-jar-with-dependencies.jar
+
 if [ "x$JAVA_HOME" = "x" ]; then
-	export JAVA_HOME=$(cd $(dirname $(readlink -f "/etc/alternatives/java"))/../..; pwd)
+    if [ -h /etc/alternatives/java ]; then
+	    export JAVA_HOME=$(cd $(dirname $(readlink -f "/etc/alternatives/java"))/../..; pwd)
+    fi
 fi
 
-JAR=/usr/share/capsula/*.jar
-java -jar $JAR $@
+if [ ! -d ${JARBASE} ]; then
+    cat <<DELIMITER
+Expecting the directory ${JARBASE} to exist.
+Please install package properly.
+DELIMITER
+    exit 1
+fi
 
+if [ ! -f ${JAR} ]; then
+    cat <<DELIMITER
+Expecting the file ${JAR} to exist.
+Please install package properly.
+DELIMITER
+    exit 1
+fi
+
+java ${JAVAOPTS} -jar $JAR "$@"
