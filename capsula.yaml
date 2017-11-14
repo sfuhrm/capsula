@@ -125,7 +125,7 @@ install:
     group: root
     mode: rw-r--r--
 - copy:
-    from: src/main/debian/capsula
+    from: src/main/package/capsula
     to: /usr/bin/capsula
     owner: root
     group: root
