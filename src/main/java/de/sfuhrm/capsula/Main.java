@@ -230,23 +230,27 @@ public final class Main {
         Thread shutdownThread = new Thread(shutdownRunnable);
         Runtime.getRuntime().addShutdownHook(shutdownThread);
 
-        Optional<Capsula> buildOptional = readAndValidateDescriptor();
-        if (!buildOptional.isPresent()
-                || params.getStopAfter().compareTo(Stage.READ_DESCRIPTOR)
-                <= 0) {
-            return;
+        try {
+            Optional<Capsula> buildOptional = readAndValidateDescriptor();
+            if (!buildOptional.isPresent()
+                    || params.getStopAfter().compareTo(Stage.READ_DESCRIPTOR)
+                    <= 0) {
+                return;
+            }
+            Capsula build = buildOptional.get();
+            final Stream<String> targetStream = getTargetStream(build);
+
+            targetStream
+                    .filter(t -> params.getTargets() == null
+                            || params.getTargets().contains(t))
+                    .forEach(t -> buildTarget(t, build, myBuildDir)
+                    );
+
         }
-        Capsula build = buildOptional.get();
-        final Stream<String> targetStream = getTargetStream(build);
-
-        targetStream
-                .filter(t -> params.getTargets() == null
-                        || params.getTargets().contains(t))
-                .forEach(t -> buildTarget(t, build, myBuildDir)
-                );
-
-        log.debug("Cleaning up");
-        Runtime.getRuntime().removeShutdownHook(shutdownThread);
-        cleanup(myBuildDir);
+        finally {
+            Runtime.getRuntime().removeShutdownHook(shutdownThread);
+            log.debug("Cleaning up");
+            cleanup(myBuildDir);
+        }
     }
 }
