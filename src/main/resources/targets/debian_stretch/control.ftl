@@ -19,7 +19,7 @@ Architecture: ${capsula.debian.architecture}
 <@relations name="Provides" list=capsula.debian.relationsFor("provides")/>
 <@relations name="Replaces" list=capsula.debian.relationsFor("replaces")/>
 Description: ${capsula.shortSummary}
-<#list capsula.longDescription as line>
+<#list capsula.longDescriptionLines as line>
 <#if line?has_content>
  ${line}
 <#else>

@@ -8,12 +8,15 @@ maintainer: # who's the package maintainer of the program
   name: Stephan Fuhrmann
   email: s@sfuhrm.de
 shortSummary: Creates packages for multiple Linux distributions. # short summary of package content
-longDescription: # long description of package content
-- A template-driven approach for generating multiple package formats
-- for Linux distributions.
-- ""
-- Current supported Linux distributions are
-- debian_stretch
+longDescription: |
+  A template-driven approach for generating multiple package formats
+  for Linux distributions.
+
+  Can build packages for multiple programming languages and build
+  environments.
+
+  Current supported Linux distributions are
+  Debian, CentOS and ArchLinux
 homepage: http://github.com/sfuhrm/capsula # homepage of the project
 license: GPL_20 # license the project is in
 targets: # which platforms to build an archive for

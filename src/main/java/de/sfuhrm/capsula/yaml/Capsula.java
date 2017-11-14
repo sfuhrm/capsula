@@ -19,6 +19,7 @@ package de.sfuhrm.capsula.yaml;
 
 import de.sfuhrm.capsula.yaml.command.Command;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -100,13 +101,15 @@ public class Capsula {
     @NotNull
     @NotBlank
     private String shortSummary;
+
+
     /**
      * Long multi-line description of the project.
      */
     @Getter
     @NotNull
-    @Size(min = 1)
-    private List<String> longDescription;
+    @NotBlank
+    private String longDescription;
 
     /**
      * The license for the project.
@@ -170,8 +173,17 @@ public class Capsula {
                     .collect(Collectors.toList());
             int total = sameVersion.size();
             int indexInverse = sameVersion.indexOf(versionWithChanges);
-            int index = total - indexInverse - 1;
+            int index = total - indexInverse - 1; // TBD this should be 1-based
             versionWithChanges.setReleaseNumber(index);
         }
+    }
+
+    /** Returns the lines of the long description as a list.
+     * @return the lines of the
+     * {@link #getLongDescription()} long description} as
+     * a list.
+     * */
+    public final List<String> getLongDescriptionLines() {
+        return Arrays.asList(getLongDescription().split("\n"));
     }
 }

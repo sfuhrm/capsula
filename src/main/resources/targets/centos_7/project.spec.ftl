@@ -21,7 +21,7 @@ URL: ${capsula.homepage}
 BuildArch: ${capsula.redhat.buildArch}
 </#if>
 %description
-<#list capsula.longDescription as line>
+<#list capsula.longDescriptionLines as line>
 ${line}
 </#list>
 

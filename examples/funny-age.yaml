@@ -8,9 +8,9 @@ maintainer: # who's the package maintainer of the program
   name: Stephan Fuhrmann
   email: s@sfuhrm.de
 shortSummary: Calculates your age in days.
-longDescription: # long description of package content
-- Based on your birth date, calculates the week day
-- of your birth and out of that your age in days.
+longDescription: |
+  Based on your birth date, calculates the week day
+  of your birth and out of that your age in days.
 homepage: https://github.com/sfuhrm/funny-age # homepage of the project
 license: APACHE_20 # license the project is in
 targets: # which platforms to build an archive for

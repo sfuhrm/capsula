@@ -8,15 +8,16 @@ maintainer: # who's the package maintainer of the program
   name: Stephan Fuhrmann
   email: s@sfuhrm.de
 shortSummary: Reformats Java source code to comply with Google Java Style.
-longDescription: # long description of package content
-- The formatter can act on whole files, on limited lines (--lines), on specific offsets (--offset),
-- passing through to standard-out (default) or altered in-place (--replace).
-- ""
-- "The Google Java Style is described here: https://google.github.io/styleguide/javaguide.html"
-- ""
-- To reformat changed lines in a specific patch, use google-java-format-diff.py.
-- ""
-- "Note: There is no configurability as to the formatter's algorithm for formatting. This is a deliberate design decision to unify our code - formatting on a single format."
+longDescription: |
+  The formatter can act on whole files, on limited lines (--lines), on specific offsets (--offset),
+  passing through to standard-out (default) or altered in-place (--replace).
+
+  The Google Java Style is described here: https://google.github.io/styleguide/javaguide.html
+
+  To reformat changed lines in a specific patch, use google-java-format-diff.py.
+
+  Note: There is no configurability as to the formatter's algorithm for formatting.
+  This is a deliberate design decision to unify our code - formatting on a single format.
 homepage: https://github.com/google/google-java-format # homepage of the project
 license: APACHE_20 # license the project is in
 targets: # which platforms to build an archive for
