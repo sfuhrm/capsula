@@ -75,6 +75,18 @@ archlinux:
     - pkg: jdk8-openjdk
     - pkg: maven
 versions:
+- version: 0.2.0
+  release: 1
+  date: 2017-11-14T15:00:00+01:00
+  changes:
+  - Breaking change, different long description in YAML config
+  - Breaking change, added clean command in YAML config
+  - Better cleanup in case of exception / CTRL-C
+  - Improved shell starter script
+  - Fix for architectures in Debian, CentOS for C/C++ building
+  - Improved Debian to support Make-based programs
+  - Option "-c" works without "-o" now
+  - Added funny age example
 - version: 0.1.4
   release: 1
   date: 2017-11-07T23:10:00+01:00
