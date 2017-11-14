@@ -246,8 +246,7 @@ public final class Main {
                     .forEach(t -> buildTarget(t, build, myBuildDir)
                     );
 
-        }
-        finally {
+        } finally {
             Runtime.getRuntime().removeShutdownHook(shutdownThread);
             log.debug("Cleaning up");
             cleanup(myBuildDir);
