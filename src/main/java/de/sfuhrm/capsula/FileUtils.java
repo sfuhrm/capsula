@@ -208,10 +208,10 @@ public final class FileUtils {
     }
 
     /**
-     * Deletes a path and its children.
-     *
+     * Deletes a path and its children. Tries to
+     * continue cleaning up, even if running into
+     * errors.
      * @param p the path to delete.
-     * @throws BuildException in case of an IO exception.
      */
     public static void deleteRecursive(final Path p) {
         try {
@@ -230,7 +230,7 @@ public final class FileUtils {
                 Files.delete(p);
             }
         } catch (IOException exception) {
-            throw new BuildException("Error deleting recursively: " + p,
+            log.warn("Error deleting recursively: " + p,
                     exception);
         }
     }

@@ -164,7 +164,7 @@ public final class Main {
                     Files.list(params.getBuildDirectory())
                             .forEach(p -> FileUtils.deleteRecursive(p));
                 } catch (IOException e) {
-                    throw new BuildException("Error while cleaning up "
+                    log.warn("Error while cleaning up "
                             + params.getBuildDirectory(), e);
                 }
             } else {
