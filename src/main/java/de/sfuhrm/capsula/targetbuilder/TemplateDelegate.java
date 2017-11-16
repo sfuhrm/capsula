@@ -47,7 +47,7 @@ class TemplateDelegate extends AbstractDelegate {
     private final Configuration cfg;
 
     /** The charset the files are in. */
-    private Charset charset;
+    private final Charset charset;
 
     /** Creates a new instance.
      * @param targetBuilder the target builder this is a delegate for.
