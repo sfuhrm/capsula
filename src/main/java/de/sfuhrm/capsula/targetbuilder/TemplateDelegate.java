@@ -89,8 +89,10 @@ class TemplateDelegate extends AbstractDelegate {
         Path toPath = getTargetBuilder().getTargetPath().resolve(to);
         try {
             Template temp = cfg.getTemplate(from);
-            if (!Files.exists(toPath.getParent())) {
-                Files.createDirectories(toPath.getParent());
+            if (toPath.getParent() != null) {
+                if (!Files.exists(toPath.getParent())) {
+                    Files.createDirectories(toPath.getParent());
+                }
             }
             try (Writer out = Files.newBufferedWriter(toPath, charset)) {
                 temp.process(getTargetBuilder().getEnvironment(), out);
