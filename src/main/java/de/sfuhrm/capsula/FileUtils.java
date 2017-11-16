@@ -98,9 +98,11 @@ public final class FileUtils {
                            final Consumer<Path> newPathConsumer) {
         try {
             if (Files.isRegularFile(from)) {
-                if (from.getParent() != null && to.getParent() != null) {
-                    if (Files.isDirectory(from.getParent())) {
-                        FileUtils.mkdirs(to.getParent(), newPathConsumer);
+                Path fromParent = from.getParent();
+                Path toParent = to.getParent();
+                if (fromParent != null && toParent != null) {
+                    if (Files.isDirectory(fromParent)) {
+                        FileUtils.mkdirs(toParent, newPathConsumer);
                     }
                 }
                 Files.copy(from, to);
