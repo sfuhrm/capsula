@@ -94,7 +94,9 @@ public class Debian extends Distribution {
 
     /**
      * The urgency of this release.
-     * @see https://www.debian.org/doc/manuals/developers-reference/ch05.en.html
+     * @see <a href=
+     * "https://www.debian.org/doc/manuals/developers-reference/ch05.en.html">
+     * Debian manual</a>
      */
     @Getter
     @NotNull
