@@ -45,8 +45,14 @@ public class VersionWithChanges extends Version {
     private List<String> changes;
 
     /** The date of this versions release. */
-    @Getter
     @NotNull
     @PastOrPresent
     private Date date;
+
+    /** Get the date of this versions release.
+     * @return a copy of the date of the change.
+     * */
+    public final Date getDate() {
+        return new Date(date.getTime());
+    }
 }
