@@ -38,7 +38,7 @@ public class InputStreamConsumerTest {
         ByteArrayInputStream inputStream = new ByteArrayInputStream(
                 "Foo\nbar\nbaz\n".getBytes(charset));
         InputStreamConsumer inputStreamConsumer = new InputStreamConsumer(
-                inputStream, s -> lines.add(s), charset);
+                inputStream, lines::add, charset);
         inputStreamConsumer.run();
 
         assertEquals(

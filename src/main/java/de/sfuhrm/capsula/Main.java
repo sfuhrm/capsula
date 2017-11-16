@@ -162,7 +162,7 @@ public final class Main {
             if (params.getBuildDirectory() != null) {
                 try {
                     Files.list(params.getBuildDirectory())
-                            .forEach(p -> FileUtils.deleteRecursive(p));
+                            .forEach(FileUtils::deleteRecursive);
                 } catch (IOException e) {
                     log.warn("Error while cleaning up "
                             + params.getBuildDirectory(), e);
@@ -189,7 +189,7 @@ public final class Main {
         Path myBuildDir;
         if (params.getBuildDirectory() != null) {
             myBuildDir = params.getBuildDirectory().toAbsolutePath();
-            Files.list(myBuildDir).forEach(p -> FileUtils.deleteRecursive(p));
+            Files.list(myBuildDir).forEach(FileUtils::deleteRecursive);
         } else {
             myBuildDir = Files.createTempDirectory("capsula").toAbsolutePath();
         }

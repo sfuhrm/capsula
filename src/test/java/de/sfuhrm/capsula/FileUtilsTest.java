@@ -35,7 +35,7 @@ public class FileUtilsTest {
         Path newDir = tmp.resolve(single);
         List<Path> newDirs = new ArrayList<>();
 
-        FileUtils.mkdirs(newDir, p -> newDirs.add(p));
+        FileUtils.mkdirs(newDir, newDirs::add);
         assertEquals(Arrays.asList(newDir), newDirs);
 
         FileUtils.deleteRecursive(tmp);
@@ -49,7 +49,7 @@ public class FileUtilsTest {
         Path newDir = tmp.resolve(a).resolve(b);
         List<Path> newDirs = new ArrayList<>();
 
-        FileUtils.mkdirs(newDir, p -> newDirs.add(p));
+        FileUtils.mkdirs(newDir, newDirs::add);
         assertEquals(Arrays.asList(newDir, newDir.getParent()), newDirs);
 
         FileUtils.deleteRecursive(tmp);

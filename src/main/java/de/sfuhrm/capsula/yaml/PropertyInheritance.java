@@ -103,7 +103,7 @@ public final class PropertyInheritance {
             // map of parent properties
             Map<String, PropertyDescriptor> parentProperties
                     = Arrays.stream(parentDescriptor.getPropertyDescriptors())
-                            .collect(Collectors.toMap(p -> p.getName(),
+                            .collect(Collectors.toMap(FeatureDescriptor::getName,
                                     p -> p));
             // try to fill all null child properties with the parent
             Arrays.stream(childDescriptor.getPropertyDescriptors())

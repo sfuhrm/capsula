@@ -229,7 +229,7 @@ public final class FileUtils {
             }
             if (Files.isDirectory(p)) {
                 log.debug("Deleting directory contents {}", p);
-                Files.list(p).forEach(t -> deleteRecursive(t));
+                Files.list(p).forEach(FileUtils::deleteRecursive);
                 log.debug("Deleting directory {}", p);
                 Files.delete(p);
             }
