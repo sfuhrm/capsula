@@ -18,6 +18,7 @@
 package de.sfuhrm.capsula.yaml;
 
 import java.beans.BeanInfo;
+import java.beans.FeatureDescriptor;
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
