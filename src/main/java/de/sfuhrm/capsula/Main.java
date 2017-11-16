@@ -78,7 +78,7 @@ public final class Main {
         PropertyInheritance.inherit(build, build.getDebian());
         PropertyInheritance.inherit(build, build.getRedhat());
         PropertyInheritance.inherit(build, build.getArchlinux());
-        build.getVersions().stream().forEach(v -> {
+        build.getVersions().forEach(v -> {
             if (v.getMaintainer() == null) {
                 v.setMaintainer(build.getMaintainer());
             }
@@ -97,7 +97,7 @@ public final class Main {
      * go on (validation error, descriptor validation option given).
      * @throws IOException if something goes wrong while reading.
      * */
-    public Optional<Capsula> readAndValidateDescriptor() throws IOException {
+    private Optional<Capsula> readAndValidateDescriptor() throws IOException {
         log.debug("Stage entered: {}", Stage.READ_DESCRIPTOR);
         final Capsula build = readDescriptor();
         ValidationDelegate validationDelegate = new ValidationDelegate();
