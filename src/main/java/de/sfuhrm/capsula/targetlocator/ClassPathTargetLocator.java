@@ -101,7 +101,7 @@ final class ClassPathTargetLocator implements TargetLocator {
                         TARGETS_DIRECTORY + "/" + target)
         || cp.getResourceName().startsWith(INCLUDE_DIRECTORY))
                 .forEach(cp -> {
-                    InputStream is = null;
+                    InputStream is;
                     Path toPath = null;
                     try {
                         is = cp.asByteSource().openStream();
