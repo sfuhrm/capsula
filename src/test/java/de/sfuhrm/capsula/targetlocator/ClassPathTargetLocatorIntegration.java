@@ -38,14 +38,15 @@ import org.junit.Test;
  */
 public class ClassPathTargetLocatorIntegration {
 
-    public String CENTOS_7 = "centos_7";
+    public final String CENTOS_7 = "centos_7";
+    public final String DEBIAN_STRETCH = "debian_stretch";
 
     @Test
     public void testGetTargets() throws IOException {
         ClassPathTargetLocator locator = new ClassPathTargetLocator();
         Set<String> targets = locator.getTargets();
         // this needs to be adjusted when adding more targets
-        assertEquals(new HashSet<>(Arrays.asList(CENTOS_7, "debian_stretch")), targets);
+        assertEquals(new HashSet<>(Arrays.asList(CENTOS_7, DEBIAN_STRETCH)), targets);
     }
 
     @Test
