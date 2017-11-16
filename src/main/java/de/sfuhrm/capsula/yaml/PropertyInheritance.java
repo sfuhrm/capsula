@@ -102,13 +102,11 @@ public final class PropertyInheritance {
                     Introspector.getBeanInfo(child.getClass());
             // map of parent properties
             Map<String, PropertyDescriptor> parentProperties
-                    = Arrays.asList(parentDescriptor.getPropertyDescriptors())
-                            .stream()
+                    = Arrays.stream(parentDescriptor.getPropertyDescriptors())
                             .collect(Collectors.toMap(p -> p.getName(),
                                     p -> p));
             // try to fill all null child properties with the parent
-            Arrays.asList(childDescriptor.getPropertyDescriptors())
-                    .stream()
+            Arrays.stream(childDescriptor.getPropertyDescriptors())
                     // parent has property
                     .filter(p -> parentProperties.containsKey(p.getName()))
                     // child has property null value
