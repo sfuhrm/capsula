@@ -46,7 +46,7 @@ public class Debian extends Distribution {
         /** These packages provide a reasonably small but
          * not too limited character-mode system. */
         standard
-    };
+    }
 
     /** Debian-specific Priority of this package. */
     @Getter
@@ -67,8 +67,8 @@ public class Debian extends Distribution {
         /** Indicates an architecture-independent package. */
         all,
         /** Indicates a source package. */
-        source;
-    };
+        source
+    }
 
     /** The Debian specific architecture of this package. */
     @Getter
@@ -89,8 +89,8 @@ public class Debian extends Distribution {
         /** Medium urgency. */
         medium,
         /** Low urgency. */
-        low;
-    };
+        low
+    }
 
     /**
      * The urgency of this release.

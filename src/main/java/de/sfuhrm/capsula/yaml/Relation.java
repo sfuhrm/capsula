@@ -82,7 +82,7 @@ public class Relation {
         /** Use this when your program replaces files from another package,
          * or completely replaces another package (used in conjunction with
          * Conflicts). */
-        replaces;
+        replaces
     }
 
     /** An operator that compares the actual package version with

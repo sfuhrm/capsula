@@ -33,5 +33,5 @@ public enum Stage {
     /** Cleanup. */
     CLEANUP,
     /** Finish. */
-    ALL;
+    ALL
 }
