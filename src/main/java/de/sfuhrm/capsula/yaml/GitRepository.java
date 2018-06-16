@@ -22,7 +22,6 @@ import java.util.regex.Pattern;
 import javax.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.validator.constraints.URL;
 
 /**
  * The reference to a git repository.
@@ -35,7 +34,6 @@ public class GitRepository {
     @Getter
     @Setter
     @NotNull
-    @URL
     private String gitUrl;
 
     /**
