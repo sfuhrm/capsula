@@ -6,6 +6,12 @@ Clones the Git repository and removes the .git files.
 # clone project
 - run:
     command: git clone ${capsula.git.gitUrl} --branch ${capsula.git.branch}
+<#if capsula.git.commit?has_content>
+# clone project
+- run:
+    command: git --git-dir ${capsula.git.gitProject}/.git checkout ${capsula.git.commit}
+</#if>
+
 # remove .git files
 - run:
     command: rm -fr ${capsula.git.gitProject}/.git ${capsula.git.gitProject}/.gitignore
